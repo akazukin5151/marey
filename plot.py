@@ -7,7 +7,7 @@ from common import mkdirs_touch_open
 
 
 def main(line_name, df):
-    print('Plotting...')
+    print('Plotting (offline)...')
     plt.rcParams['font.family'] = 'Hiragino Sans GB'
 
     plt.figure(figsize=(15, 15))

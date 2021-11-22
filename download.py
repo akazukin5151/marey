@@ -3,7 +3,7 @@ from pathlib import Path
 from common import mkdirs_touch_open, fetch_soup
 
 def main(line_name):
-    print('Downloading urls...')
+    print('Downloading urls online...')
     with open(f'urls/{line_name}.txt', 'r') as f:
         file_ = f.read()
 
@@ -20,7 +20,5 @@ def main(line_name):
         page = fetch_soup(url)
         print(f'Fetch successful, writing to {file_name}')
         mkdirs_touch_open(str(page), file_name)
-
-if __name__ == '__main__':
-    line_name = 'chuo'
-    main(line_name)
+    else:
+        print('No files downloaded because outputs already exists')

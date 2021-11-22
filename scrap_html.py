@@ -13,7 +13,7 @@ def main(line_name):
     for f in Path(f'htmls/{line_name}/').iterdir():
         df = df.append(make_df(f))
     mkdirs_touch_open('', outfile)
-    df.to_csv(outfile)
+    df.to_csv(outfile, index=False)
 
 def make_df(file_):
     with open(file_, 'r') as f:
@@ -35,7 +35,7 @@ def make_df(file_):
     final = [first_station_info] + final + [last_station_info]
     final = pd.DataFrame.from_records(final, columns=['Station', 'Arrive', 'Depart'])
     final['Train'] = file_.name
-    return final
+    return final.reset_index()
 
 def get_station_name(s):
     return s.find('td', class_='td-station-name').get_text()
@@ -51,7 +51,3 @@ def get_rest_station_info(s):
     arr_t = splitted[0].strip()[:-1]
     dep_t = splitted[-1].strip()[:-1]
     return (name, arr_t, dep_t)
-
-if __name__ == '__main__':
-    line_name = 'chuo'
-    main(line_name)

@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def main(line_name):
-    print('Preparing plot...')
+    print('Preparing plot (offline)...')
     df = pd.read_csv(f'generated_csv/{line_name}.csv')
 
     df['Arrive'] = df.Arrive.str.replace('24:', '0:').astype('datetime64[ns]')
@@ -13,12 +13,12 @@ def main(line_name):
     new_rows = []
     for idx, row in df[df.Arrive != df.Depart].dropna().iterrows():
         new_row = row.copy()
-        new_row['Unnamed: 0'] += 0.5
+        new_row['index'] += 0.5
         new_row['Arrive'] = new_row.Depart
         df.loc[idx, 'Depart'] = row['Arrive']
         new_rows.append(new_row)
     df = df.append(pd.DataFrame(new_rows)).reset_index(drop=True)
-    df.sort_values(['Train', 'Unnamed: 0'], inplace=True)
+    df.sort_values(['Train', 'index'], inplace=True)
 
     fix_next_days(df, 'Arrive')
 
@@ -32,7 +32,7 @@ def main(line_name):
     # Fill NaT in Arrive with Depart
     # Only the first station has NaT for Arrive
     # This assumes that there's only one first-station, so picking the first one is fine
-    first = df[df['Unnamed: 0'] == 0].Station.iloc[0]
+    first = df[df['index'] == 0].Station.iloc[0]
     df['Arrive'].where(
         df['Station'] != first, df.Depart, inplace=True
     )
@@ -72,7 +72,3 @@ def find_next_day(xs: '[a]') -> 'a':
     # recursive case 2
     # if the upper is not monotonic, repeat with upper
     return find_next_day(upper)
-
-if __name__ == '__main__':
-    line_name = 'chuo'
-    main(line_name)

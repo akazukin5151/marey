@@ -5,7 +5,7 @@ from common import mkdirs_touch_open, fetch_soup
 def main(URL, line_name):
     if Path(f'urls/{line_name}.txt').exists():
         return
-    print('Getting urls...')
+    print('Getting urls online...')
 
     print('Fetching the page...')
     # a page showing the timetable of a station
@@ -88,8 +88,3 @@ def get_target_url(link):
     sff = '&SFF=180-0'
 
     return 'https://ekitan.com/timetable/railway/train?sf=' + sf + '&tx=' + tx + '&dw=' + dw + '&dt=' + dt + '&departure=' + departure + sff + '&d=' + d
-
-if __name__ == '__main__':
-    URL = "https://ekitan.com/timetable/railway/line-station/180-0/d1"
-    line_name = 'chuo'
-    main(URL, line_name)
