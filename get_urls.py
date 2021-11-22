@@ -5,6 +5,7 @@ from common import mkdirs_touch_open, fetch_soup
 def main(URL, line_name):
     if Path(f'urls/{line_name}.txt').exists():
         return
+    print('Getting urls...')
 
     print('Fetching the page...')
     # a page showing the timetable of a station

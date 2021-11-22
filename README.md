@@ -2,6 +2,13 @@
 
 A python script that scrapes [ekitan](ekitan.com/) (a Japanese transportation routing service) to make a train schedule diagram
 
+Note that the following scripts will immediately return if their output file already exists (regardless if the file is correct)
+- get_urls.py
+- downloads.py (Checks if every file to be downloaded already exists)
+- scrap_html.py
+
+To force the scripts to run, delete their output files
+
 # Install dependencies
 
 Install the dependencies with your favourite package manager:

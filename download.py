@@ -3,6 +3,7 @@ from pathlib import Path
 from common import mkdirs_touch_open, fetch_soup
 
 def main(line_name):
+    print('Downloading urls...')
     with open(f'urls/{line_name}.txt', 'r') as f:
         file_ = f.read()
 

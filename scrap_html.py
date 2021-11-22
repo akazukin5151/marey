@@ -8,6 +8,7 @@ def main(line_name):
     outfile = Path(f'generated_csv/{line_name}.csv')
     if outfile.exists():
         return
+    print('Scraping html... (offline)')
     df = pd.DataFrame(columns=['Station', 'Arrive', 'Depart', 'Train'])
     for f in Path(f'htmls/{line_name}/').iterdir():
         df = df.append(make_df(f))

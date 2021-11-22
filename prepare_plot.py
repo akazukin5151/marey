@@ -3,6 +3,7 @@ import pandas as pd
 
 
 def main(line_name):
+    print('Preparing plot...')
     df = pd.read_csv(f'generated_csv/{line_name}.csv')
 
     df['Arrive'] = df.Arrive.str.replace('24:', '0:').astype('datetime64[ns]')
