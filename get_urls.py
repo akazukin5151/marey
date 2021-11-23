@@ -24,14 +24,14 @@ def main(URL, line_name):
             train_dest = train.get('data-dest').replace('/', '_')
             train_speed = train.get('data-tr-type')
             train_dep_min = train.find('a').find('span', class_='time-min means-text start').get_text()
-            target_url = get_target_url(train.find('a'))
+            target_url = get_target_url(URL, train.find('a'))
 
             out = f'{target_url};htmls/{line_name}/{train_dep_hour}-{train_dep_min}-{train_dest}-{train_speed}'
             result.append(out)
 
     mkdirs_touch_open('\n'.join(result), Path(f'urls/{line_name}.txt'))
 
-def get_target_url(link):
+def get_target_url(URL, link):
     # {{{ JS function for reference
     """
     $('.ek-train-link').on("click", function(){
@@ -76,8 +76,8 @@ def get_target_url(link):
     # unknown when this fills
     dw = ''
 
-    # hardcoded - the date range of my current search
-    dt = '20211122'
+    # the date range of the current search
+    dt = URL.split('?dt=')[-1]
 
     departure = link.get('data-departure')
 

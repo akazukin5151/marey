@@ -24,7 +24,7 @@
 <meta content="" property="og:site_name"/>
 <meta content="blog" property="og:type"/>
 <meta content="" property="og:image"/>
-<meta content="Oh7LoCg6e7tMV5TWwK6ucRqtkK1lbowvLIL5TsBO" name="csrf-token"/>
+<meta content="QNW83pgdyMkdbpcxWBGnlcwtnJAPz3ps65ILQyie" name="csrf-token"/>
 <style type="text/css">
 	.noscroll {
 		overflow: hidden;
@@ -539,7 +539,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <a class="logo" data-event_rep="ヘッダー-ロゴ" ga-event-lbl="GA-TRAC_railway-train_PC_header-logo" href="https://ekitan.com/">駅探 | ekitan</a>
 </div>
 <div class="title-info">
-<a href="https://forward.ekitan.com/?fid=9Aag&amp;kiseki=HEGaTnnA&amp;frame_id=header-info&amp;unit_id=header-info-1&amp;banner_id=header-info-1&amp;trans_id=578619c1de6729c8&amp;utm_source=ekitan_pc&amp;utm_medium=headerinfo">
+<a href="https://forward.ekitan.com/?fid=9Aag&amp;kiseki=HEGaTnnA&amp;frame_id=header-info&amp;unit_id=header-info-1&amp;banner_id=header-info-1&amp;trans_id=769619c47a6bd2db&amp;utm_source=ekitan_pc&amp;utm_medium=headerinfo">
 <span class="fei fei-loudspeaker icon-loudspeaker-l"></span>
 <span class="text">駅弁コラボのサウンドアトラクション「駅弁GO！」がスタート！</span>
 </a>
@@ -652,7 +652,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div class="search-result train-operating">
 <div class="search-result-header">
 <div class="search-filter">
-<p class="text">東京：2021年11月22日(月)　12:24発</p>
+<p class="text">東京：2021年11月1日(月)　12:24発</p>
 </div>
 <div class="pagination-wrap wide ek-pager-onetrain clearfix">
 <div class="pagination">
@@ -1453,7 +1453,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <div class="sidebar-adv-item">
 <div class="contents-wrap padding10" style="margin-bottom: 0px">
 <div class="contents-box-wrap link-box">
-<a href="https://forward.ekitan.com/?fid=XU8h&amp;kiseki=HEGaTnnA&amp;frame_id=r_top_1&amp;unit_id=r_top_1-1&amp;banner_id=pc_280x100_memberpass1&amp;trans_id=578619c1de6729c8&amp;&amp;utm_source=ekitan_pc&amp;utm_medium=train-result_rcolom#benefit-cat04">
+<a href="https://forward.ekitan.com/?fid=XU8h&amp;kiseki=HEGaTnnA&amp;frame_id=r_top_1&amp;unit_id=r_top_1-1&amp;banner_id=pc_280x100_memberpass1&amp;trans_id=769619c47a6bd2db&amp;&amp;utm_source=ekitan_pc&amp;utm_medium=train-result_rcolom#benefit-cat04">
 <div class="contents-box col2">
 <div class="contents-box-inner">
 <img alt="" src="//forward.ekitan.com/cdn/img/70x70_memberpass1.png?u=1587357389" srcset="//forward.ekitan.com/cdn/img/70x70_memberpass1.png?u=1587357389 1x, //forward.ekitan.com/cdn/img/70x70_memberpass1@2x.png?u=1587357389 2x"/>
@@ -1466,7 +1466,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </a>
 </div>
 <div class="contents-box-wrap link-box">
-<a href="https://forward.ekitan.com/?fid=X35Z&amp;kiseki=HEGaTnnA&amp;frame_id=r_top_2&amp;unit_id=r_top_2-1&amp;banner_id=pc_280x100_kaspersky1&amp;trans_id=578619c1de6729c8&amp;&amp;utm_source=ekitan_pc&amp;utm_medium=train-result_rcolom">
+<a href="https://forward.ekitan.com/?fid=X35Z&amp;kiseki=HEGaTnnA&amp;frame_id=r_top_2&amp;unit_id=r_top_2-1&amp;banner_id=pc_280x100_kaspersky1&amp;trans_id=769619c47a6bd2db&amp;&amp;utm_source=ekitan_pc&amp;utm_medium=train-result_rcolom">
 <div class="contents-box col2 pb0 mb0 border-none border-b-none">
 <div class="contents-box-inner">
 <img alt="" src="//forward.ekitan.com/cdn/img/70x70_kaspersky1.png?u=1587357389" srcset="//forward.ekitan.com/cdn/img/70x70_kaspersky1.png?u=1587357389 1x, //forward.ekitan.com/cdn/img/70x70_kaspersky1@2x.png?u=1587357389 2x"/>
@@ -1578,7 +1578,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 <div class="modal-footer" style="display: none;">
 <a class="btn btn-white over-blue text-blue" href="https://account.ekitan.com/home/register">アカウントを取得する</a>
-<a class="btn btn-white over-blue text-blue" href="https://account.ekitan.com/home/login?url=https%3A%2F%2Fekitan.com%2Ftimetable%2Ftimetable%2Frailway%2Ftrain%3Fsf%3D2590%26tx%3D300100-41484-1253T%26dw%3D%26dt%3D20211122%26departure%3D1224%26SFF%3D180-0%26d%3D1">ログインする</a>
+<a class="btn btn-white over-blue text-blue" href="https://account.ekitan.com/home/login?url=https%3A%2F%2Fekitan.com%2Ftimetable%2Ftimetable%2Frailway%2Ftrain%3Fsf%3D2590%26tx%3D300100-41484-1253T%26dw%3D%26dt%3D20211101%26departure%3D1224%26SFF%3D180-0%26d%3D1">ログインする</a>
 </div>
 </div>
 </div>
@@ -1763,8 +1763,8 @@ console.log("display => "+DISP);
 	// 内部的にはhttpsではなくhttpとして取得できるための対応
 	function getCurrentUrl() {
 		// TOPのURLはスラッシュなしでもRequest::path()はスラッシュとして返すため
-		var path = ("timetable/railway/train" == '/') ? ((("http://ekitan.com/timetable/railway/train?SFF=180-0&d=1&departure=1224&dt=20211122&dw=&sf=2590&tx=300100-41484-1253T").indexOf('?') != -1) ? '/' : '') : '/' + "timetable/railway/train";
-		var queryString = (("http://ekitan.com/timetable/railway/train?SFF=180-0&d=1&departure=1224&dt=20211122&dw=&sf=2590&tx=300100-41484-1253T").indexOf('?') != -1) ? '?' + ("http://ekitan.com/timetable/railway/train?SFF=180-0&d=1&departure=1224&dt=20211122&dw=&sf=2590&tx=300100-41484-1253T").split('?')[1] : '';
+		var path = ("timetable/railway/train" == '/') ? ((("http://ekitan.com/timetable/railway/train?SFF=180-0&d=1&departure=1224&dt=20211101&dw=&sf=2590&tx=300100-41484-1253T").indexOf('?') != -1) ? '/' : '') : '/' + "timetable/railway/train";
+		var queryString = (("http://ekitan.com/timetable/railway/train?SFF=180-0&d=1&departure=1224&dt=20211101&dw=&sf=2590&tx=300100-41484-1253T").indexOf('?') != -1) ? '?' + ("http://ekitan.com/timetable/railway/train?SFF=180-0&d=1&departure=1224&dt=20211101&dw=&sf=2590&tx=300100-41484-1253T").split('?')[1] : '';
 		var currentUrl = "https://ekitan.com" + path + queryString;
 		return currentUrl;
 	}
@@ -1773,15 +1773,15 @@ console.log("display => "+DISP);
 	// 内部的にはhttpsではなくhttpとして取得できるための対応
 	function getCurrentUrlWithoutQuery() {
 		// TOPのURLはスラッシュなしでもRequest::path()はスラッシュとして返すため
-		var path = ("timetable/railway/train" == '/') ? ((("http://ekitan.com/timetable/railway/train?SFF=180-0&d=1&departure=1224&dt=20211122&dw=&sf=2590&tx=300100-41484-1253T").indexOf('?') != -1) ? '/' : '') : '/' + "timetable/railway/train";
+		var path = ("timetable/railway/train" == '/') ? ((("http://ekitan.com/timetable/railway/train?SFF=180-0&d=1&departure=1224&dt=20211101&dw=&sf=2590&tx=300100-41484-1253T").indexOf('?') != -1) ? '/' : '') : '/' + "timetable/railway/train";
 		var currentUrl = "https://ekitan.com" + path;
 		return currentUrl;
 	}
 
 	// 現在のURLの取得（完全）
 	function getCurrentFullUrl() {
-		var path = ("timetable/railway/train" == '/') ? ((("http://ekitan.com/timetable/railway/train?SFF=180-0&d=1&departure=1224&dt=20211122&dw=&sf=2590&tx=300100-41484-1253T").indexOf('?') != -1) ? '/' : '') : '/' + "timetable/railway/train";
-		var queryString = (("http://ekitan.com/timetable/railway/train?SFF=180-0&d=1&departure=1224&dt=20211122&dw=&sf=2590&tx=300100-41484-1253T").indexOf('?') != -1) ? '?' + ("http://ekitan.com/timetable/railway/train?SFF=180-0&d=1&departure=1224&dt=20211122&dw=&sf=2590&tx=300100-41484-1253T").split('?')[1] : '';
+		var path = ("timetable/railway/train" == '/') ? ((("http://ekitan.com/timetable/railway/train?SFF=180-0&d=1&departure=1224&dt=20211101&dw=&sf=2590&tx=300100-41484-1253T").indexOf('?') != -1) ? '/' : '') : '/' + "timetable/railway/train";
+		var queryString = (("http://ekitan.com/timetable/railway/train?SFF=180-0&d=1&departure=1224&dt=20211101&dw=&sf=2590&tx=300100-41484-1253T").indexOf('?') != -1) ? '?' + ("http://ekitan.com/timetable/railway/train?SFF=180-0&d=1&departure=1224&dt=20211101&dw=&sf=2590&tx=300100-41484-1253T").split('?')[1] : '';
 		var currentUrl = "https://ekitan.com" + path + queryString;
 		return currentUrl;
 	}
@@ -1791,14 +1791,14 @@ console.log("display => "+DISP);
 		return {
 			'year': '2021',
 			'month': '11',
-			'day': '22'
+			'day': '01'
 		};
 	};
 
 	// クエリストリング配列の取得
 	function getInput() {
 		var input = {};
-		var query = "sf=2590&tx=300100-41484-1253T&dw=&dt=20211122&departure=1224&SFF=180-0&d=1";
+		var query = "sf=2590&tx=300100-41484-1253T&dw=&dt=20211101&departure=1224&SFF=180-0&d=1";
 		var undefined;	// 未定義値の変数
 		$.each(query.split("&"), function(idx, val){
 			kv = val.split("=");
