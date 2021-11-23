@@ -11,12 +11,7 @@ To force the scripts to run, delete their output files
 
 # Install dependencies
 
-Install the dependencies with your favourite package manager:
-- BeautifulSoup
-- pandas
-- matplotlib
-- numpy
-- Python 3 (obviously)
+Install the dependencies with `pip install -r requirements.txt`
 
 # Running
 
