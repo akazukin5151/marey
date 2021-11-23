@@ -6,6 +6,10 @@ from common import mkdirs_touch_open
 
 
 def main(df: 'pd.DataFrame', line_name: str, plot_name: str, alpha: float, line: bool):
+    outfile = Path(f'plots/{line_name}_{plot_name}.png')
+    if outfile.exists():
+        return
+
     print(f'Plotting {plot_name} (offline)...')
 
     plt.rcParams['font.family'] = 'Hiragino Sans GB'
