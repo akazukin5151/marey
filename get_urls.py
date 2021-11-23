@@ -26,6 +26,10 @@ def main(URL, line_name):
             train_dest = train.get('data-dest').replace('/', '_')
             train_speed = train.get('data-tr-type')
             train_dep_min = train.find('a').find('span', class_='time-min means-text')
+            if train_dep_min is None:
+                train_dep_min = train.find('a').find(
+                    'span', class_='time-min means-text start'
+                )
             train_dep_min = train_dep_min.get_text()
             target_url = get_target_url(URL, train.find('a'))
 

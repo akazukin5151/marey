@@ -36,7 +36,10 @@ if __name__ == '__main__':
     #line_name = 'chuo_sobu'
     #line_color = '#fdbc00'
     #url = 'https://ekitan.com/timetable/railway/line-station/184-20/d2?dt=20211101'
-    line_name = 'chuo'
-    line_color = '#FE642E'
-    url = 'https://ekitan.com/timetable/railway/line-station/180-0/d1?dt=20211101'
+    #line_name = 'chuo'
+    #line_color = '#FE642E'
+    #url = 'https://ekitan.com/timetable/railway/line-station/180-0/d1?dt=20211101'
+    line_name = 'keihin_tohoku'
+    line_color = '#00BFFF'
+    url = 'https://ekitan.com/timetable/railway/line-station/79-0/d1?dt=20211101'
     main(url, line_name, line_color)
