@@ -8,6 +8,10 @@ A python script that scrapes [ekitan](ekitan.com/) (a Japanese transportation ro
 
 ![chuo_delta_scatter](plots/chuo_delta_scatter.png)
 
+# Features
+
+- Can start from any station, not just line terminus
+
 # Install dependencies
 
 Install the dependencies with `pip install -r requirements.txt`
