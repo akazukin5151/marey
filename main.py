@@ -10,8 +10,11 @@ def main(url, line_name):
     scrap_html.main(line_name)
     # This is not saved to a file because dtype data has to be preserved
     # You could still pickle it if you really want to export the entire thing intact
-    df = prepare_plot.main(line_name)
-    plot.main(line_name, df)
+    df = prepare_plot.prepare_normal(line_name)
+    plot.main(line_name, 'normal', df, 0.5)
+    prepare_plot.prepare_delta(df)
+    plot.main(line_name, 'delta', df, 0.2)
+
 
 if __name__ == '__main__':
     # don't use "current" results, always pin to a specific date

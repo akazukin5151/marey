@@ -1,8 +1,10 @@
+from datetime import date
+from datetime import datetime
 from datetime import timedelta
 import pandas as pd
 
 
-def main(line_name):
+def prepare_normal(line_name):
     print('Preparing plot (offline)...')
     df = pd.read_csv(f'generated_csv/{line_name}.csv')
 
@@ -72,3 +74,16 @@ def find_next_day(xs: '[a]') -> 'a':
     # recursive case 2
     # if the upper is not monotonic, repeat with upper
     return find_next_day(upper)
+
+def prepare_delta(df):
+    print('Preparing delta plot (offline)...')
+    for train in df.Train.unique():
+        here = df[df.Train == train]
+        # this doesn't work for some fucking reason
+        #new = here.Arrive - here.Arrive.min()
+        new = here.Arrive.apply(lambda x: x - here.Arrive.min())
+        df['Arrive'].where(df.Train != train, new, inplace=True)
+    today = date.today()
+    midnight = datetime.combine(today, datetime.min.time())
+    df['Arrive'] = df.Arrive.apply(lambda x: midnight + x)
+
