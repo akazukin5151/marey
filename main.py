@@ -1,3 +1,4 @@
+from pathlib import Path
 import get_urls
 import download
 import scrap_html
@@ -8,12 +9,23 @@ def main(url, line_name):
     get_urls.main(url, line_name)
     download.main(line_name)
     scrap_html.main(line_name)
-    # This is not saved to a file because dtype data has to be preserved
-    # You could still pickle it if you really want to export the entire thing intact
+
+    # Check if plot needs to be prepared
+    normal = Path(f'plots/{line_name}_normal.png')
+    delta = Path(f'plots/{line_name}_delta.png')
+    delta_scatter = Path(f'plots/{line_name}_delta_scatter.png')
+    if normal.exists() and delta.exists() and delta_scatter.exists():
+        return
+
     df = prepare_plot.prepare_normal(line_name)
-    plot.main(line_name, 'normal', df, 0.5)
+    plot.main(df, line_name, 'normal', alpha=0.5, line=True)
+
+    # If only normal was missing, exit now
+    if delta.exists() and delta_scatter.exists():
+        return
     prepare_plot.prepare_delta(df)
-    plot.main(line_name, 'delta', df, 0.2)
+    plot.main(df, line_name, 'delta', alpha=0.2, line=True)
+    plot.main(df, line_name, 'delta_scatter', alpha=0.2, line=False)
 
 
 if __name__ == '__main__':

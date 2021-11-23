@@ -21,4 +21,4 @@ def main(line_name):
         print(f'Fetch successful, writing to {file_name}')
         mkdirs_touch_open(str(page), file_name)
     else:
-        print('No files downloaded because outputs already exists')
+        print('No files downloaded because all outputs already exists')
