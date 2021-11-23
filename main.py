@@ -33,8 +33,8 @@ def main(url, line_name):
 if __name__ == '__main__':
     # don't use "current" results, always pin to a specific date
     # NO: 'https://ekitan.com/timetable/railway/line-station/180-0/d1'
-    url = 'https://ekitan.com/timetable/railway/line-station/184-20/d2?dt=20211101'
-    line_name = 'chuo_sobu'
-    #url = 'https://ekitan.com/timetable/railway/line-station/180-0/d1?dt=20211101'
-    #line_name = 'chuo'
+    #url = 'https://ekitan.com/timetable/railway/line-station/184-20/d2?dt=20211101'
+    #line_name = 'chuo_sobu'
+    url = 'https://ekitan.com/timetable/railway/line-station/180-0/d1?dt=20211101'
+    line_name = 'chuo'
     main(url, line_name)
