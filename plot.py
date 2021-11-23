@@ -6,7 +6,10 @@ from matplotlib.ticker import AutoMinorLocator
 from common import mkdirs_touch_open
 
 
-def main(df: 'pd.DataFrame', line_name: str, plot_name: str, alpha: float, line: bool):
+def main(
+    df: 'pd.DataFrame', line_name: str, plot_name: str, alpha: float,
+    color: str, line: bool,
+):
     outfile = Path(f'plots/{line_name}_{plot_name}.png')
     if outfile.exists():
         return
@@ -17,7 +20,7 @@ def main(df: 'pd.DataFrame', line_name: str, plot_name: str, alpha: float, line:
     plt.figure(figsize=(15, 15))
 
     args = dict(
-        color='orange',
+        color=color,
         alpha=alpha,
         marker='o'
     )
