@@ -27,6 +27,7 @@ def main(line_name, plot_name, df, alpha):
     plt.gca().xaxis.set_major_formatter(DateFormatter('%H:%M'))
     plt.gca().xaxis.set_minor_formatter(DateFormatter('%H:%M'))
     plt.gca().xaxis.set_tick_params(labeltop='on')
+    plt.gca().yaxis.set_tick_params(labelright='on')
     plt.tight_layout()
     outfile = Path(f'plots/{line_name}_{plot_name}.png')
     mkdirs_touch_open('', outfile)
