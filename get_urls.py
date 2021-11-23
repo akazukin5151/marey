@@ -1,19 +1,21 @@
 import time
 from pathlib import Path
+from bs4 import BeautifulSoup
 from common import mkdirs_touch_open, fetch_soup
 
 def main(URL, line_name):
     if Path(f'urls/{line_name}.txt').exists():
         return
-    print('Getting urls online...')
 
-    print('Fetching the page...')
-    # a page showing the timetable of a station
-    page = fetch_soup(URL)
-    print('Page fetched!')
+    with open(f'./htmls/{line_name}.html', 'r') as f:
+        page = BeautifulSoup(f.read(), features='html.parser')
 
+    # If the page is on a station that is not the terminus, the page
+    # will contain 2 `ek-hour-line`s. The one with the `active` is the correct one
+    active = page.find_all('div', 'tab-content-inner active')
+    assert len(active) == 1
     # the table containing all the trains departing, grouped by departure hour
-    hours_lines = page.find_all('tr', class_='ek-hour_line')
+    hours_lines = active[0].find_all('tr', class_='ek-hour_line')
 
     result = []
     for hour_line in hours_lines:
@@ -23,7 +25,8 @@ def main(URL, line_name):
         for train in trains:
             train_dest = train.get('data-dest').replace('/', '_')
             train_speed = train.get('data-tr-type')
-            train_dep_min = train.find('a').find('span', class_='time-min means-text start').get_text()
+            train_dep_min = train.find('a').find('span', class_='time-min means-text')
+            train_dep_min = train_dep_min.get_text()
             target_url = get_target_url(URL, train.find('a'))
 
             out = f'{target_url};htmls/{line_name}/{train_dep_hour}-{train_dep_min}-{train_dest}-{train_speed}'

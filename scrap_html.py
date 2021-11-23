@@ -24,14 +24,20 @@ def make_df(file_):
 
     # first and last stations only have one of {arrival, departure} time
     first_station_name = get_station_name(first_station)
-    first_station_dep_time = get_station_time_text(first_station).strip()[:-1]
+    # don't special-case this because a "first" station can actually not be the terminus
+    _, first_station_dep_time, _ = get_rest_station_info(first_station)
     first_station_info = (first_station_name, np.nan, first_station_dep_time)
 
     last_station_name = get_station_name(rest_stations[-1])
     last_station_arr_time = get_station_time_text(rest_stations[-1]).strip()[:-1]
     last_station_info = (last_station_name, last_station_arr_time, np.nan)
 
-    final = [get_rest_station_info(x) for x in rest_stations[:-1]]
+    final = [
+        get_rest_station_info(x)
+        for x in rest_stations[:-1]
+        # if the first station isn't the terminus, exclude previous stations
+        if x.parent.parent.parent['class'][0] != 'before-selected-station'
+    ]
     final = [first_station_info] + final + [last_station_info]
     final = pd.DataFrame.from_records(final, columns=['Station', 'Arrive', 'Depart'])
     final['Train'] = file_.name
