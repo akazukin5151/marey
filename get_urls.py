@@ -4,10 +4,10 @@ from bs4 import BeautifulSoup
 from common import mkdirs_touch_open, fetch_soup
 
 def main(URL, line_name):
-    if Path(f'urls/{line_name}.txt').exists():
+    if Path(f'out/urls/{line_name}.txt').exists():
         return
 
-    with open(f'./htmls/{line_name}.html', 'r') as f:
+    with open(f'out/htmls/{line_name}.html', 'r') as f:
         page = BeautifulSoup(f.read(), features='html.parser')
 
     # If the page is on a station that is not the terminus, the page
@@ -33,10 +33,10 @@ def main(URL, line_name):
             train_dep_min = train_dep_min.get_text()
             target_url = get_target_url(URL, train.find('a'))
 
-            out = f'{target_url};htmls/{line_name}/{train_dep_hour}-{train_dep_min}-{train_dest}-{train_speed}'
+            out = f'{target_url};out/htmls/{line_name}/{train_dep_hour}-{train_dep_min}-{train_dest}-{train_speed}'
             result.append(out)
 
-    mkdirs_touch_open('\n'.join(result), Path(f'urls/{line_name}.txt'))
+    mkdirs_touch_open('\n'.join(result), Path(f'out/urls/{line_name}.txt'))
 
 def get_target_url(URL, link):
     # {{{ JS function for reference

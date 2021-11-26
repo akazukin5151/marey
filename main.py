@@ -13,9 +13,9 @@ def main(url, line_name, line_color):
     scrap_html.main(line_name)
 
     # Check if plot needs to be prepared
-    normal = Path(f'plots/{line_name}_normal.png')
-    delta = Path(f'plots/{line_name}_delta.png')
-    delta_scatter = Path(f'plots/{line_name}_delta_scatter.png')
+    normal = Path(f'out/plots/{line_name}_normal.png')
+    delta = Path(f'out/plots/{line_name}_delta.png')
+    delta_scatter = Path(f'out/plots/{line_name}_delta_scatter.png')
     if normal.exists() and delta.exists() and delta_scatter.exists():
         return
 

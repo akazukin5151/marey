@@ -10,7 +10,7 @@ def main(
     df: 'pd.DataFrame', line_name: str, plot_name: str, alpha: float,
     color: str, line: bool,
 ):
-    outfile = Path(f'plots/{line_name}_{plot_name}.png')
+    outfile = Path(f'out/plots/{line_name}_{plot_name}.png')
     if outfile.exists():
         return
 

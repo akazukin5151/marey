@@ -2,7 +2,7 @@ from pathlib import Path
 from common import mkdirs_touch_open, fetch_soup
 
 def main(url, line_name):
-    outfile = Path(f'htmls/{line_name}.html')
+    outfile = Path(f'out/htmls/{line_name}.html')
     if outfile.exists():
         return
     print('Getting urls online...')

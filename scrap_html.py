@@ -5,12 +5,12 @@ from bs4 import BeautifulSoup
 from common import mkdirs_touch_open
 
 def main(line_name):
-    outfile = Path(f'generated_csv/{line_name}.csv')
+    outfile = Path(f'out/generated_csv/{line_name}.csv')
     if outfile.exists():
         return
     print('Scraping html... (offline)')
     df = pd.DataFrame(columns=['Station', 'Arrive', 'Depart', 'Train'])
-    for f in Path(f'htmls/{line_name}/').iterdir():
+    for f in Path(f'out/htmls/{line_name}/').iterdir():
         df = df.append(make_df(f))
     mkdirs_touch_open('', outfile)
     df.to_csv(outfile, index=False)
