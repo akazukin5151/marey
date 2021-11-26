@@ -18,17 +18,16 @@ Install the dependencies with `pip install -r requirements.txt`
 
 # Running
 
-Either edit main.py in this section to use your own url and line name
+Either edit the bottom of main.py to use your own url and line name, and line color
 
-```py
-    url = 'https://ekitan.com/timetable/railway/line-station/180-0/d1?dt=20211101'
-    line_name = 'chuo'
-    main(url, line_name)
-```
+Or from another python module, import `main` and call `main.main(line)`, giving your own `line`. To construct a `Line`, import `common` and call `common.Constants.Line`
 
-Or from another python module, import `main` and call `main.main(url, line_name)`, giving your own `url` and `line_name`
+Note that your url should be pinned to a specific date, not current results. See:
 
-Note that all the scripts will try its best to immediately return if their output file already exists (regardless if the file is correct). To force the scripts to run, delete their output files
+- NO: 'https://ekitan.com/timetable/railway/line-station/180-0/d1'
+- YES: 'https://ekitan.com/timetable/railway/line-station/180-0/d1?dt=20211101'
+
+All the scripts will try its best to immediately return if their output file already exists (regardless if the file is correct). To force the scripts to run, delete their output files
 
 # Q&A
 

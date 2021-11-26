@@ -9,6 +9,11 @@ class Constants(NamedTuple):
     gen_csv_dir = Path('out/generated_csv')
     plot_dir = Path('out/plots')
 
+class Line(NamedTuple):
+    name: str
+    color: str
+    url: str
+
 def mkdirs_touch_open(s: str, path: Path):
     path.parent.mkdir(exist_ok=True, parents=True)
     path.touch(exist_ok=True)
