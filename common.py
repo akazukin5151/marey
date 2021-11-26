@@ -1,6 +1,13 @@
+from typing import NamedTuple
 from pathlib import Path
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
+
+class Constants(NamedTuple):
+    url_dir = Path('out/urls')
+    html_dir = Path('out/htmls')
+    gen_csv_dir = Path('out/generated_csv')
+    plot_dir = Path('out/plots')
 
 def mkdirs_touch_open(s: str, path: Path):
     path.parent.mkdir(exist_ok=True, parents=True)

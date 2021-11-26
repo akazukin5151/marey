@@ -1,8 +1,8 @@
 from pathlib import Path
-from common import mkdirs_touch_open, fetch_soup
+from common import mkdirs_touch_open, fetch_soup, Constants
 
 def main(url, line_name):
-    outfile = Path(f'out/htmls/{line_name}.html')
+    outfile = Constants.html_dir / f'{line_name}.html'
     if outfile.exists():
         return
     print('Getting urls online...')

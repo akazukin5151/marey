@@ -1,4 +1,5 @@
 from pathlib import Path
+from common import Constants
 import save_page
 import get_urls
 import download
@@ -13,9 +14,9 @@ def main(url, line_name, line_color):
     scrap_html.main(line_name)
 
     # Check if plot needs to be prepared
-    normal = Path(f'out/plots/{line_name}_normal.png')
-    delta = Path(f'out/plots/{line_name}_delta.png')
-    delta_scatter = Path(f'out/plots/{line_name}_delta_scatter.png')
+    normal = Constants.plot_dir / f'{line_name}_normal.png'
+    delta = Constants.plot_dir / f'{line_name}_delta.png'
+    delta_scatter = Constants.plot_dir / f'{line_name}_delta_scatter.png'
     if normal.exists() and delta.exists() and delta_scatter.exists():
         return
 

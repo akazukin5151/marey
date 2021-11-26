@@ -3,14 +3,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
 from matplotlib.ticker import AutoMinorLocator
-from common import mkdirs_touch_open
+from common import mkdirs_touch_open, Constants
 
 
 def main(
     df: 'pd.DataFrame', line_name: str, plot_name: str, alpha: float,
     color: str, line: bool,
 ):
-    outfile = Path(f'out/plots/{line_name}_{plot_name}.png')
+    outfile = Constants.plot_dir / f'{line_name}_{plot_name}.png'
     if outfile.exists():
         return
 

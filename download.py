@@ -1,10 +1,10 @@
 import time
 from pathlib import Path
-from common import mkdirs_touch_open, fetch_soup
+from common import mkdirs_touch_open, fetch_soup, Constants
 
 def main(line_name):
     print('Downloading urls online...')
-    with open(f'out/urls/{line_name}.txt', 'r') as f:
+    with open(Constants.url_dir / f'{line_name}.txt', 'r') as f:
         file_ = f.read()
 
     for line in file_.split('\n'):

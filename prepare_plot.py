@@ -2,11 +2,12 @@ from datetime import date
 from datetime import datetime
 from datetime import timedelta
 import pandas as pd
+from common import Constants
 
 
 def prepare_normal(line_name):
     print('Preparing plot (offline)...')
-    df = pd.read_csv(f'out/generated_csv/{line_name}.csv')
+    df = pd.read_csv(Constants.gen_csv_dir / f'{line_name}.csv')
 
     df['Arrive'] = df.Arrive.str.replace('24:', '0:').astype('datetime64[ns]')
     df['Depart'] = df.Depart.astype('datetime64[ns]')
