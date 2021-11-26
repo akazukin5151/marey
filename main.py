@@ -21,14 +21,14 @@ def main(line: Line):
         return
 
     df = prepare_plot.prepare_normal(line.name)
-    plot.main(df, line.name, 'normal', alpha=0.5, color=line_color, line=True)
+    plot.main(df, line.name, 'normal', alpha=0.5, color=line.color, line=True)
 
     # If only normal was missing, exit now
     if delta.exists() and delta_scatter.exists():
         return
     prepare_plot.prepare_delta(df)
-    plot.main(df, line.name, 'delta', alpha=0.2, color=line_color, line=True)
-    plot.main(df, line.name, 'delta_scatter', alpha=0.2, color=line_color, line=False)
+    plot.main(df, line.name, 'delta', alpha=0.2, color=line.color, line=True)
+    plot.main(df, line.name, 'delta_scatter', alpha=0.2, color=line.color, line=False)
 
 
 if __name__ == '__main__':
@@ -47,4 +47,14 @@ if __name__ == '__main__':
         color = '#00BFFF',
         url = 'https://ekitan.com/timetable/railway/line-station/79-0/d1?dt=20211101'
     )
-    main(kt)
+    yamanote = Line(
+        name = 'yamanote',
+        color = '#9acd32',
+        url = 'https://ekitan.com/timetable/railway/line-station/182-15/d1?dt=20211101'
+    )
+    takasaki = Line(
+        name = 'takasaki',
+        color = '#FF8C00',
+        url = 'https://ekitan.com/timetable/railway/line-station/136-4/d1?dt=20211101'
+    )
+    main(yamanote)
