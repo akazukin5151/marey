@@ -2,11 +2,11 @@
 
 A python script that scrapes [ekitan](ekitan.com/) (a Japanese transportation routing service) to make a train schedule diagram
 
-![chuo_normal](plots/chuo_normal.png)
+![chuo_normal](examples/plots/chuo_normal.png)
 
-![chuo_delta](plots/chuo_delta.png)
+![chuo_delta](examples/plots/chuo_delta.png)
 
-![chuo_delta_scatter](plots/chuo_delta_scatter.png)
+![chuo_delta_scatter](examples/plots/chuo_delta_scatter.png)
 
 # Features
 
