@@ -16,6 +16,8 @@ A python script that scrapes [ekitan](ekitan.com/) (a Japanese transportation ro
 
 Install the dependencies with `pip install -r requirements.txt`
 
+Bokeh is optional, it is only used for interactive plots
+
 # Running
 
 Either edit the bottom of main.py to use your own url and line name, and line color

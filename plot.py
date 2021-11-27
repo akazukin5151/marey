@@ -46,3 +46,31 @@ def main(
     mkdirs_touch_open('', outfile)
     plt.savefig(outfile)
 
+def bokeh(
+    df: 'pd.DataFrame', line_name: str, plot_name: str, alpha: float,
+    color: str, line: bool,
+):
+    from bokeh.plotting import figure, show, ColumnDataSource, save
+    from bokeh.io import output_file
+
+    outfile = Constants.plot_dir / f'{line_name}_{plot_name}.html'
+    if outfile.exists():
+        return
+
+    print(f'Plotting {plot_name} (offline)...')
+    output_file(outfile)
+
+    source = ColumnDataSource(data=df)
+    p1 = figure(
+        x_axis_type='datetime', y_range=df.Station.unique(),
+        tools='hover,pan,wheel_zoom,box_zoom,reset',
+        tooltips=[
+            ("index", "$index"),
+            ("(x,y)", "($x, $y)"),
+            ("Train", "@Train"),
+        ]
+    )
+    p1.circle('Arrive', 'Station', source=source, alpha=alpha, color=color)
+    if line:
+        p1.line('Arrive', 'Station', source=source, alpha=alpha, color=color)
+    save(p1)
