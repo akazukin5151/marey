@@ -20,7 +20,7 @@ A python script that scrapes [ekitan](ekitan.com/) (a Japanese transportation ro
 
 Install the dependencies with `pip install -r requirements.txt`
 
-Bokeh is optional, it is only used for interactive plots
+Bokeh and Altair is optional, it is only used for interactive plots and depends on your choice
 
 # Running
 
