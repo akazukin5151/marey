@@ -73,3 +73,42 @@ def bokeh(
     if line:
         p1.line('Arrive', 'Station', source=source, alpha=alpha, color=color)
     save(p1)
+
+def altair(
+    df: 'pd.DataFrame', line_name: str, plot_name: str, alpha: float,
+    color: str, line: bool,
+):
+    import altair as alt
+
+    outfile = Constants.plot_dir / f'{line_name}_{plot_name}.html'
+    if outfile.exists():
+        return
+
+    print(f'Plotting {plot_name} (offline)...')
+
+    if line:
+        begin = alt.Chart(df).mark_line(
+            order=False, point=alt.OverlayMarkDef(color=color), opacity=alpha, color=color
+        )
+    else:
+        begin = alt.Chart(df).mark_circle(order=False, fillOpacity=alpha, color=color)
+
+    selection = alt.selection_interval(bind='scales', zoom=True)
+
+    chart = begin.encode(
+        x='Arrive',
+        y=alt.Y('Station:O', sort=None),
+        detail=alt.Detail('Train'),
+        tooltip=['Train', 'Arrive', 'Station']
+    ).add_selection(
+        selection
+    ).properties(
+        width=900
+    ).interactive(
+        bind_x=True,
+        bind_y=True
+    )
+
+    with open(outfile, 'w') as f:
+        chart.save(f, 'html')
+
