@@ -1,3 +1,4 @@
+from enum import Enum
 from pathlib import Path
 from common import Constants, Line
 import save_page
@@ -7,14 +8,20 @@ import scrap_html
 import prepare_plot
 import plot
 
-def main(line: Line, plt_func: 'DataFrame -> str -> str -> float -> str -> bool -> IO ()'):
+# (DataFrame -> str -> str -> float -> str -> bool -> IO (), str)
+class Plotter(Enum):
+    matplotlib = (plot.matplotlib, 'png')
+    bokeh      = (plot.bokeh,      'html')
+    altair     = (plot.altair,     'html')
+
+def main(line: Line, plotter: Plotter):
     save_page.main(line.url, line.name)
     get_urls.main(line.url, line.name)
     download.main(line.name)
     scrap_html.main(line.name)
 
     # Check if plot needs to be prepared
-    ext = 'html' if interactive else 'png'
+    ext = plotter.value[1]
     normal = Constants.plot_dir / f'{line.name}_normal.{ext}'
     delta = Constants.plot_dir / f'{line.name}_delta.{ext}'
     delta_scatter = Constants.plot_dir / f'{line.name}_delta_scatter.{ext}'
@@ -22,6 +29,7 @@ def main(line: Line, plt_func: 'DataFrame -> str -> str -> float -> str -> bool 
         return
 
     df = prepare_plot.prepare_normal(line.name)
+    plt_func = plotter.value[0]
     plt_func(df, line.name, 'normal', alpha=0.5, color=line.color, line=True)
 
     # If only normal was missing, exit now
@@ -58,4 +66,4 @@ if __name__ == '__main__':
         color = '#FF8C00',
         url = 'https://ekitan.com/timetable/railway/line-station/136-4/d1?dt=20211101'
     )
-    main(yamanote, plt_func=plot.bokeh)
+    main(yamanote, plotter=Plotter.bokeh)
