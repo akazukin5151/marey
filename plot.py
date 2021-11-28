@@ -50,7 +50,8 @@ def bokeh(
     df: 'pd.DataFrame', line_name: str, plot_name: str, alpha: float,
     color: str, line: bool,
 ):
-    from bokeh.plotting import figure, show, ColumnDataSource, save
+    import numpy as np
+    from bokeh.plotting import figure, ColumnDataSource, save
     from bokeh.io import output_file
 
     outfile = Constants.plot_dir / f'{line_name}_{plot_name}.html'
@@ -62,7 +63,7 @@ def bokeh(
 
     source = ColumnDataSource(data=df)
     p1 = figure(
-        x_axis_type='datetime', y_range=df.Station.unique(),
+        x_axis_type='datetime', y_range=np.flip(df.Station.unique()),
         tools='hover,pan,wheel_zoom,box_zoom,reset',
         tooltips=[
             ("index", "$index"),

@@ -24,13 +24,7 @@ def prepare_normal(line_name):
     df.sort_values(['Train', 'index'], inplace=True)
 
     fix_next_days(df, 'Arrive')
-
-    # Move the midnight train to the right (pretend it's a day later)
-    train = df.sort_values('Arrive').iloc[0].Train
-    start = df[df.Train == train].iloc[0].name
-    end = df[df.Train == train].iloc[-1].name
-    df.loc[start:end, 'Arrive'] += timedelta(days=1)
-    df.loc[start:end, 'Depart'] += timedelta(days=1)
+    fix_next_days(df, 'Depart')
 
     # Fill NaT in Arrive with Depart
     # Only the first station has NaT for Arrive
@@ -42,14 +36,20 @@ def prepare_normal(line_name):
     return df
 
 def fix_next_days(df, col):
+    midnight = pd.Timestamp.today().replace(
+        hour=0, minute=0, second=0, microsecond=0, nanosecond=0
+    )
+    three_am = pd.Timestamp.today().replace(
+        hour=3, minute=0, second=0, microsecond=0, nanosecond=0
+    )
     for train in df.Train.unique():
-        xs = df[df.Train == train].Arrive
-        if not xs.dropna().is_monotonic:
-            xx = find_next_day(xs.dropna())
-            pos = xs[xs == xx].index[0]
-            df.loc[pos : xs.index[-1], col] = (
-                df.loc[pos : xs.index[-1], col] + timedelta(days=1)
-            )
+        xs = df[df.Train == train][col]
+        xs_dropped = xs.dropna()
+        to_change = (midnight <= xs_dropped) & (xs_dropped < three_am)
+        new = xs_dropped[to_change].apply(lambda x: x + timedelta(days=1))
+        if new.shape[0] == 0:
+            continue
+        df.loc[new.index[0] : new.index[-1], col] = new
 
 def find_next_day(xs: '[a]') -> 'a':
     '''uses binary search to find the point where the next day has started'''
