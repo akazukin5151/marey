@@ -11,6 +11,10 @@ A python script that scrapes [ekitan](ekitan.com/) (a Japanese transportation ro
 # Features
 
 - Can start from any station, not just line terminus
+- Multiple plotters available
+    - Non-interactive matplotlib
+    - Interactive bokeh
+    - Interactive Altair/Vega (Note: rather slow for large data sets)
 
 # Install dependencies
 
