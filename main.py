@@ -7,7 +7,7 @@ import scrap_html
 import prepare_plot
 import plot
 
-def main(line: Line, interactive: bool):
+def main(line: Line, plt_func: 'DataFrame -> str -> str -> float -> str -> bool -> IO ()'):
     save_page.main(line.url, line.name)
     get_urls.main(line.url, line.name)
     download.main(line.name)
@@ -21,17 +21,15 @@ def main(line: Line, interactive: bool):
     if normal.exists() and delta.exists() and delta_scatter.exists():
         return
 
-    func = plot.bokeh if interactive else plot.main
-
     df = prepare_plot.prepare_normal(line.name)
-    func(df, line.name, 'normal', alpha=0.5, color=line.color, line=True)
+    plt_func(df, line.name, 'normal', alpha=0.5, color=line.color, line=True)
 
     # If only normal was missing, exit now
     if delta.exists() and delta_scatter.exists():
         return
     prepare_plot.prepare_delta(df)
-    func(df, line.name, 'delta', alpha=0.2, color=line.color, line=True)
-    func(df, line.name, 'delta_scatter', alpha=0.2, color=line.color, line=False)
+    plt_func(df, line.name, 'delta', alpha=0.2, color=line.color, line=True)
+    plt_func(df, line.name, 'delta_scatter', alpha=0.2, color=line.color, line=False)
 
 
 if __name__ == '__main__':
@@ -60,4 +58,4 @@ if __name__ == '__main__':
         color = '#FF8C00',
         url = 'https://ekitan.com/timetable/railway/line-station/136-4/d1?dt=20211101'
     )
-    main(yamanote, interactive=True)
+    main(yamanote, plt_func=plot.bokeh)

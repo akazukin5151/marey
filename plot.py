@@ -1,6 +1,6 @@
 from common import Constants
 
-def main(
+def matplotlib(
     df: 'pd.DataFrame', line_name: str, plot_name: str, alpha: float,
     color: str, line: bool,
 ):
