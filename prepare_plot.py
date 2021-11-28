@@ -51,31 +51,6 @@ def fix_next_days(df, col):
             continue
         df.loc[new.index[0] : new.index[-1], col] = new
 
-def find_next_day(xs: '[a]') -> 'a':
-    '''uses binary search to find the point where the next day has started'''
-    # base case 1
-    # is_monotonic tests if it is monotonically INCREASING
-    # that means [3, 4].is_monotonic is FALSE, and therefore the culprit is 4
-    if not xs.is_monotonic and len(xs) == 2:
-        return xs.iloc[-1]
-
-    # split up the list into two halves
-    mid = len(xs) // 2
-    upper = xs[:mid]
-    if upper.is_monotonic:
-        lower = xs[mid:]
-        if lower.is_monotonic:
-            # base case 2
-            # if both are monotonic, then we've found the break
-            return xs.iloc[mid]
-        # recursive case 1
-        # if the upper is monotonic, then it means the lower half is not
-        # repeat with lower
-        return find_next_day(lower)
-    # recursive case 2
-    # if the upper is not monotonic, repeat with upper
-    return find_next_day(upper)
-
 def prepare_delta(df):
     print('Preparing delta plot (offline)...')
     for train in df.Train.unique():

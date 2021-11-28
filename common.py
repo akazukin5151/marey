@@ -4,15 +4,15 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
 class Constants(NamedTuple):
-    url_dir = Path('out/urls')
-    html_dir = Path('out/htmls')
-    gen_csv_dir = Path('out/generated_csv')
-    plot_dir = Path('out/plots')
+    url_dir:     Path = Path('out/urls')
+    html_dir:    Path = Path('out/htmls')
+    gen_csv_dir: Path = Path('out/generated_csv')
+    plot_dir:    Path = Path('out/plots')
 
 class Line(NamedTuple):
-    name: str
+    name:  str
     color: str
-    url: str
+    url:   str
 
 def mkdirs_touch_open(s: str, path: Path):
     path.parent.mkdir(exist_ok=True, parents=True)

@@ -1,3 +1,4 @@
+from common import Constants
 def main(
     df: 'pd.DataFrame', line_name: str, plot_name: str, alpha: float,
     color: str, line: bool,
@@ -5,7 +6,7 @@ def main(
     import matplotlib.pyplot as plt
     from matplotlib.dates import DateFormatter
     from matplotlib.ticker import AutoMinorLocator
-    from common import mkdirs_touch_open, Constants
+    from common import mkdirs_touch_open
 
     outfile = Constants.plot_dir / f'{line_name}_{plot_name}.png'
     if outfile.exists():
