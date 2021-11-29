@@ -1,5 +1,4 @@
 from common import Constants
-from matplotlib import ticker
 
 def matplotlib(
     df: 'DataFrame', df_for_branch: 'DataFrame',
@@ -9,9 +8,7 @@ def matplotlib(
     import matplotlib.pyplot as plt
     from matplotlib.dates import DateFormatter
     from matplotlib.ticker import AutoMinorLocator
-    from matplotlib.category import StrCategoryLocator, StrCategoryFormatter
     from common import mkdirs_touch_open
-    from collections import OrderedDict
 
     outfile = Constants.plot_dir / f'{line_name}_{plot_name}.png'
     if outfile.exists():
@@ -20,7 +17,7 @@ def matplotlib(
     print(f'Plotting {plot_name} (offline)...')
 
     plt.rcParams['font.family'] = 'Hiragino Sans GB'
-    _, ax = plt.subplots(figsize=(15, 15))
+    plt.figure(figsize=(15, 15))
 
     args = dict(
         color=color,
@@ -32,7 +29,7 @@ def matplotlib(
 
     # yikes
     for train in df.Train.unique():
-        ax.plot(
+        plt.plot(
             df[df.Train == train]['Arrive'],
             df[df.Train == train]['Station_sequence'],
             **args
@@ -41,21 +38,20 @@ def matplotlib(
     branch_color = 'tab:blue'
     args['color'] = branch_color
     for train in df_for_branch.Train.unique():
-        ax.plot(
+        plt.plot(
             df_for_branch[df_for_branch.Train == train]['Arrive'],
             df_for_branch[df_for_branch.Train == train]['Station_sequence'],
             **args
         )
 
-    ax.grid(which='both', alpha=0.7)
-    ax.tick_params(axis='x', which='minor')
-    ax.invert_yaxis()
-    ax.xaxis.set_minor_locator(AutoMinorLocator(2))
-    ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))
-    ax.xaxis.set_minor_formatter(DateFormatter('%H:%M'))
-    ax.xaxis.set_tick_params(labeltop='on')
-    ax.yaxis.set_tick_params(labelright='on')
-
+    plt.grid(which='both', alpha=0.7)
+    plt.gca().tick_params(axis='x', which='minor')
+    plt.gca().invert_yaxis()
+    plt.gca().xaxis.set_minor_locator(AutoMinorLocator(2))
+    plt.gca().xaxis.set_major_formatter(DateFormatter('%H:%M'))
+    plt.gca().xaxis.set_minor_formatter(DateFormatter('%H:%M'))
+    plt.gca().xaxis.set_tick_params(labeltop='on')
+    plt.gca().yaxis.set_tick_params(labelright='on')
     plt.tight_layout()
     mkdirs_touch_open('', outfile)
     plt.savefig(outfile)
