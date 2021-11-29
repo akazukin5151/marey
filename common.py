@@ -13,7 +13,12 @@ class Line(NamedTuple):
     name:     str
     color:    str
     url:      str
-    branched: bool
+    branched: 'Optional[BranchData]'
+
+class BranchData(NamedTuple):
+    verbatim:    'List[str]'
+    main_branch: 'List[str]'
+    branch:      'List[str]'
 
 def mkdirs_touch_open(s: str, path: Path):
     path.parent.mkdir(exist_ok=True, parents=True)
