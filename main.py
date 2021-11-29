@@ -33,20 +33,15 @@ def main(line: Line, plotter: Plotter):
     stations_in_each_trip = df.groupby('Train').Station.unique().apply(tuple)
     unique_counts = stations_in_each_trip.value_counts()
     main_line = unique_counts.index[0]
-    main_lines = [main_line]
     branch_lines = []
     for unique_line, _ in unique_counts[1:].items():
         if not (set(unique_line).issubset(main_line)
                 or set(main_line).issubset(unique_line)):
-        #    main_lines.append(unique_line)
-        #else:
             branch_lines.append(unique_line)
 
-    # For the main subplot, just exclude the branches
     trains_on_main = stations_in_each_trip[~stations_in_each_trip.isin(branch_lines)]
     df_for_main = df[df.Train.isin(trains_on_main.index)]
-    # If there are branches, plot them in other subplots
-    # TODO multiple branches = multiple subplots
+    # TODO multiple branches?
     trains_on_branch = stations_in_each_trip[stations_in_each_trip.isin(branch_lines)]
     df_for_branch = df[df.Train.isin(trains_on_branch.index)]
 
