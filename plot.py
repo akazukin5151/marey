@@ -22,12 +22,6 @@ def matplotlib(
     plt.rcParams['font.family'] = 'Hiragino Sans GB'
     _, ax = plt.subplots(figsize=(15, 15))
 
-    import numpy as np
-    df['Station_sequence'] = np.nan
-    def f(x):
-        df.loc[x.index, 'Station_sequence'] = range(x.shape[0])
-    df.groupby('Train').apply(f)
-
     args = dict(
         color=color,
         alpha=alpha,
@@ -43,54 +37,6 @@ def matplotlib(
             df[df.Train == train]['Station_sequence'],
             **args
         )
-
-    # TODO
-    dic = {'大宮(埼玉)': 0,
-     'さいたま新都心': 1,
-     '浦和': 2,
-     '赤羽': 3,
-     #start branch
-     '池袋': 4,
-     '新宿': 5,
-     '渋谷': 6,
-     '恵比寿': 7,
-     '大崎': 8,
-     '武蔵小杉': 9,
-     #end branch
-     '横浜': 10,
-     '戸塚': 11,
-     '大船': 12,
-     '藤沢': 13,
-     '辻堂': 14,
-     '茅ケ崎': 15,
-     '平塚': 16,
-     '大磯': 17,
-     '二宮': 18,
-     '国府津': 19,
-     '鴨宮': 20,
-     '小田原': 21,
-     '早川': 22,
-     '根府川': 23,
-     '真鶴': 24,
-     '湯河原': 25,
-     '熱海': 26,
-     '来宮': 27,
-     '伊豆多賀': 28,
-     '網代': 29,
-     '宇佐美': 30,
-     '伊東': 31,
-     '函南': 32,
-     '三島': 33,
-     '沼津': 34}
-
-    df_for_branch['Station_sequence'] = np.nan
-    def f(x):
-        for idx, row in x.iterrows():
-            station = row.Station
-            seq = dic[station]
-            df_for_branch.loc[idx, 'Station_sequence'] = seq
-        #df_for_branch.loc[x.index, 'Station_sequence'] = range(x.shape[0])
-    df_for_branch.groupby('Train').apply(f)
 
     branch_color = 'tab:blue'
     args['color'] = branch_color
