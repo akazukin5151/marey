@@ -30,20 +30,7 @@ def main(line: Line, plotter: Plotter):
 
     df = prepare_plot.prepare_normal(line.name)
 
-    stations_in_each_trip = df.groupby('Train').Station.unique().apply(tuple)
-    unique_counts = stations_in_each_trip.value_counts()
-    main_line = unique_counts.index[0]
-    branch_lines = []
-    for unique_line, _ in unique_counts[1:].items():
-        if not (set(unique_line).issubset(main_line)
-                or set(main_line).issubset(unique_line)):
-            branch_lines.append(unique_line)
-
-    trains_on_main = stations_in_each_trip[~stations_in_each_trip.isin(branch_lines)]
-    df_for_main = df[df.Train.isin(trains_on_main.index)]
-    # TODO multiple branches?
-    trains_on_branch = stations_in_each_trip[stations_in_each_trip.isin(branch_lines)]
-    df_for_branch = df[df.Train.isin(trains_on_branch.index)]
+    df_for_main, df_for_branch = prepare_plot.handle_branches(df)
 
     verbatim = [
      '大宮(埼玉)',
@@ -92,26 +79,10 @@ def main(line: Line, plotter: Plotter):
      '大崎',
      '武蔵小杉',
      ]
-    branched = {}
-    for a, b in zip(main_branch, branch):
-        branched[a] = a + '/' + b
-        branched[b] = a + '/' + b
-    combined = {x: x for x in verbatim}
-    combined.update(branched)
+    combined = branch_data_to_combined(verbatim, main_branch, branch)
 
-    def g(df, combined):
-        # FIXME: there's a setting with copy warning even though i always used .loc
-        import numpy as np
-        df.loc[:, 'Station_sequence'] = np.nan
-        def f(x):
-            for idx, row in x.iterrows():
-                station = row.Station
-                seq = combined[station]
-                df.loc[idx, 'Station_sequence'] = seq
-        df.groupby('Train').apply(f)
-
-    g(df_for_main, combined)
-    g(df_for_branch, combined)
+    prepare_plot.set_station_seqs(df_for_main, combined)
+    prepare_plot.set_station_seqs(df_for_branch, combined)
 
     plt_func = plotter.value[0]
     plt_func(
@@ -133,6 +104,17 @@ def main(line: Line, plotter: Plotter):
         df_for_main, df_for_branch,
         line.name, 'delta_scatter', alpha=0.2, color=line.color, line=False
     )
+
+def branch_data_to_combined(
+    verbatim: '[str]', main_branch: '[str]', branch: '[str]'
+) -> 'dict[str, str]':
+    branched = {}
+    for a, b in zip(main_branch, branch):
+        branched[a] = a + '/' + b
+        branched[b] = a + '/' + b
+    combined = {x: x for x in verbatim}
+    combined.update(branched)
+    return combined
 
 
 if __name__ == '__main__':
