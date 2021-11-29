@@ -37,9 +37,8 @@ def matplotlib(
     plt.gca().tick_params(axis='x', which='minor')
     plt.gca().invert_yaxis()
     plt.gca().xaxis.set_minor_locator(AutoMinorLocator(2))
-    # broken for now
-    #plt.gca().xaxis.set_major_formatter(DateFormatter('%H:%M'))
-    #plt.gca().xaxis.set_minor_formatter(DateFormatter('%H:%M'))
+    plt.gca().xaxis.set_major_formatter(DateFormatter('%H:%M'))
+    plt.gca().xaxis.set_minor_formatter(DateFormatter('%H:%M'))
     plt.gca().xaxis.set_tick_params(labeltop='on')
     plt.gca().yaxis.set_tick_params(labelright='on')
     plt.tight_layout()

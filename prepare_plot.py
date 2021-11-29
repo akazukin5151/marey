@@ -73,5 +73,9 @@ def prepare_delta(df):
             return pd.concat([res1, res2])
         return g(here)
 
-    return grouped.apply(f)
+    grouped = grouped.apply(f)
+    today = date.today()
+    midnight = datetime.combine(today, datetime.min.time())
+    grouped['Arrive'] = grouped.Arrive.apply(lambda x: midnight + x)
+    return grouped
 
