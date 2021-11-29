@@ -1,7 +1,7 @@
 from common import Constants
 
 def matplotlib(
-    df: 'DataFrame', df_for_branch: 'DataFrame',
+    df: 'DataFrame', df_for_branch: 'Optional[DataFrame]',
     line_name: str, plot_name: str, alpha: float,
     color: str, line: bool,
 ):
@@ -28,21 +28,24 @@ def matplotlib(
         args.update(dict(linestyle='None'))  # Must be a string!
 
     # yikes
+    col = 'Station' if df_for_branch is None else 'Station_sequence'
+
     for train in df.Train.unique():
         plt.plot(
             df[df.Train == train]['Arrive'],
-            df[df.Train == train]['Station_sequence'],
+            df[df.Train == train][col],
             **args
         )
 
-    branch_color = 'tab:blue'
-    args['color'] = branch_color
-    for train in df_for_branch.Train.unique():
-        plt.plot(
-            df_for_branch[df_for_branch.Train == train]['Arrive'],
-            df_for_branch[df_for_branch.Train == train]['Station_sequence'],
-            **args
-        )
+    if df_for_branch is not None:
+        branch_color = 'tab:blue'
+        args['color'] = branch_color
+        for train in df_for_branch.Train.unique():
+            plt.plot(
+                df_for_branch[df_for_branch.Train == train]['Arrive'],
+                df_for_branch[df_for_branch.Train == train][col],
+                **args
+            )
 
     plt.grid(which='both', alpha=0.7)
     plt.gca().tick_params(axis='x', which='minor')
@@ -57,7 +60,8 @@ def matplotlib(
     plt.savefig(outfile)
 
 def bokeh(
-    df: 'pd.DataFrame', line_name: str, plot_name: str, alpha: float,
+    df: 'DataFrame', df_for_branch: 'Optional[DataFrame]',
+    line_name: str, plot_name: str, alpha: float,
     color: str, line: bool,
 ):
     import numpy as np
@@ -84,10 +88,12 @@ def bokeh(
     p1.circle('Arrive', 'Station', source=source, alpha=alpha, color=color)
     if line:
         p1.line('Arrive', 'Station', source=source, alpha=alpha, color=color)
+
     save(p1)
 
 def altair(
-    df: 'pd.DataFrame', line_name: str, plot_name: str, alpha: float,
+    df: 'DataFrame', df_for_branch: 'Optional[DataFrame]',
+    line_name: str, plot_name: str, alpha: float,
     color: str, line: bool,
 ):
     import altair as alt

@@ -10,9 +10,10 @@ class Constants(NamedTuple):
     plot_dir    = Path('out/plots')
 
 class Line(NamedTuple):
-    name:  str
-    color: str
-    url:   str
+    name:     str
+    color:    str
+    url:      str
+    branched: bool
 
 def mkdirs_touch_open(s: str, path: Path):
     path.parent.mkdir(exist_ok=True, parents=True)

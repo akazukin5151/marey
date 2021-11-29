@@ -30,8 +30,6 @@ def main(line: Line, plotter: Plotter):
 
     df = prepare_plot.prepare_normal(line.name)
 
-    df_for_main, df_for_branch = prepare_plot.handle_branches(df)
-
     verbatim = [
      '大宮(埼玉)',
      'さいたま新都心',
@@ -79,10 +77,13 @@ def main(line: Line, plotter: Plotter):
      '大崎',
      '武蔵小杉',
      ]
-    combined = branch_data_to_combined(verbatim, main_branch, branch)
-
-    prepare_plot.set_station_seqs(df_for_main, combined)
-    prepare_plot.set_station_seqs(df_for_branch, combined)
+    if line.branched:
+        df_for_main, df_for_branch = prepare_plot.handle_branches(df)
+        combined = branch_data_to_combined(verbatim, main_branch, branch)
+        prepare_plot.set_station_seqs(df_for_main, combined)
+        prepare_plot.set_station_seqs(df_for_branch, combined)
+    else:
+        df_for_main, df_for_branch = df, None
 
     plt_func = plotter.value[0]
     plt_func(
@@ -93,8 +94,10 @@ def main(line: Line, plotter: Plotter):
     # If only normal was missing, exit now
     if delta.exists() and delta_scatter.exists():
         return
+
     df_for_main = prepare_plot.prepare_delta(df_for_main)
-    df_for_branch = prepare_plot.prepare_delta(df_for_branch)
+    if line.branched:
+        df_for_branch = prepare_plot.prepare_delta(df_for_branch)
 
     plt_func(
         df_for_main, df_for_branch,
@@ -121,26 +124,32 @@ if __name__ == '__main__':
     chuo = Line(
         name = 'chuo',
         color = '#FE642E',
-        url = 'https://ekitan.com/timetable/railway/line-station/180-0/d1?dt=20211101'
+        url = 'https://ekitan.com/timetable/railway/line-station/180-0/d1?dt=20211101',
+        branched = False
     )
     chuo_sobu = Line(
         name = 'chuo_sobu',
         color = '#fdbc00',
-        url = 'https://ekitan.com/timetable/railway/line-station/184-20/d2?dt=20211101'
+        url = 'https://ekitan.com/timetable/railway/line-station/184-20/d2?dt=20211101',
+        branched = False
     )
     kt = Line(
         name = 'keihin_tohoku',
         color = '#00BFFF',
-        url = 'https://ekitan.com/timetable/railway/line-station/79-0/d1?dt=20211101'
+        url = 'https://ekitan.com/timetable/railway/line-station/79-0/d1?dt=20211101',
+        branched = False
     )
     yamanote = Line(
         name = 'yamanote',
         color = '#9acd32',
-        url = 'https://ekitan.com/timetable/railway/line-station/182-15/d1?dt=20211101'
+        url = 'https://ekitan.com/timetable/railway/line-station/182-15/d1?dt=20211101',
+        branched = False
     )
     takasaki = Line(
         name = 'takasaki',
         color = '#FF8C00',
-        url = 'https://ekitan.com/timetable/railway/line-station/136-4/d1?dt=20211101'
+        url = 'https://ekitan.com/timetable/railway/line-station/136-4/d1?dt=20211101',
+        branched = True
     )
+    # Note that only matplotlib works with branches for now...
     main(takasaki, plotter=Plotter.matplotlib)
