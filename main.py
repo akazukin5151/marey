@@ -35,7 +35,7 @@ def main(line: Line, plotter: Plotter):
     # If only normal was missing, exit now
     if delta.exists() and delta_scatter.exists():
         return
-    prepare_plot.prepare_delta(df)
+    df = prepare_plot.prepare_delta(df)
     plt_func(df, line.name, 'delta', alpha=0.2, color=line.color, line=True)
     plt_func(df, line.name, 'delta_scatter', alpha=0.2, color=line.color, line=False)
 
@@ -66,4 +66,4 @@ if __name__ == '__main__':
         color = '#FF8C00',
         url = 'https://ekitan.com/timetable/railway/line-station/136-4/d1?dt=20211101'
     )
-    main(yamanote, plotter=Plotter.bokeh)
+    main(yamanote, plotter=Plotter.matplotlib)

@@ -53,13 +53,25 @@ def fix_next_days(df, col):
 
 def prepare_delta(df):
     print('Preparing delta plot (offline)...')
-    for train in df.Train.unique():
-        here = df[df.Train == train]
-        # this doesn't work for some fucking reason
-        #new = here.Arrive - here.Arrive.min()
+
+    grouped = df.groupby('Train')
+    def g(here):
         new = here.Arrive.apply(lambda x: x - here.Arrive.min())
-        df['Arrive'].where(df.Train != train, new, inplace=True)
-    today = date.today()
-    midnight = datetime.combine(today, datetime.min.time())
-    df['Arrive'] = df.Arrive.apply(lambda x: midnight + x)
+        here['Arrive'] = new
+        return here
+
+    def f(here):
+        first_station = here.iloc[0].Station
+        dup_firsts = here[here.Station == first_station]
+        if dup_firsts.shape[0] > 1:
+            start_idx = dup_firsts.iloc[1:].index[0]
+            # This will mutate grouped...
+            new = here.loc[start_idx:].Train.apply(lambda x: x + '_1')
+            here.loc[start_idx:].Train = new
+            res1 = g(here.loc[:start_idx-1])
+            res2 = g(here.loc[start_idx:])
+            return pd.concat([res1, res2])
+        return g(here)
+
+    return grouped.apply(f)
 
