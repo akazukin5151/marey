@@ -105,14 +105,18 @@ def main(line: Line, plotter: Plotter):
     combined.update(branched)
 
     def g(df, combined):
+        # FIXME: there's a setting with copy warning even though i always used .loc
         import numpy as np
-        df['Station_sequence'] = np.nan
+        df.loc[:, 'Station_sequence'] = np.nan
         def f(x):
             for idx, row in x.iterrows():
                 station = row.Station
                 seq = combined[station]
                 df.loc[idx, 'Station_sequence'] = seq
         df.groupby('Train').apply(f)
+
+    g(df_for_main, combined)
+    g(df_for_branch, combined)
 
     plt_func = plotter.value[0]
     plt_func(
@@ -125,9 +129,6 @@ def main(line: Line, plotter: Plotter):
         return
     df_for_main = prepare_plot.prepare_delta(df_for_main)
     df_for_branch = prepare_plot.prepare_delta(df_for_branch)
-
-    g(df_for_main, combined)
-    g(df_for_branch, combined)
 
     plt_func(
         df_for_main, df_for_branch,
