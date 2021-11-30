@@ -30,8 +30,8 @@ def main(line: Line, plotter: Plotter):
 
     df = prepare_plot.prepare_normal(line.name)
 
-    if line.branched:
-        df_for_main, df_for_branch = prepare_plot.handle_branches(df)
+    if line.branch_data is not None:
+        df_for_main, df_for_branch = prepare_plot.handle_branches(df, line.branch_data)
     else:
         df_for_main, df_for_branch = df, None
 
@@ -46,7 +46,7 @@ def main(line: Line, plotter: Plotter):
         return
 
     df_for_main = prepare_plot.prepare_delta(line.name, df_for_main)
-    if line.branched:
+    if line.branch_data:
         df_for_branch = prepare_plot.prepare_delta(line.name + '_branch', df_for_branch)
 
     plt_func(
@@ -64,32 +64,32 @@ if __name__ == '__main__':
         name = 'chuo',
         color = '#FE642E',
         url = 'https://ekitan.com/timetable/railway/line-station/180-0/d1?dt=20211101',
-        branched = None
+        branch_data = None
     )
     chuo_sobu = Line(
         name = 'chuo_sobu',
         color = '#fdbc00',
         url = 'https://ekitan.com/timetable/railway/line-station/184-20/d2?dt=20211101',
-        branched = None
+        branch_data = None
     )
     kt = Line(
         name = 'keihin_tohoku',
         color = '#00BFFF',
         url = 'https://ekitan.com/timetable/railway/line-station/79-0/d1?dt=20211101',
-        branched = None
+        branch_data = None
     )
     yamanote = Line(
         name = 'yamanote',
         color = '#9acd32',
         url = 'https://ekitan.com/timetable/railway/line-station/182-15/d1?dt=20211101',
-        branched = None
+        branch_data = None
     )
     takasaki = Line(
         name = 'takasaki',
         color = '#FF8C00',
         url = 'https://ekitan.com/timetable/railway/line-station/136-4/d1?dt=20211101',
         # I'm not sure where to scrap reliable data for this
-        branched = BranchData(
+        branch_data = BranchData(
             verbatim = [
                 '大宮(埼玉)',
                 'さいたま新都心',

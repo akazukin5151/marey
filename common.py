@@ -13,7 +13,7 @@ class Line(NamedTuple):
     name:     str
     color:    str
     url:      str
-    branched: 'Optional[BranchData]'
+    branch_data: 'Optional[BranchData]'
 
 class BranchData(NamedTuple):
     """

@@ -93,7 +93,7 @@ def prepare_delta(line_name, df):
     return grouped
 
 def handle_branches(df, branch_data):
-    df_for_main, df_for_branch = handle_branches(df)
+    df_for_main, df_for_branch = split_by_branch(df)
     combined = branch_data_to_combined(branch_data)
     set_station_seqs(df_for_main, combined)
     set_station_seqs(df_for_branch, combined)
