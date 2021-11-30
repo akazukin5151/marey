@@ -2,6 +2,7 @@ from datetime import date
 from datetime import datetime
 from datetime import timedelta
 import pandas as pd
+import numpy as np
 from common import Constants
 
 
@@ -79,3 +80,29 @@ def prepare_delta(df):
     grouped['Arrive'] = grouped.Arrive.apply(lambda x: midnight + x)
     return grouped
 
+def handle_branches(df):
+    stations_in_each_trip = df.groupby('Train').Station.unique().apply(tuple)
+    unique_counts = stations_in_each_trip.value_counts()
+    main_line = unique_counts.index[0]
+    branch_lines = []
+    for unique_line, _ in unique_counts[1:].items():
+        if not (set(unique_line).issubset(main_line)
+                or set(main_line).issubset(unique_line)):
+            branch_lines.append(unique_line)
+
+    trains_on_main = stations_in_each_trip[~stations_in_each_trip.isin(branch_lines)]
+    df_for_main = df[df.Train.isin(trains_on_main.index)]
+    # TODO multiple branches?
+    trains_on_branch = stations_in_each_trip[stations_in_each_trip.isin(branch_lines)]
+    df_for_branch = df[df.Train.isin(trains_on_branch.index)]
+    return (df_for_main, df_for_branch)
+
+def set_station_seqs(df, combined):
+    # FIXME: there's a setting with copy warning even though i always used .loc
+    df.loc[:, 'Station_sequence'] = np.nan
+    def f(x):
+        for idx, row in x.iterrows():
+            station = row.Station
+            seq = combined[station]
+            df.loc[idx, 'Station_sequence'] = seq
+    df.groupby('Train').apply(f)
