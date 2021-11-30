@@ -16,6 +16,15 @@ class Line(NamedTuple):
     branched: 'Optional[BranchData]'
 
 class BranchData(NamedTuple):
+    """
+    This only supports branches that split up from the main line but merge back again
+    Also only works if `len(main_branch) == len(branch)`
+
+    A -> B ->  C -> D -> G -> H
+           \_> E -> F /
+
+    verbatim = [A, B, G, H], main_branch = [C, D], and branch = [E, F]
+    """
     verbatim:    'List[str]'
     main_branch: 'List[str]'
     branch:      'List[str]'
