@@ -20,11 +20,11 @@ chuo_sobu_normal
 
 chuo_sobu_delta
 
-![chuo_sobu_delta](examples/plot/chuo_sobu_delta.png)
+![chuo_sobu_delta](examples/plots/chuo_sobu_delta.png)
 
 huo_sobu_delta_scatter
 
-![chuo_sobu_delta_scatter](examples/plot/chuo_sobu_delta_scatter.png)
+![chuo_sobu_delta_scatter](examples/plots/chuo_sobu_delta_scatter.png)
 
 keihin_tohoku_normal
 
