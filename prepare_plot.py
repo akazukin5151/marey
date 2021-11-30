@@ -7,7 +7,12 @@ from common import Constants
 
 
 def prepare_normal(line_name):
+    outfile = Constants.gen_csv_dir / f'{line_name}_processed.csv'
+    if outfile.exists():
+        return pd.read_csv(outfile, parse_dates=['Arrive', 'Depart'])
+
     print('Preparing plot (offline)...')
+
     df = pd.read_csv(Constants.gen_csv_dir / f'{line_name}.csv')
 
     df['Arrive'] = df.Arrive.str.replace('24:', '0:').astype('datetime64[ns]')
@@ -34,6 +39,7 @@ def prepare_normal(line_name):
     df['Arrive'].where(
         df['Station'] != first, df.Depart, inplace=True
     )
+    df.to_csv(outfile)
     return df
 
 def fix_next_days(df, col):
@@ -52,7 +58,11 @@ def fix_next_days(df, col):
             continue
         df.loc[new.index[0] : new.index[-1], col] = new
 
-def prepare_delta(df):
+def prepare_delta(line_name, df):
+    outfile = Constants.gen_csv_dir / f'{line_name}_delta.csv'
+    if outfile.exists():
+        return pd.read_csv(outfile, parse_dates=['Arrive', 'Depart'])
+
     print('Preparing delta plot (offline)...')
 
     grouped = df.groupby('Train')
@@ -78,6 +88,8 @@ def prepare_delta(df):
     today = date.today()
     midnight = datetime.combine(today, datetime.min.time())
     grouped['Arrive'] = grouped.Arrive.apply(lambda x: midnight + x)
+
+    df.to_csv(outfile)
     return grouped
 
 def handle_branches(df):

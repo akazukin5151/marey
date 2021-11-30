@@ -48,9 +48,9 @@ def main(line: Line, plotter: Plotter):
     if delta.exists() and delta_scatter.exists():
         return
 
-    df_for_main = prepare_plot.prepare_delta(df_for_main)
+    df_for_main = prepare_plot.prepare_delta(line.name, df_for_main)
     if line.branched:
-        df_for_branch = prepare_plot.prepare_delta(df_for_branch)
+        df_for_branch = prepare_plot.prepare_delta(line.name + '_branch', df_for_branch)
 
     plt_func(
         df_for_main, df_for_branch,
