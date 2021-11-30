@@ -1,7 +1,5 @@
-import time
-from pathlib import Path
 from bs4 import BeautifulSoup
-from common import mkdirs_touch_open, fetch_soup, Constants
+from common import mkdirs_touch_open, Constants
 
 def main(URL, line_name):
     if (Constants.url_dir / f'{line_name}.txt').exists():

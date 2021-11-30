@@ -1,5 +1,4 @@
 from enum import Enum
-from pathlib import Path
 from common import Constants, Line, BranchData
 import save_page
 import get_urls

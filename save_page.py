@@ -1,4 +1,3 @@
-from pathlib import Path
 from common import mkdirs_touch_open, fetch_soup, Constants
 
 def main(url, line_name):
