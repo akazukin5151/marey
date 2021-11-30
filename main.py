@@ -32,9 +32,6 @@ def main(line: Line, plotter: Plotter):
 
     if line.branched:
         df_for_main, df_for_branch = prepare_plot.handle_branches(df)
-        combined = branch_data_to_combined(line.branched)
-        prepare_plot.set_station_seqs(df_for_main, combined)
-        prepare_plot.set_station_seqs(df_for_branch, combined)
     else:
         df_for_main, df_for_branch = df, None
 
@@ -60,15 +57,6 @@ def main(line: Line, plotter: Plotter):
         df_for_main, df_for_branch,
         line.name, 'delta_scatter', alpha=0.2, color=line.color, line=False
     )
-
-def branch_data_to_combined(branch_data: 'BranchData') -> 'dict[str, str]':
-    branched = {}
-    for a, b in zip(branch_data.main_branch, branch_data.branch):
-        branched[a] = a + '/' + b
-        branched[b] = a + '/' + b
-    combined = {x: x for x in branch_data.verbatim}
-    combined.update(branched)
-    return combined
 
 
 if __name__ == '__main__':

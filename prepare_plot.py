@@ -92,7 +92,23 @@ def prepare_delta(line_name, df):
     df.to_csv(outfile)
     return grouped
 
-def handle_branches(df):
+def handle_branches(df, branch_data):
+    df_for_main, df_for_branch = handle_branches(df)
+    combined = branch_data_to_combined(branch_data)
+    set_station_seqs(df_for_main, combined)
+    set_station_seqs(df_for_branch, combined)
+    return (df_for_main, df_for_branch)
+
+def branch_data_to_combined(branch_data: 'BranchData') -> 'dict[str, str]':
+    branched = {}
+    for a, b in zip(branch_data.main_branch, branch_data.branch):
+        branched[a] = a + '/' + b
+        branched[b] = a + '/' + b
+    combined = {x: x for x in branch_data.verbatim}
+    combined.update(branched)
+    return combined
+
+def split_by_branch(df):
     stations_in_each_trip = df.groupby('Train').Station.unique().apply(tuple)
     unique_counts = stations_in_each_trip.value_counts()
     main_line = unique_counts.index[0]
