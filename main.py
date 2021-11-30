@@ -31,7 +31,7 @@ def main(line: Line, plotter: Plotter):
     df = prepare_plot.prepare_normal(line.name)
 
     if line.branch_data is not None:
-        df_for_main, df_for_branch = prepare_plot.handle_branches(df, line.branch_data)
+        df_for_main, df_for_branch = prepare_plot.handle_branches(df, line)
     else:
         df_for_main, df_for_branch = df, None
 
@@ -45,7 +45,7 @@ def main(line: Line, plotter: Plotter):
     if delta.exists() and delta_scatter.exists():
         return
 
-    df_for_main = prepare_plot.prepare_delta(line.name, df_for_main)
+    df_for_main = prepare_plot.prepare_delta(line.name + '_main', df_for_main)
     if line.branch_data:
         df_for_branch = prepare_plot.prepare_delta(line.name + '_branch', df_for_branch)
 

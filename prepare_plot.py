@@ -89,14 +89,25 @@ def prepare_delta(line_name, df):
     midnight = datetime.combine(today, datetime.min.time())
     grouped['Arrive'] = grouped.Arrive.apply(lambda x: midnight + x)
 
-    df.to_csv(outfile)
+    grouped.to_csv(outfile)
     return grouped
 
-def handle_branches(df, branch_data):
+def handle_branches(df, line):
+    outfile1 = Constants.gen_csv_dir / f'{line.name}_main.csv'
+    outfile2 = Constants.gen_csv_dir / f'{line.name}_branch.csv'
+    if outfile1.exists() and outfile2.exists():
+        return (
+            pd.read_csv(outfile1, parse_dates=['Arrive', 'Depart']),
+            pd.read_csv(outfile2, parse_dates=['Arrive', 'Depart'])
+        )
+
     df_for_main, df_for_branch = split_by_branch(df)
-    combined = branch_data_to_combined(branch_data)
+    combined = branch_data_to_combined(line.branch_data)
     set_station_seqs(df_for_main, combined)
     set_station_seqs(df_for_branch, combined)
+
+    df_for_main.to_csv(outfile1)
+    df_for_branch.to_csv(outfile2)
     return (df_for_main, df_for_branch)
 
 def branch_data_to_combined(branch_data: 'BranchData') -> 'dict[str, str]':
