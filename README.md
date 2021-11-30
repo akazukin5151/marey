@@ -2,33 +2,63 @@
 
 A python script that scrapes [ekitan](ekitan.com/) (a Japanese transportation routing service) to make a train schedule diagram
 
+chuo_normal
+
 ![chuo_normal](examples/plots/chuo_normal.png)
+
+chuo_delta
 
 ![chuo_delta](examples/plots/chuo_delta.png)
 
+chuo_delta_scatter
+
 ![chuo_delta_scatter](examples/plots/chuo_delta_scatter.png)
+
+chuo_sobu_normal
 
 ![chuo_sobu_normal](examples/plots/chuo_sobu_normal.png)
 
+chuo_sobu_delta
+
 ![chuo_sobu_delta](examples/plot/chuo_sobu_delta.png)
+
+huo_sobu_delta_scatter
 
 ![chuo_sobu_delta_scatter](examples/plot/chuo_sobu_delta_scatter.png)
 
+keihin_tohoku_normal
+
 ![keihin_tohoku_normal](examples/plots/keihin_tohoku_normal.png)
+
+keihin_tohoku_delta
 
 ![keihin_tohoku_delta](examples/plots/keihin_tohoku_delta.png)
 
+keihin_tohoku_delta_scatter
+
 ![keihin_tohoku_delta_scatter](examples/plots/keihin_tohoku_delta_scatter.png)
+
+takasaki_normal
 
 ![takasaki_normal](examples/plots/takasaki_normal.png)
 
+takasaki_delta
+
 ![takasaki_delta](examples/plots/takasaki_delta.png)
+
+takasaki_delta_scatter
 
 ![takasaki_delta_scatter](examples/plots/takasaki_delta_scatter.png)
 
+yamanote_normal
+
 ![yamanote_normal](examples/plots/yamanote_normal.png)
 
+yamanote_delta
+
 ![yamanote_delta](examples/plots/yamanote_delta.png)
+
+yamanote_delta_scatter
 
 ![yamanote_delta_scatter](examples/plots/yamanote_delta_scatter.png)
 
