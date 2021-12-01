@@ -31,7 +31,9 @@ def delta(line1: 'Line', line2: 'Line', fixes: 'Optional[List[(str, str)]]' = No
     There should be a tuple for every station that only one line has
     '''
     # TODO multiple lines
-    outfile = Constants.plot_dir / (line1.name + '_' + line2.name + '_combined.png')
+    outfile = Constants.plot_dir / (
+        line1.name + '_' + line2.name + '_combined_delta.png'
+    )
     if outfile.exists():
         return
 
