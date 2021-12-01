@@ -12,7 +12,19 @@ def read_delta_csv(line_name):
         parse_dates=['Arrive', 'Depart']
     )
 
-def delta(line1: 'Line', line2: 'Line', fixes: 'Optional[List[(str, str)]]' = None):
+def delta(line1, line2, fixes):
+    return delta_inner('', True, line1, line2, fixes)
+
+def delta_scatter(line1, line2, fixes):
+    return delta_inner('_scatter', False, line1, line2, fixes)
+
+def delta_inner(
+    modifier: str,
+    draw_line: bool,
+    line1: 'Line',
+    line2: 'Line',
+    fixes: 'Optional[List[(str, str)]]' = None
+):
     '''Given two lines, plot them together in the same axis,
     optionally fixing their station names.
 
@@ -32,7 +44,7 @@ def delta(line1: 'Line', line2: 'Line', fixes: 'Optional[List[(str, str)]]' = No
     There should be a tuple for every station that only one line has
     '''
     outfile = Constants.plot_dir / (
-        line1.name + '_' + line2.name + '_combined_delta.png'
+        line1.name + '_' + line2.name + f'_combined_delta{modifier}.png'
     )
     if outfile.exists():
         return
@@ -63,10 +75,10 @@ def delta(line1: 'Line', line2: 'Line', fixes: 'Optional[List[(str, str)]]' = No
 
     # Plot order doesn't matter
     ax = plot.plot_ax_core(
-        df1, alpha=0.2, color=line1.color, line=True,
+        df1, alpha=0.2, color=line1.color, line=draw_line,
     )
     ax = plot.plot_ax_core(
-        df2, alpha=0.2, color=line2.color, line=True, ax=ax,
+        df2, alpha=0.2, color=line2.color, line=draw_line, ax=ax,
     )
     custom_lines = [
         Line2D([0], [0], color=line1.color, marker='o'),
@@ -153,8 +165,18 @@ def shift_times(dfs, base_idx: int, target_idx: int, base_station: str):
     ) - Constants.midnight
     dfs[target_idx].Arrive = dfs[target_idx].Arrive + incr
 
-def delta_subsets(
-    lines: 'List[Line]', starts: 'List[str]', ends: 'List[str]',
+def delta_subsets(lines, starts, ends, shifts, fixes):
+    return delta_subsets_inner('', True, lines, starts, ends, shifts, fixes)
+
+def delta_subsets_scatter(lines, starts, ends, shifts, fixes):
+    return delta_subsets_inner('_scatter', False, lines, starts, ends, shifts, fixes)
+
+def delta_subsets_inner(
+    modifier: str,
+    draw_line: bool,
+    lines: 'List[Line]',
+    starts: 'List[str]',
+    ends: 'List[str]',
     shifts: 'List[(int, int, str)]',
     fixes: 'Optional[List[(str, str)]]' = None
 ):
@@ -165,7 +187,9 @@ def delta_subsets(
     excess items at the end is ignored
     '''
     line_names = [line.name for line in lines]
-    outfile = Constants.plot_dir / ('_'.join(line_names) + '_combined_delta.png')
+    outfile = Constants.plot_dir / (
+        '_'.join(line_names) + f'_combined_delta{modifier}.png'
+    )
     if outfile.exists():
         return
 
@@ -196,7 +220,7 @@ def delta_subsets(
     ax = None
     for df, line in zip(dfs, lines):
         ax = plot.plot_ax_core(
-            df, alpha=0.2, color=line.color, line=True, ax=ax
+            df, alpha=0.2, color=line.color, line=draw_line, ax=ax
         )
 
     custom_lines = [

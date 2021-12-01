@@ -154,3 +154,11 @@ if __name__ == '__main__':
         [(0, 2, '田端')],
         fixes
     )
+    combined.delta_scatter(kt, takasaki, fixes)
+    combined.delta_subsets_scatter(
+        [kt, takasaki, yamanote],
+        ['赤羽', '赤羽', None],
+        [None, None, '大崎'],
+        [(0, 2, '田端')],
+        fixes
+    )
