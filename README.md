@@ -38,17 +38,17 @@ keihin_tohoku_delta_scatter
 
 ![keihin_tohoku_delta_scatter](examples/plots/keihin_tohoku_delta_scatter.png)
 
-takasaki_normal
+ueno_tokyo_normal
 
-![takasaki_normal](examples/plots/takasaki_normal.png)
+![ueno_tokyo_normal](examples/plots/ueno_tokyo_normal.png)
 
-takasaki_delta
+ueno_tokyo_delta
 
-![takasaki_delta](examples/plots/takasaki_delta.png)
+![ueno_tokyo_delta](examples/plots/ueno_tokyo_delta.png)
 
-takasaki_delta_scatter
+ueno_tokyo_delta_scatter
 
-![takasaki_delta_scatter](examples/plots/takasaki_delta_scatter.png)
+![ueno_tokyo_delta_scatter](examples/plots/ueno_tokyo_delta_scatter.png)
 
 yamanote_normal
 
@@ -62,21 +62,21 @@ yamanote_delta_scatter
 
 ![yamanote_delta_scatter](examples/plots/yamanote_delta_scatter.png)
 
-keihin_tohoku_takasaki_combined_delta
+keihin_tohoku_ueno_tokyo_combined_delta
 
-![keihin_tohoku_takasaki_combined_delta](examples/plots/keihin_tohoku_takasaki_combined_delta.png)
+![keihin_tohoku_ueno_tokyo_combined_delta](examples/plots/keihin_tohoku_ueno_tokyo_combined_delta.png)
 
-keihin_tohoku_takasaki_combined_delta_scatter
+keihin_tohoku_ueno_tokyo_combined_delta_scatter
 
-![keihin_tohoku_takasaki_combined_delta_scatter](examples/plots/keihin_tohoku_takasaki_combined_delta_scatter.png)
+![keihin_tohoku_ueno_tokyo_combined_delta_scatter](examples/plots/keihin_tohoku_ueno_tokyo_combined_delta_scatter.png)
 
-keihin_tohoku_takasaki_yamanote_combined_delta
+keihin_tohoku_ueno_tokyo_yamanote_combined_delta
 
-![keihin_tohoku_takasaki_yamanote_combined_delta](examples/plots/keihin_tohoku_takasaki_yamanote_combined_delta.png)
+![keihin_tohoku_ueno_tokyo_yamanote_combined_delta](examples/plots/keihin_tohoku_ueno_tokyo_yamanote_combined_delta.png)
 
-keihin_tohoku_takasaki_yamanote_combined_delta_scatter
+keihin_tohoku_ueno_tokyo_yamanote_combined_delta_scatter
 
-![keihin_tohoku_takasaki_yamanote_combined_delta_scatter](examples/plots/keihin_tohoku_takasaki_yamanote_combined_delta_scatter.png)
+![keihin_tohoku_ueno_tokyo_yamanote_combined_delta_scatter](examples/plots/keihin_tohoku_ueno_tokyo_yamanote_combined_delta_scatter.png)
 
 # Features
 

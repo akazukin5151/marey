@@ -85,8 +85,8 @@ if __name__ == '__main__':
         url = 'https://ekitan.com/timetable/railway/line-station/182-15/d1?dt=20211101',
         branch_data = None
     )
-    takasaki = Line(
-        name = 'takasaki',
+    ueno_tokyo = Line(
+        name = 'ueno_tokyo',
         color = '#FF8C00',
         url = 'https://ekitan.com/timetable/railway/line-station/136-4/d1?dt=20211101',
         # I'm not sure where to scrap reliable data for this
@@ -141,22 +141,22 @@ if __name__ == '__main__':
         )
     )
     # Note that only matplotlib works with branches for now...
-    main(takasaki, plotter=Plotter.matplotlib)
+    main(ueno_tokyo, plotter=Plotter.matplotlib)
     fixes = [
         ('尾久', '上中里'),
         ('戸塚', '磯子')
     ]
-    combined.delta(kt, takasaki, fixes)
+    combined.delta(kt, ueno_tokyo, fixes)
     combined.delta_subsets(
-        [kt, takasaki, yamanote],
+        [kt, ueno_tokyo, yamanote],
         ['赤羽', '赤羽', None],
         [None, None, '大崎'],
         [(0, 2, '田端')],
         fixes
     )
-    combined.delta_scatter(kt, takasaki, fixes)
+    combined.delta_scatter(kt, ueno_tokyo, fixes)
     combined.delta_subsets_scatter(
-        [kt, takasaki, yamanote],
+        [kt, ueno_tokyo, yamanote],
         ['赤羽', '赤羽', None],
         [None, None, '大崎'],
         [(0, 2, '田端')],
