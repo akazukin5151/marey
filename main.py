@@ -103,23 +103,20 @@ if __name__ == '__main__':
     )
     # Note that only matplotlib works with branches for now...
     main(ueno_tokyo, plotter=Plotter.matplotlib)
+
+    d = [
+        (kt, '赤羽', None),
+        (ueno_tokyo, '赤羽', None),
+        (yamanote, None, '大崎')
+    ]
     fixes = [
         ('尾久', '上中里'),
         ('戸塚', '磯子')
     ]
+    shifts = [(0, 2, '田端')]
+
     combined.delta(kt, ueno_tokyo, fixes)
-    combined.delta_subsets(
-        [kt, ueno_tokyo, yamanote],
-        ['赤羽', '赤羽', None],
-        [None, None, '大崎'],
-        [(0, 2, '田端')],
-        fixes
-    )
     combined.delta_scatter(kt, ueno_tokyo, fixes)
-    combined.delta_subsets_scatter(
-        [kt, ueno_tokyo, yamanote],
-        ['赤羽', '赤羽', None],
-        [None, None, '大崎'],
-        [(0, 2, '田端')],
-        fixes
-    )
+
+    combined.delta_subsets(d, shifts, fixes)
+    combined.delta_subsets_scatter(d, shifts, fixes)

@@ -165,10 +165,19 @@ def shift_times(dfs, base_idx: int, target_idx: int, base_station: str):
     ) - Constants.midnight
     dfs[target_idx].Arrive = dfs[target_idx].Arrive + incr
 
-def delta_subsets(lines, starts, ends, shifts, fixes):
+def delta_subsets(d: '(Line, Optional[str], Optional[str])]', shifts, fixes):
+    lines = [x for x, _, _ in d]
+    starts = [start for _, start, _ in d]
+    ends = [end for _, _, end in d]
     return delta_subsets_inner('', True, lines, starts, ends, shifts, fixes)
 
-def delta_subsets_scatter(lines, starts, ends, shifts, fixes):
+def delta_subsets_scatter(
+    d: '(Line, Optional[str], Optional[str])]',
+    shifts, fixes
+):
+    lines = [x for x, _, _ in d]
+    starts = [start for _, start, _ in d]
+    ends = [end for _, _, end in d]
     return delta_subsets_inner('_scatter', False, lines, starts, ends, shifts, fixes)
 
 def delta_subsets_inner(
