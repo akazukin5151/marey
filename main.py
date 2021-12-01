@@ -1,5 +1,5 @@
 from enum import Enum
-from common import Constants, Line, BranchData
+from common import Constants, Line
 import save_page
 import get_urls
 import download
@@ -90,55 +90,16 @@ if __name__ == '__main__':
         color = '#FF8C00',
         url = 'https://ekitan.com/timetable/railway/line-station/136-4/d1?dt=20211101',
         # I'm not sure where to scrap reliable data for this
-        branch_data = BranchData(
-            verbatim = [
-                '大宮(埼玉)',
-                'さいたま新都心',
-                '浦和',
-                '赤羽',
-                '横浜',
-                '戸塚',
-                '大船',
-                '藤沢',
-                '辻堂',
-                '茅ケ崎',
-                '平塚',
-                '大磯',
-                '二宮',
-                '国府津',
-                '鴨宮',
-                '小田原',
-                '早川',
-                '根府川',
-                '真鶴',
-                '湯河原',
-                '熱海',
-                '来宮',
-                '伊豆多賀',
-                '網代',
-                '宇佐美',
-                '伊東',
-                '函南',
-                '三島',
-                '沼津',
-            ],
-            main_branch = [
-                '尾久',
-                '上野',
-                '東京',
-                '新橋',
-                '品川',
-                '川崎',
-            ],
-            branch = [
-                '池袋',
-                '新宿',
-                '渋谷',
-                '恵比寿',
-                '大崎',
-                '武蔵小杉',
-            ]
-        )
+        # have to first pass in None, inspect the plot, then fill in fixes
+        # also what do when there aren't an equal number of matching stations?
+        branch_data = [
+            ('尾久', '池袋'),
+            ('上野', '新宿'),
+            ('東京', '渋谷'),
+            ('新橋', '恵比寿'),
+            ('品川', '大崎'),
+            ('川崎', '武蔵小杉')
+        ]
     )
     # Note that only matplotlib works with branches for now...
     main(ueno_tokyo, plotter=Plotter.matplotlib)

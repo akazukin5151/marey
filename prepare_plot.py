@@ -103,22 +103,19 @@ def handle_branches(df, line):
         )
 
     df_for_main, df_for_branch = split_by_branch(df)
-    combined = branch_data_to_combined(line.branch_data)
-    set_station_seqs(df_for_main, combined)
-    set_station_seqs(df_for_branch, combined)
+    branched = branch_data_to_combined(line.branch_data)
+    set_station_seqs(df_for_main, branched)
+    set_station_seqs(df_for_branch, branched)
 
     df_for_main.to_csv(outfile1)
     df_for_branch.to_csv(outfile2)
     return (df_for_main, df_for_branch)
 
-def branch_data_to_combined(branch_data: 'BranchData') -> 'dict[str, str]':
+def branch_data_to_combined(branch_data: 'List[(str, str)]') -> 'dict[str, str]':
     branched = {}
-    for a, b in zip(branch_data.main_branch, branch_data.branch):
-        branched[a] = a + '/' + b
-        branched[b] = a + '/' + b
-    combined = {x: x for x in branch_data.verbatim}
-    combined.update(branched)
-    return combined
+    for (a, b) in branch_data:
+        branched[a] = branched[b] = a + '/' + b
+    return branched
 
 def split_by_branch(df):
     stations_in_each_trip = df.groupby('Train').Station.unique().apply(tuple)
@@ -137,12 +134,12 @@ def split_by_branch(df):
     df_for_branch = df[df.Train.isin(trains_on_branch.index)]
     return (df_for_main, df_for_branch)
 
-def set_station_seqs(df, combined):
+def set_station_seqs(df, branched):
     # FIXME: there's a setting with copy warning even though i always used .loc
     df.loc[:, 'Station_sequence'] = np.nan
     def f(x):
         for idx, row in x.iterrows():
             station = row.Station
-            seq = combined[station]
+            seq = branched.get(station, station)
             df.loc[idx, 'Station_sequence'] = seq
     df.groupby('Train').apply(f)

@@ -17,21 +17,7 @@ class Line(NamedTuple):
     name:     str
     color:    str
     url:      str
-    branch_data: 'Optional[BranchData]'
-
-class BranchData(NamedTuple):
-    """
-    This only supports branches that split up from the main line but merge back again
-    Also only works if `len(main_branch) == len(branch)`
-
-    A -> B ->  C -> D -> G -> H
-           \_> E -> F /
-
-    verbatim = [A, B, G, H], main_branch = [C, D], and branch = [E, F]
-    """
-    verbatim:    'List[str]'
-    main_branch: 'List[str]'
-    branch:      'List[str]'
+    branch_data: 'Optional[List[(str, str)]]'
 
 def mkdirs_touch_open(s: str, path: Path):
     path.parent.mkdir(exist_ok=True, parents=True)
