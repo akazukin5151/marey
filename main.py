@@ -147,3 +147,10 @@ if __name__ == '__main__':
         ('戸塚', '磯子')
     ]
     combined.delta(kt, takasaki, fixes)
+    combined.delta_subsets(
+        [kt, takasaki, yamanote],
+        ['赤羽', '赤羽', None],
+        [None, None, '大崎'],
+        [(0, 2, '田端')],
+        fixes
+    )

@@ -1,4 +1,6 @@
 from typing import NamedTuple
+from datetime import date
+from datetime import datetime
 from pathlib import Path
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
@@ -8,6 +10,8 @@ class Constants(NamedTuple):
     html_dir    = Path('out/htmls')
     gen_csv_dir = Path('out/generated_csv')
     plot_dir    = Path('out/plots')
+    today       = date.today()
+    midnight    = datetime.combine(today, datetime.min.time())
 
 class Line(NamedTuple):
     name:     str

@@ -1,5 +1,3 @@
-from datetime import date
-from datetime import datetime
 from datetime import timedelta
 import pandas as pd
 import numpy as np
@@ -43,7 +41,7 @@ def prepare_normal(line_name):
     return df
 
 def fix_next_days(df, col):
-    midnight = pd.Timestamp.today().replace(
+    midnight_ = pd.Timestamp.today().replace(
         hour=0, minute=0, second=0, microsecond=0, nanosecond=0
     )
     three_am = pd.Timestamp.today().replace(
@@ -52,11 +50,23 @@ def fix_next_days(df, col):
     for train in df.Train.unique():
         xs = df[df.Train == train][col]
         xs_dropped = xs.dropna()
-        to_change = (midnight <= xs_dropped) & (xs_dropped < three_am)
+        to_change = (midnight_ <= xs_dropped) & (xs_dropped < three_am)
         new = xs_dropped[to_change].apply(lambda x: x + timedelta(days=1))
         if new.shape[0] == 0:
             continue
         df.loc[new.index[0] : new.index[-1], col] = new
+
+def subtract_min(here):
+    new = here.Arrive.apply(lambda x: x - here.Arrive.min())
+    here['Arrive'] = new
+    return here
+
+def groupby_apply_midnight(df: 'DataFrame[a]', f: '(a -> b)') -> 'DataFrame[b]':
+    '''Map a function over a dataframe grouped by trains, then added by midnight'''
+    grouped = df.groupby('Train')
+    grouped = grouped.apply(f)
+    grouped['Arrive'] = grouped.Arrive.apply(lambda x: Constants.midnight + x)
+    return grouped
 
 def prepare_delta(line_name, df):
     outfile = Constants.gen_csv_dir / f'{line_name}_delta.csv'
@@ -64,12 +74,6 @@ def prepare_delta(line_name, df):
         return pd.read_csv(outfile, parse_dates=['Arrive', 'Depart'])
 
     print('Preparing delta plot (offline)...')
-
-    grouped = df.groupby('Train')
-    def g(here):
-        new = here.Arrive.apply(lambda x: x - here.Arrive.min())
-        here['Arrive'] = new
-        return here
 
     def f(here):
         first_station = here.iloc[0].Station
@@ -79,17 +83,14 @@ def prepare_delta(line_name, df):
             # This will mutate grouped...
             new = here.loc[start_idx:].Train.apply(lambda x: x + '_1')
             here.loc[start_idx:].Train = new
-            res1 = g(here.loc[:start_idx-1])
-            res2 = g(here.loc[start_idx:])
+            res1 = subtract_min(here.loc[:start_idx-1])
+            res2 = subtract_min(here.loc[start_idx:])
             return pd.concat([res1, res2])
-        return g(here)
+        return subtract_min(here)
 
-    grouped = grouped.apply(f)
-    today = date.today()
-    midnight = datetime.combine(today, datetime.min.time())
-    grouped['Arrive'] = grouped.Arrive.apply(lambda x: midnight + x)
-
+    grouped = groupby_apply_midnight(df, f)
     grouped.to_csv(outfile)
+
     return grouped
 
 def handle_branches(df, line):

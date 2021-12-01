@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import plot
 from common import Constants
+from prepare_plot import subtract_min, groupby_apply_midnight
 
 
 def read_delta_csv(line_name):
@@ -30,7 +31,6 @@ def delta(line1: 'Line', line2: 'Line', fixes: 'Optional[List[(str, str)]]' = No
 
     There should be a tuple for every station that only one line has
     '''
-    # TODO multiple lines
     outfile = Constants.plot_dir / (
         line1.name + '_' + line2.name + '_combined_delta.png'
     )
@@ -131,3 +131,80 @@ def find_need_to_fix(s1: 'Series[a]', s2: 'Series[a]') -> '[(int, a)]':
             # This is when the two lines branch (case 3), ignore it
     return case_twos
 
+
+def remove_stations(f, station: str, df):
+    for train in df.Train.unique():
+        this_train = df[df.Train == train]
+        idx_eq = this_train[this_train['Station'] == station].index
+        if len(idx_eq) == 0:
+            continue
+        idxes = f(idx_eq[0], this_train.index)
+        df.drop(index=idxes, inplace=True)
+
+def remove_stations_after(station: str, df):
+    return remove_stations(lambda x, y: range(x, y[-1]+1), station, df)
+
+def remove_stations_before(station: str, df):
+    return remove_stations(lambda x, y: range(y[0], x), station, df)
+
+def shift_times(dfs, base_idx: int, target_idx: int, base_station: str):
+    incr = (
+        dfs[base_idx][dfs[base_idx].Station == base_station].Arrive.mean()
+    ) - Constants.midnight
+    dfs[target_idx].Arrive = dfs[target_idx].Arrive + incr
+
+def delta_subsets(
+    lines: 'List[Line]', starts: 'List[str]', ends: 'List[str]',
+    shifts: 'List[(int, int, str)]',
+    fixes: 'Optional[List[(str, str)]]' = None
+):
+    '''Given a list of Lines, plot all lines together in the same axis,
+    limiting the stations to start at `starts` and end at `ends` for each line
+
+    len(lines) == len(starts) == len(ends) should be satisfied, but if not,
+    excess items at the end is ignored
+    '''
+    line_names = [line.name for line in lines]
+    outfile = Constants.plot_dir / ('_'.join(line_names) + '_combined_delta.png')
+    if outfile.exists():
+        return
+
+    print('Plotting combined (offline)...')
+    dfs = [read_delta_csv(line.name + '_main') for line in lines]
+
+    for idx, (df, station) in enumerate(zip(dfs, starts)):
+        # This is looping twice if condition is true...
+        if station is not None:
+            remove_stations_before(station, df)
+        dfs[idx] = groupby_apply_midnight(df, subtract_min)
+
+    for shift in shifts:
+        shift_times(dfs, shift[0], shift[1], shift[2])
+
+    for df, station in zip(dfs, ends):
+        if station is not None:
+            remove_stations_after(station, df)
+
+    if fixes:
+        for (a, b) in fixes:
+            fused = a + '/' + b
+            for df in dfs:
+                df.replace(a, fused, inplace=True)
+                df.replace(b, fused, inplace=True)
+
+    # Plot order doesn't matter
+    ax = None
+    for df, line in zip(dfs, lines):
+        ax = plot.plot_ax_core(
+            df, alpha=0.2, color=line.color, line=True, ax=ax
+        )
+
+    custom_lines = [
+        Line2D([0], [0], color=line.color, marker='o')
+        for line in lines
+    ]
+
+    plot.format_mpl_plot(ax)
+    plt.legend(custom_lines, line_names)
+    plt.tight_layout()
+    plt.savefig(outfile)
