@@ -66,6 +66,10 @@ keihin_tohoku_takasaki_combined_delta
 
 ![keihin_tohoku_takasaki_combined_delta](examples/plots/keihin_tohoku_takasaki_combined_delta.png)
 
+keihin_tohoku_takasaki_yamanote_combined_delta
+
+![keihin_tohoku_takasaki_yamanote_combined_delta](examples/plots/keihin_tohoku_takasaki_yamanote_combined_delta.png)
+
 # Features
 
 - Can start from any station, not just line terminus
