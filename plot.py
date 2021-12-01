@@ -59,6 +59,48 @@ def matplotlib(
     mkdirs_touch_open('', outfile)
     plt.savefig(outfile)
 
+def plot_ax_core(
+    df: 'DataFrame',
+    alpha: float,
+    color: str, line: bool,
+    ax: 'Optional[Axis]' = None
+):
+    import matplotlib.pyplot as plt
+
+    plt.rcParams['font.family'] = 'Hiragino Sans GB'
+    if ax is None:
+        _, ax = plt.subplots(figsize=(15, 15))
+
+    args = dict(
+        color=color,
+        alpha=alpha,
+        marker='o'
+    )
+    if not line:
+        args.update(dict(linestyle='None'))  # Must be a string!
+
+    # yikes
+    for train in df.Train.unique():
+        ax.plot(
+            df[df.Train == train]['Arrive'],
+            df[df.Train == train]['Station'],
+            **args
+        )
+    return ax
+
+def format_mpl_plot(ax):
+    # This has to be separated for some reason
+    from matplotlib.dates import DateFormatter
+    from matplotlib.ticker import AutoMinorLocator
+    ax.grid(which='both', alpha=0.7)
+    ax.tick_params(axis='x', which='minor')
+    ax.invert_yaxis()
+    ax.xaxis.set_minor_locator(AutoMinorLocator(2))
+    ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))
+    ax.xaxis.set_minor_formatter(DateFormatter('%H:%M'))
+    ax.xaxis.set_tick_params(labeltop='on')
+    ax.yaxis.set_tick_params(labelright='on')
+
 def bokeh(
     df: 'DataFrame', df_for_branch: 'Optional[DataFrame]',
     line_name: str, plot_name: str, alpha: float,

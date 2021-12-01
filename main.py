@@ -6,6 +6,7 @@ import download
 import scrap_html
 import prepare_plot
 import plot
+import combined
 
 # Only matplotlib supports the second DataFrame argument
 # (DataFrame -> Maybe DataFrame -> str -> str -> float -> str -> bool -> IO (), str)
@@ -141,3 +142,8 @@ if __name__ == '__main__':
     )
     # Note that only matplotlib works with branches for now...
     main(takasaki, plotter=Plotter.matplotlib)
+    fixes = [
+        ('尾久', '上中里'),
+        ('戸塚', '磯子')
+    ]
+    combined.delta(kt, takasaki, fixes)
