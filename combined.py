@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 import plot
 from common import Constants
 
@@ -60,14 +61,18 @@ def delta(line1: 'Line', line2: 'Line', fixes: 'Optional[List[(str, str)]]' = No
 
     # Plot order doesn't matter
     ax = plot.plot_ax_core(
-        df1,
-        alpha=0.2, color=line1.color, line=True
+        df1, alpha=0.2, color=line1.color, line=True,
     )
     ax = plot.plot_ax_core(
-        df2,
-        alpha=0.2, color=line2.color, line=True, ax=ax
+        df2, alpha=0.2, color=line2.color, line=True, ax=ax,
     )
+    custom_lines = [
+        Line2D([0], [0], color=line1.color, marker='o'),
+        Line2D([0], [0], color=line2.color, marker='o')
+    ]
+
     plot.format_mpl_plot(ax)
+    plt.legend(custom_lines, [line1.name, line2.name])
     plt.tight_layout()
     plt.savefig(outfile)
 
