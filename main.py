@@ -62,37 +62,37 @@ def main(line: Line, plotter: Plotter):
 
 if __name__ == '__main__':
     chuo = Line(
-        name = 'chuo',
-        color = '#FE642E',
-        url = 'https://ekitan.com/timetable/railway/line-station/180-0/d1?dt=20211101',
-        branch_data = None
+        name='chuo',
+        color='#FE642E',
+        url='https://ekitan.com/timetable/railway/line-station/180-0/d1?dt=20211101',
+        branch_data=None
     )
     chuo_sobu = Line(
-        name = 'chuo_sobu',
-        color = '#fdbc00',
-        url = 'https://ekitan.com/timetable/railway/line-station/184-20/d2?dt=20211101',
-        branch_data = None
+        name='chuo_sobu',
+        color='#fdbc00',
+        url='https://ekitan.com/timetable/railway/line-station/184-20/d2?dt=20211101',
+        branch_data=None
     )
     kt = Line(
-        name = 'keihin_tohoku',
-        color = '#00BFFF',
-        url = 'https://ekitan.com/timetable/railway/line-station/79-0/d1?dt=20211101',
-        branch_data = None
+        name='keihin_tohoku',
+        color='#00BFFF',
+        url='https://ekitan.com/timetable/railway/line-station/79-0/d1?dt=20211101',
+        branch_data=None
     )
     yamanote = Line(
-        name = 'yamanote',
-        color = '#9acd32',
-        url = 'https://ekitan.com/timetable/railway/line-station/182-15/d1?dt=20211101',
-        branch_data = None
+        name='yamanote',
+        color='#9acd32',
+        url='https://ekitan.com/timetable/railway/line-station/182-15/d1?dt=20211101',
+        branch_data=None
     )
     ueno_tokyo = Line(
-        name = 'ueno_tokyo',
-        color = '#FF8C00',
-        url = 'https://ekitan.com/timetable/railway/line-station/136-4/d1?dt=20211101',
+        name='ueno_tokyo',
+        color='#FF8C00',
+        url='https://ekitan.com/timetable/railway/line-station/136-4/d1?dt=20211101',
         # I'm not sure where to scrap reliable data for this
         # have to first pass in None, inspect the plot, then fill in fixes
         # also what do when there aren't an equal number of matching stations?
-        branch_data = [
+        branch_data=[
             ('尾久', '池袋'),
             ('上野', '新宿'),
             ('東京', '渋谷'),

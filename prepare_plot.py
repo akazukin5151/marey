@@ -83,7 +83,7 @@ def prepare_delta(line_name, df):
             # This will mutate grouped...
             new = here.loc[start_idx:].Train.apply(lambda x: x + '_1')
             here.loc[start_idx:].Train = new
-            res1 = subtract_min(here.loc[:start_idx-1])
+            res1 = subtract_min(here.loc[:start_idx - 1])
             res2 = subtract_min(here.loc[start_idx:])
             return pd.concat([res1, res2])
         return subtract_min(here)

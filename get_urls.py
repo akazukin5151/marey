@@ -31,7 +31,12 @@ def main(URL, line_name):
             train_dep_min = train_dep_min.get_text()
             target_url = get_target_url(URL, train.find('a'))
 
-            out = f'{target_url};{Constants.html_dir / line_name}/{train_dep_hour}-{train_dep_min}-{train_dest}-{train_speed}'
+            outname = (
+                Constants.html_dir
+                / line_name
+                / f'{train_dep_hour}-{train_dep_min}-{train_dest}-{train_speed}'
+            )
+            out = f'{target_url};{outname}'
             result.append(out)
 
     mkdirs_touch_open('\n'.join(result), Constants.url_dir / f'{line_name}.txt')

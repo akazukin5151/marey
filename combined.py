@@ -137,7 +137,7 @@ def find_need_to_fix(s1: 'Series[a]', s2: 'Series[a]') -> '[(int, a)]':
             # If the next station in the long line is in the short line
             # then continue matching the next station in the long line
             # with stations in the short line
-            if longer_line.iloc[long_i+1] in slower_line.values:
+            if longer_line.iloc[long_i + 1] in slower_line.values:
                 long_i += 1
             # else:
             # This is when the two lines branch (case 3), ignore it
@@ -154,7 +154,7 @@ def remove_stations(f, station: str, df):
         df.drop(index=idxes, inplace=True)
 
 def remove_stations_after(station: str, df):
-    return remove_stations(lambda x, y: range(x, y[-1]+1), station, df)
+    return remove_stations(lambda x, y: range(x, y[-1] + 1), station, df)
 
 def remove_stations_before(station: str, df):
     return remove_stations(lambda x, y: range(y[0], x), station, df)
