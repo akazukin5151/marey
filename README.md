@@ -66,9 +66,17 @@ keihin_tohoku_takasaki_combined_delta
 
 ![keihin_tohoku_takasaki_combined_delta](examples/plots/keihin_tohoku_takasaki_combined_delta.png)
 
+keihin_tohoku_takasaki_combined_delta_scatter
+
+![keihin_tohoku_takasaki_combined_delta_scatter](examples/plots/keihin_tohoku_takasaki_combined_delta_scatter.png)
+
 keihin_tohoku_takasaki_yamanote_combined_delta
 
 ![keihin_tohoku_takasaki_yamanote_combined_delta](examples/plots/keihin_tohoku_takasaki_yamanote_combined_delta.png)
+
+keihin_tohoku_takasaki_yamanote_combined_delta_scatter
+
+![keihin_tohoku_takasaki_yamanote_combined_delta_scatter](examples/plots/keihin_tohoku_takasaki_yamanote_combined_delta_scatter.png)
 
 # Features
 
