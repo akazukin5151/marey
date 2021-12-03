@@ -281,3 +281,49 @@ def delta_subsets_inner(
     plt.legend(custom_lines, line_names)
     plt.tight_layout()
     plt.savefig(outfile)
+
+def delta_subsets_box(
+    d: '(Line, Optional[str], Optional[str])]',
+    shifts, fixes
+):
+    lines = [x for x, _, _ in d]
+    starts = [start for _, start, _ in d]
+    ends = [end for _, _, end in d]
+    line_names = [line.name for line in lines]
+
+    outfile = Constants.plot_dir / (
+        '_'.join(line_names) + '_combined_delta_box.png'
+    )
+    if outfile.exists():
+        return
+
+    print('Plotting combined (offline)...')
+    dfs = [read_delta_csv(line.name + '_main') for line in lines]
+
+    for idx, (df, station) in enumerate(zip(dfs, starts)):
+        # This is looping twice if condition is true...
+        if station is not None:
+            remove_stations_before(station, df)
+        dfs[idx] = groupby_apply_midnight(df, subtract_min)
+
+    for shift in shifts:
+        shift_times(dfs, shift[0], shift[1], shift[2])
+
+    for df, station in zip(dfs, ends):
+        if station is not None:
+            remove_stations_after(station, df)
+
+    if fixes:
+        for (a, b) in fixes:
+            fused = a + '/' + b
+            for df in dfs:
+                df.replace(a, fused, inplace=True)
+                df.replace(b, fused, inplace=True)
+
+    # Plot order doesn't matter
+    for line, df in zip(lines, dfs):
+        df['Line'] = line.name
+
+    df = pd.concat(dfs)
+    plot.seaborn_boxplot_combined(df, outfile)
+

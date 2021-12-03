@@ -126,3 +126,4 @@ if __name__ == '__main__':
 
     combined.delta_subsets(d, shifts, fixes)
     combined.delta_subsets_scatter(d, shifts, fixes)
+    combined.delta_subsets_box(d, shifts, fixes)
