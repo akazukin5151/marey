@@ -90,6 +90,46 @@ def delta_inner(
     plt.tight_layout()
     plt.savefig(outfile)
 
+def delta_box(
+    line1: 'Line',
+    line2: 'Line',
+    fixes: 'Optional[List[(str, str)]]' = None
+):
+    outfile = Constants.plot_dir / (
+        line1.name + '_' + line2.name + '_combined_delta_box.png'
+    )
+    if outfile.exists():
+        return
+
+    print('Plotting combined (offline)...')
+    df1 = read_delta_csv(line1.name + '_main')
+    df2 = read_delta_csv(line2.name + '_main')
+
+    if fixes is None:
+        # get all unique stations sequences
+        df1_stations = df1.groupby('Train').Station.unique().apply(tuple)
+        df2_stations = df2.groupby('Train').Station.unique().apply(tuple)
+        # find train with most stations
+        df1_longest_train = df1_stations.apply(len).idxmax()
+        df2_longest_train = df2_stations.apply(len).idxmax()
+        # Select only the stations on that train
+        df1_stations_longest = df1[df1.Train == df1_longest_train].Station
+        df2_stations_longest = df2[df2.Train == df2_longest_train].Station
+        print(find_need_to_fix(df1_stations_longest, df2_stations_longest))
+    else:
+        for (a, b) in fixes:
+            fused = a + '/' + b
+            # where doesn't work for some reason
+            df1.replace(a, fused, inplace=True)
+            df2.replace(b, fused, inplace=True)
+            df1.replace(b, fused, inplace=True)
+            df2.replace(a, fused, inplace=True)
+
+    df1['Line'] = line1.name
+    df2['Line'] = line2.name
+    df = pd.concat([df1, df2])
+    plot.seaborn_boxplot_combined(df, outfile)
+
 def find_need_to_fix(s1: 'Series[a]', s2: 'Series[a]') -> '[(int, a)]':
     '''Try to match stations from the two Series, returning potential
     stations that need to be corrected manually

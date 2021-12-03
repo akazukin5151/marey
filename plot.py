@@ -1,6 +1,31 @@
 from common import Constants
 
 
+def seaborn_boxplot_combined(
+    df: 'DataFrame',
+    outfile: str,
+):
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+    from common import mkdirs_touch_open
+
+    if outfile.exists():
+        return
+
+    plt.rcParams['font.family'] = 'Hiragino Sans GB'
+    plt.figure(figsize=(15, 15))
+
+    # even if seaborn allowed datetimes, numpy couldn't add them for some reason
+    df.Arrive = df.Arrive.view(int) / 1e12
+    sns.boxplot(data=df, x='Arrive', y='Station', hue='Line')
+
+    plt.grid(which='both', alpha=0.7)
+    plt.gca().tick_params(axis='x', which='minor')
+    plt.gca().yaxis.set_tick_params(labelright='on')
+    plt.tight_layout()
+    mkdirs_touch_open('', outfile)
+    plt.savefig(outfile)
+
 # only plots main branch
 def seaborn_boxplot(
     df: 'DataFrame', df_for_branch: 'Optional[DataFrame]',

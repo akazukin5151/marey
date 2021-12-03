@@ -122,6 +122,7 @@ if __name__ == '__main__':
 
     combined.delta(kt, ueno_tokyo, fixes)
     combined.delta_scatter(kt, ueno_tokyo, fixes)
+    combined.delta_box(kt, ueno_tokyo, fixes)
 
     combined.delta_subsets(d, shifts, fixes)
     combined.delta_subsets_scatter(d, shifts, fixes)
