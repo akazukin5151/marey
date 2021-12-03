@@ -33,6 +33,12 @@ def seaborn_boxplot(
     # even if seaborn allowed datetimes, numpy couldn't add them for some reason
     df.Arrive = df.Arrive.view(int) / 1e12
     sns.boxplot(data=df, x='Arrive', y='Station', color=color)
+    # Gets too thin at the end (because too few stations), so boxplots are better
+    # This is why a ridgeline (https://seaborn.pydata.org/examples/kde_ridgeplot.html)
+    # plot won't work -- height of distribution too small
+    #sns.violinplot(data=df, x='Arrive', y='Station', color=color)
+    # This one needs change the division from 1e12 to 1e6
+    #sns.kdeplot(data=df, x="Arrive", hue='Station')
 
     plt.grid(which='both', alpha=0.7)
     plt.gca().tick_params(axis='x', which='minor')
