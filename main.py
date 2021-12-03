@@ -26,7 +26,8 @@ def main(line: Line, plotter: Plotter):
     normal = Constants.plot_dir / f'{line.name}_normal.{ext}'
     delta = Constants.plot_dir / f'{line.name}_delta.{ext}'
     delta_scatter = Constants.plot_dir / f'{line.name}_delta_scatter.{ext}'
-    if normal.exists() and delta.exists() and delta_scatter.exists():
+    delta_box = Constants.plot_dir / f'{line.name}_delta_box.{ext}'
+    if normal.exists() and delta.exists() and delta_scatter.exists() and delta_box.exists():
         return
 
     df = prepare_plot.prepare_normal(line.name)
@@ -43,7 +44,7 @@ def main(line: Line, plotter: Plotter):
     )
 
     # If only normal was missing, exit now
-    if delta.exists() and delta_scatter.exists():
+    if delta.exists() and delta_scatter.exists() and delta_box.exists():
         return
 
     df_for_main = prepare_plot.prepare_delta(line.name + '_main', df_for_main)
@@ -57,6 +58,10 @@ def main(line: Line, plotter: Plotter):
     plt_func(
         df_for_main, df_for_branch,
         line.name, 'delta_scatter', alpha=0.2, color=line.color, line=False
+    )
+    plot.seaborn_boxplot(
+        df_for_main, df_for_branch,
+        line.name, 'delta_box', alpha=0.2, color=line.color, line=False
     )
 
 
