@@ -30,8 +30,9 @@ def seaborn_boxplot(
     if not line:
         args.update(dict(linestyle='None'))  # Must be a string!
 
+    # even if seaborn allowed datetimes, numpy couldn't add them for some reason
     df.Arrive = df.Arrive.view(int) / 1e12
-    sns.boxplot(data=df, x='Arrive', y='Station')
+    sns.boxplot(data=df, x='Arrive', y='Station', color=color)
 
     plt.grid(which='both', alpha=0.7)
     plt.gca().tick_params(axis='x', which='minor')
