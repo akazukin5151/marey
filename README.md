@@ -14,6 +14,10 @@ chuo_delta_scatter
 
 ![chuo_delta_scatter](examples/plots/chuo_delta_scatter.png)
 
+chuo_delta_box
+
+![chuo_delta_box](examples/plots/chuo_delta_box.png)
+
 chuo_sobu_normal
 
 ![chuo_sobu_normal](examples/plots/chuo_sobu_normal.png)
@@ -25,6 +29,10 @@ chuo_sobu_delta
 huo_sobu_delta_scatter
 
 ![chuo_sobu_delta_scatter](examples/plots/chuo_sobu_delta_scatter.png)
+
+chuo_sobu_delta_box
+
+![chuo_sobu_delta_box](examples/plots/chuo_sobu_delta_box.png)
 
 keihin_tohoku_normal
 
@@ -38,6 +46,9 @@ keihin_tohoku_delta_scatter
 
 ![keihin_tohoku_delta_scatter](examples/plots/keihin_tohoku_delta_scatter.png)
 
+keihin_tohoku_delta_box
+
+![keihin_tohoku_delta_box](examples/plots/keihin_tohoku_delta_box.png)
 ueno_tokyo_normal
 
 ![ueno_tokyo_normal](examples/plots/ueno_tokyo_normal.png)
@@ -49,6 +60,10 @@ ueno_tokyo_delta
 ueno_tokyo_delta_scatter
 
 ![ueno_tokyo_delta_scatter](examples/plots/ueno_tokyo_delta_scatter.png)
+
+ueno_tokyo_delta_box
+
+![ueno_tokyo_delta_box](examples/plots/ueno_tokyo_delta_box.png)
 
 yamanote_normal
 
@@ -62,6 +77,10 @@ yamanote_delta_scatter
 
 ![yamanote_delta_scatter](examples/plots/yamanote_delta_scatter.png)
 
+yamanote_delta_box
+
+![yamanote_delta_box](examples/plots/yamanote_delta_box.png)
+
 keihin_tohoku_ueno_tokyo_combined_delta
 
 ![keihin_tohoku_ueno_tokyo_combined_delta](examples/plots/keihin_tohoku_ueno_tokyo_combined_delta.png)
@@ -70,6 +89,11 @@ keihin_tohoku_ueno_tokyo_combined_delta_scatter
 
 ![keihin_tohoku_ueno_tokyo_combined_delta_scatter](examples/plots/keihin_tohoku_ueno_tokyo_combined_delta_scatter.png)
 
+keihin_tohoku_ueno_tokyo_combined_delta_box
+
+![keihin_tohoku_ueno_tokyo_combined_delta_box](examples/plots/keihin_tohoku_ueno_tokyo_combined_delta_box.png)
+
+
 keihin_tohoku_ueno_tokyo_yamanote_combined_delta
 
 ![keihin_tohoku_ueno_tokyo_yamanote_combined_delta](examples/plots/keihin_tohoku_ueno_tokyo_yamanote_combined_delta.png)
@@ -77,6 +101,10 @@ keihin_tohoku_ueno_tokyo_yamanote_combined_delta
 keihin_tohoku_ueno_tokyo_yamanote_combined_delta_scatter
 
 ![keihin_tohoku_ueno_tokyo_yamanote_combined_delta_scatter](examples/plots/keihin_tohoku_ueno_tokyo_yamanote_combined_delta_scatter.png)
+
+keihin_tohoku_ueno_tokyo_yamanote_combined_delta_box
+
+![keihin_tohoku_ueno_tokyo_yamanote_combined_delta_box](examples/plots/keihin_tohoku_ueno_tokyo_yamanote_combined_delta_box.png)
 
 # Features
 
