@@ -1,5 +1,17 @@
 from common import Constants
+import pandas as pd
 
+
+def format_int_time(tick_value: int, pos: int) -> str:
+    '''
+    tick_value: int
+        The arrival time, after conversion to int and divided by 1e12
+    pos: int
+        The index of the tick
+    '''
+    dt = pd.to_datetime(tick_value * 1e12)
+    # {x : 03} means pad the string with zeros to ensure it is two digits
+    return f"{dt.hour}:{dt.minute : 03}"
 
 def seaborn_boxplot_combined(
     df: 'DataFrame',
@@ -7,6 +19,7 @@ def seaborn_boxplot_combined(
 ):
     import seaborn as sns
     import matplotlib.pyplot as plt
+    from matplotlib.ticker import FuncFormatter
     from common import mkdirs_touch_open
 
     if outfile.exists():
@@ -25,6 +38,8 @@ def seaborn_boxplot_combined(
     plt.grid(which='both', alpha=0.7)
     plt.gca().tick_params(axis='x', which='minor')
     plt.gca().yaxis.set_tick_params(labelright='on')
+    plt.gca().xaxis.set_major_formatter(FuncFormatter(format_int_time))
+    plt.gca().xaxis.set_tick_params(labeltop='on')
     plt.tight_layout()
     mkdirs_touch_open('', outfile)
     plt.savefig(outfile)
@@ -37,8 +52,7 @@ def seaborn_boxplot(
 ):
     import seaborn as sns
     import matplotlib.pyplot as plt
-    from matplotlib.dates import DateFormatter
-    from matplotlib.ticker import AutoMinorLocator
+    from matplotlib.ticker import FuncFormatter
     from common import mkdirs_touch_open
 
     outfile = Constants.plot_dir / f'{line_name}_{plot_name}.png'
@@ -70,10 +84,8 @@ def seaborn_boxplot(
 
     plt.grid(which='both', alpha=0.7)
     plt.gca().tick_params(axis='x', which='minor')
-#    #plt.gca().xaxis.set_minor_locator(AutoMinorLocator(2))
-#    #plt.gca().xaxis.set_major_formatter(DateFormatter('%H:%M'))
-#    #plt.gca().xaxis.set_minor_formatter(DateFormatter('%H:%M'))
-#    plt.gca().xaxis.set_tick_params(labeltop='on')
+    plt.gca().xaxis.set_major_formatter(FuncFormatter(format_int_time))
+    plt.gca().xaxis.set_tick_params(labeltop='on')
     plt.gca().yaxis.set_tick_params(labelright='on')
     plt.tight_layout()
     mkdirs_touch_open('', outfile)
