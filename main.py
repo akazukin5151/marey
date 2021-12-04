@@ -107,6 +107,10 @@ if __name__ == '__main__':
         ]
     )
     # Note that only matplotlib works with branches for now...
+    main(chuo, plotter=Plotter.matplotlib)
+    main(chuo_sobu, plotter=Plotter.matplotlib)
+    main(kt, plotter=Plotter.matplotlib)
+    main(yamanote, plotter=Plotter.matplotlib)
     main(ueno_tokyo, plotter=Plotter.matplotlib)
 
     d = [
