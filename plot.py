@@ -43,6 +43,7 @@ def seaborn_boxplot_combined(
     plt.tight_layout()
     mkdirs_touch_open('', outfile)
     plt.savefig(outfile)
+    plt.close()
 
 # only plots main branch
 def seaborn_boxplot(
@@ -82,6 +83,7 @@ def seaborn_boxplot(
     plt.tight_layout()
     mkdirs_touch_open('', outfile)
     plt.savefig(outfile)
+    plt.close()
 
 def matplotlib(
     df: 'DataFrame', df_for_branch: 'Optional[DataFrame]',
@@ -141,6 +143,7 @@ def matplotlib(
     plt.tight_layout()
     mkdirs_touch_open('', outfile)
     plt.savefig(outfile)
+    plt.close()
 
 def plot_ax_core(
     df: 'DataFrame',

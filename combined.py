@@ -89,6 +89,7 @@ def delta_inner(
     plt.legend(custom_lines, [line1.name, line2.name])
     plt.tight_layout()
     plt.savefig(outfile)
+    plt.close()
 
 def delta_box(
     line1: 'Line',
@@ -281,6 +282,7 @@ def delta_subsets_inner(
     plt.legend(custom_lines, line_names)
     plt.tight_layout()
     plt.savefig(outfile)
+    plt.close()
 
 def delta_subsets_box(
     d: '(Line, Optional[str], Optional[str])]',
