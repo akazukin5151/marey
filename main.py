@@ -60,8 +60,8 @@ def main(line: Line, plotter: Plotter):
         line.name, 'delta_scatter', alpha=0.2, color=line.color, line=False
     )
     plot.seaborn_boxplot(
-        df_for_main, df_for_branch,
-        line.name, 'delta_box', alpha=0.2, color=line.color, line=False
+        df_for_main,
+        line.name, 'delta_box', color=line.color
     )
 
 

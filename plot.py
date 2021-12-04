@@ -46,9 +46,9 @@ def seaborn_boxplot_combined(
 
 # only plots main branch
 def seaborn_boxplot(
-    df: 'DataFrame', df_for_branch: 'Optional[DataFrame]',
-    line_name: str, plot_name: str, alpha: float,
-    color: str, line: bool,
+    df: 'DataFrame',
+    line_name: str, plot_name: str,
+    color: str,
 ):
     import seaborn as sns
     import matplotlib.pyplot as plt
@@ -63,14 +63,6 @@ def seaborn_boxplot(
 
     plt.rcParams['font.family'] = 'Hiragino Sans GB'
     plt.figure(figsize=(15, 15))
-
-    args = dict(
-        color=color,
-        alpha=alpha,
-        marker='o'
-    )
-    if not line:
-        args.update(dict(linestyle='None'))  # Must be a string!
 
     # even if seaborn allowed datetimes, numpy couldn't add them for some reason
     df.Arrive = df.Arrive.view(int) / 1e12
