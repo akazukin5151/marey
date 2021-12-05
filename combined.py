@@ -18,6 +18,14 @@ def delta(line1, line2, fixes):
 def delta_scatter(line1, line2, fixes):
     return delta_inner('_scatter', False, line1, line2, fixes)
 
+def delta_box(line1, line2, fixes):
+    outfile, df1, df2 = delta_core('_box', line1, line2, fixes)
+
+    df1['Line'] = line1.name
+    df2['Line'] = line2.name
+    df = pd.concat([df1, df2])
+    plot.seaborn_boxplot_combined(df, outfile)
+
 def delta_inner(
     modifier: str,
     draw_line: bool,
@@ -43,35 +51,7 @@ def delta_inner(
 
     There should be a tuple for every station that only one line has
     '''
-    outfile = Constants.plot_dir / (
-        line1.name + '_' + line2.name + f'_combined_delta{modifier}.png'
-    )
-    if outfile.exists():
-        return
-
-    print('Plotting combined (offline)...')
-    df1 = read_delta_csv(line1.name + '_main')
-    df2 = read_delta_csv(line2.name + '_main')
-
-    if fixes is None:
-        # get all unique stations sequences
-        df1_stations = df1.groupby('Train').Station.unique().apply(tuple)
-        df2_stations = df2.groupby('Train').Station.unique().apply(tuple)
-        # find train with most stations
-        df1_longest_train = df1_stations.apply(len).idxmax()
-        df2_longest_train = df2_stations.apply(len).idxmax()
-        # Select only the stations on that train
-        df1_stations_longest = df1[df1.Train == df1_longest_train].Station
-        df2_stations_longest = df2[df2.Train == df2_longest_train].Station
-        print(find_need_to_fix(df1_stations_longest, df2_stations_longest))
-    else:
-        for (a, b) in fixes:
-            fused = a + '/' + b
-            # where doesn't work for some reason
-            df1.replace(a, fused, inplace=True)
-            df2.replace(b, fused, inplace=True)
-            df1.replace(b, fused, inplace=True)
-            df2.replace(a, fused, inplace=True)
+    outfile, df1, df2 = delta_core(modifier, line1, line2, fixes)
 
     # Plot order doesn't matter
     ax = plot.plot_ax_core(
@@ -91,18 +71,18 @@ def delta_inner(
     plt.savefig(outfile)
     plt.close()
 
-def delta_box(
+def delta_core(
+    modifier: str,
     line1: 'Line',
     line2: 'Line',
     fixes: 'Optional[List[(str, str)]]' = None
 ):
     outfile = Constants.plot_dir / (
-        line1.name + '_' + line2.name + '_combined_delta_box.png'
+        line1.name + '_' + line2.name + f'_combined_delta{modifier}.png'
     )
     if outfile.exists():
         return
 
-    print('Plotting combined (offline)...')
     df1 = read_delta_csv(line1.name + '_main')
     df2 = read_delta_csv(line2.name + '_main')
 
@@ -125,11 +105,7 @@ def delta_box(
             df2.replace(b, fused, inplace=True)
             df1.replace(b, fused, inplace=True)
             df2.replace(a, fused, inplace=True)
-
-    df1['Line'] = line1.name
-    df2['Line'] = line2.name
-    df = pd.concat([df1, df2])
-    plot.seaborn_boxplot_combined(df, outfile)
+    return (outfile, df1, df2)
 
 def find_need_to_fix(s1: 'Series[a]', s2: 'Series[a]') -> '[(int, a)]':
     '''Try to match stations from the two Series, returning potential
@@ -237,6 +213,51 @@ def delta_subsets_inner(
     excess items at the end is ignored
     '''
     line_names = [line.name for line in lines]
+    outfile, dfs = delta_subsets_core(modifier, lines, starts, ends, shifts, fixes)
+
+    # Plot order doesn't matter
+    ax = None
+    for df, line in zip(dfs, lines):
+        ax = plot.plot_ax_core(
+            df, alpha=0.2, color=line.color, line=draw_line, ax=ax
+        )
+
+    custom_lines = [
+        Line2D([0], [0], color=line.color, marker='o')
+        for line in lines
+    ]
+
+    plot.format_mpl_plot(ax)
+    plt.legend(custom_lines, line_names)
+    plt.tight_layout()
+    plt.savefig(outfile)
+    plt.close()
+
+def delta_subsets_box(
+    d: '(Line, Optional[str], Optional[str])]',
+    shifts, fixes
+):
+    lines = [x for x, _, _ in d]
+    starts = [start for _, start, _ in d]
+    ends = [end for _, _, end in d]
+    outfile, dfs = delta_subsets_core('_box', lines, starts, ends, shifts, fixes)
+
+    # Plot order doesn't matter
+    for line, df in zip(lines, dfs):
+        df['Line'] = line.name
+
+    df = pd.concat(dfs)
+    plot.seaborn_boxplot_combined(df, outfile)
+
+def delta_subsets_core(
+    modifier: str,
+    lines: 'List[Line]',
+    starts: 'List[str]',
+    ends: 'List[str]',
+    shifts: 'List[(int, int, str)]',
+    fixes: 'Optional[List[(str, str)]]' = None
+):
+    line_names = [line.name for line in lines]
     outfile = Constants.plot_dir / (
         '_'.join(line_names) + f'_combined_delta{modifier}.png'
     )
@@ -265,67 +286,4 @@ def delta_subsets_inner(
             for df in dfs:
                 df.replace(a, fused, inplace=True)
                 df.replace(b, fused, inplace=True)
-
-    # Plot order doesn't matter
-    ax = None
-    for df, line in zip(dfs, lines):
-        ax = plot.plot_ax_core(
-            df, alpha=0.2, color=line.color, line=draw_line, ax=ax
-        )
-
-    custom_lines = [
-        Line2D([0], [0], color=line.color, marker='o')
-        for line in lines
-    ]
-
-    plot.format_mpl_plot(ax)
-    plt.legend(custom_lines, line_names)
-    plt.tight_layout()
-    plt.savefig(outfile)
-    plt.close()
-
-def delta_subsets_box(
-    d: '(Line, Optional[str], Optional[str])]',
-    shifts, fixes
-):
-    lines = [x for x, _, _ in d]
-    starts = [start for _, start, _ in d]
-    ends = [end for _, _, end in d]
-    line_names = [line.name for line in lines]
-
-    outfile = Constants.plot_dir / (
-        '_'.join(line_names) + '_combined_delta_box.png'
-    )
-    if outfile.exists():
-        return
-
-    print('Plotting combined (offline)...')
-    dfs = [read_delta_csv(line.name + '_main') for line in lines]
-
-    for idx, (df, station) in enumerate(zip(dfs, starts)):
-        # This is looping twice if condition is true...
-        if station is not None:
-            remove_stations_before(station, df)
-        dfs[idx] = groupby_apply_midnight(df, subtract_min)
-
-    for shift in shifts:
-        shift_times(dfs, shift[0], shift[1], shift[2])
-
-    for df, station in zip(dfs, ends):
-        if station is not None:
-            remove_stations_after(station, df)
-
-    if fixes:
-        for (a, b) in fixes:
-            fused = a + '/' + b
-            for df in dfs:
-                df.replace(a, fused, inplace=True)
-                df.replace(b, fused, inplace=True)
-
-    # Plot order doesn't matter
-    for line, df in zip(lines, dfs):
-        df['Line'] = line.name
-
-    df = pd.concat(dfs)
-    plot.seaborn_boxplot_combined(df, outfile)
-
+    return outfile, dfs
