@@ -47,14 +47,10 @@ def fix_next_days(df, col):
     three_am = pd.Timestamp.today().replace(
         hour=3, minute=0, second=0, microsecond=0, nanosecond=0
     )
-    for train in df.Train.unique():
-        xs = df[df.Train == train][col]
-        xs_dropped = xs.dropna()
-        to_change = (midnight_ <= xs_dropped) & (xs_dropped < three_am)
-        new = xs_dropped[to_change].apply(lambda x: x + timedelta(days=1))
-        if new.shape[0] == 0:
-            continue
-        df.loc[new.index[0] : new.index[-1], col] = new
+    xs = df[col]
+    xs_dropped = xs.dropna()
+    to_change = (midnight_ <= xs_dropped) & (xs_dropped < three_am)
+    xs_dropped[to_change] += timedelta(days=1)
 
 def subtract_min(here):
     new = here.Arrive.apply(lambda x: x - here.Arrive.min())
