@@ -26,7 +26,7 @@ chuo_sobu_delta
 
 ![chuo_sobu_delta](examples/plots/chuo_sobu_delta.png)
 
-huo_sobu_delta_scatter
+chuo_sobu_delta_scatter
 
 ![chuo_sobu_delta_scatter](examples/plots/chuo_sobu_delta_scatter.png)
 
