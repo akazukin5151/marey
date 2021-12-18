@@ -1,0 +1,38 @@
+[project]
+name = "marey"
+version = "0.0.0"
+description = ""
+authors = [
+    {name = "akazukin5151", email = "tsuiyikching@protonmail.com"},
+]
+dependencies = [
+    "beautifulsoup4",
+    "bokeh==2.4.2",
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "seaborn",
+]
+requires-python = ">=3.9"
+license = {text = "GLP3"}
+
+[project.urls]
+homepage = "www.github.com/akazukin5151/marey"
+
+[project.optional-dependencies]
+[tool]
+[tool.pdm]
+[[tool.pdm.source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "altair",
+    "bokeh",
+]
+[build-system]
+requires = ["pdm-pep517"]
+build-backend = "pdm.pep517.api"
