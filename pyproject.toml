@@ -14,7 +14,7 @@ dependencies = [
     "seaborn",
 ]
 requires-python = ">=3.9"
-license = {text = "GLP3"}
+license = {text = "GPL-3.0-or-later"}
 
 [project.urls]
 homepage = "www.github.com/akazukin5151/marey"
