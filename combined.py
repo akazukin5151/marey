@@ -19,7 +19,10 @@ def delta_scatter(line1, line2, fixes):
     return delta_inner('_scatter', False, line1, line2, fixes)
 
 def delta_box(line1, line2, fixes):
-    outfile, df1, df2 = delta_core('_box', line1, line2, fixes)
+    res = delta_core('_box', line1, line2, fixes)
+    if res is None:
+        return
+    outfile, df1, df2 = res
 
     df1['Line'] = line1.name
     df2['Line'] = line2.name
@@ -51,7 +54,10 @@ def delta_inner(
 
     There should be a tuple for every station that only one line has
     '''
-    outfile, df1, df2 = delta_core(modifier, line1, line2, fixes)
+    res = delta_core(modifier, line1, line2, fixes)
+    if res is None:
+        return
+    outfile, df1, df2 = res
 
     # Plot order doesn't matter
     ax = plot.plot_ax_core(
@@ -213,7 +219,10 @@ def delta_subsets_inner(
     excess items at the end is ignored
     '''
     line_names = [line.name for line in lines]
-    outfile, dfs = delta_subsets_core(modifier, lines, starts, ends, shifts, fixes)
+    res = delta_subsets_core(modifier, lines, starts, ends, shifts, fixes)
+    if res is None:
+        return
+    outfile, dfs = res
 
     # Plot order doesn't matter
     ax = None
@@ -240,7 +249,10 @@ def delta_subsets_box(
     lines = [x for x, _, _ in d]
     starts = [start for _, start, _ in d]
     ends = [end for _, _, end in d]
-    outfile, dfs = delta_subsets_core('_box', lines, starts, ends, shifts, fixes)
+    res = delta_subsets_core('_box', lines, starts, ends, shifts, fixes)
+    if res is None:
+        return
+    outfile, dfs = res
 
     # Plot order doesn't matter
     for line, df in zip(lines, dfs):
