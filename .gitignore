@@ -3,3 +3,5 @@ out/*
 tokyo-metro-subway-map.png
  __pypackages__/
 .pdm.toml
+
+.mypy_cache/3.9

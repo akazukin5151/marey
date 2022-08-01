@@ -116,21 +116,13 @@ keihin_tohoku_ueno_tokyo_yamanote_combined_delta_box
 
 # Install dependencies
 
-## Easy route: use pdm
-
-1. Install [pdm](https://github.com/pdm-project/pdm)
-2. Git clone
-3. `pdm sync`
-
-## Manual route
-
 Install dependencies from `pyproject.toml`
 
 Bokeh and Altair is optional, it is only used for interactive plots and depends on your choice
 
 # Running
 
-`pdm run python main.py`
+`python main.py`
 
 # Editing
 
