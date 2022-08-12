@@ -54,7 +54,8 @@ def fix_next_days(df, col):
     xs = df[col]
     xs_dropped = xs.dropna()
     to_change = (midnight_ <= xs_dropped) & (xs_dropped < three_am)
-    xs_dropped[to_change] += timedelta(days=1)
+    for i in xs_dropped[to_change].index:
+        df.loc[i, col] += timedelta(days=1)
 
 def subtract_min(here):
     # no inplace to allow further processing
