@@ -75,7 +75,7 @@ if __name__ == '__main__':
     chuo_sobu = Line(
         name='chuo_sobu',
         color='#fdbc00',
-        url='https://ekitan.com/timetable/railway/line-station/184-20/d2?dt=20211101',
+        url='https://ekitan.com/timetable/railway/line-station/184-0/d2?dt=20211101',
         branch_data=None
     )
     kt = Line(
