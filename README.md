@@ -1,5 +1,7 @@
 # train schedule diagram
 
+[![status](https://img.shields.io/badge/status-maintenance-green)](https://img.shields.io/badge/status-maintenance-green)
+
 A python script that scrapes [ekitan](ekitan.com/) (a Japanese transportation routing service) to make a train schedule diagram
 
 chuo_normal
