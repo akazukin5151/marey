@@ -141,9 +141,11 @@ All the scripts will try its best to immediately return if their output file alr
 
 # Q&A
 
-- Why not use the JR website? [Eg](https://www.jreast-timetable.jp/2112/timetable/tt1039/1039090.html)
+- Why not use the JR website? ~~[Eg](https://www.jreast-timetable.jp/2112/timetable/tt1039/1039090.html)~~
 
-Because it does not have arrival and departure time, only an instantaneous time
+~~Because it does not have arrival and departure time, only an instantaneous time~~
+
+That link was no longer working for me. Turns out that they do indeed have arrival and departure time, [eg](https://www.jreast-timetable.jp/2211/train/150/151431.html). Ekitan still has the advantage of being a centralized source as it has data for non JR services, such as Tokyo Metro. While Tokyo Metro still has the same data available ([eg](https://www.tokyometro.jp/station/timetable.html?dt=h&dr=a&ln=ginza&st=asakusa&h=6&m=17)), it means a different website to scrape, which makes the code less adaptable and flexible.
 
 # See also
 - https://mbtaviz.github.io/
