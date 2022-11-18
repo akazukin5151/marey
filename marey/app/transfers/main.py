@@ -29,10 +29,10 @@ def main(route: Route):
                 break
         else:  # no break
             raise Exception(f"couldn't find matching train at {time}")
-        print(target_url)
 
-        # using pre-existing code, download that page
-        #save_page.main(url, line_name, TODO)
+        # download that page
+        journey_html = Path('out/transfers/journey') / f'{name}-{time}.html'
+        save_page.main(target_url, journey_html)
 
         # using pre-existing code, scrape that html
         # TODO: different input dir
