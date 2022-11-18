@@ -4,6 +4,8 @@ from marey.lib import save_page
 from . import scrape_routing
 from marey.lib import get_urls
 from marey.lib import scrap_html
+from marey.lib import prepare_plot
+from marey.lib import plot
 
 def main(route: Route):
     outfile = Path('out/transfers/routing') / f'{route.filename}.html'
@@ -36,6 +38,11 @@ def main(route: Route):
         save_page.main(target_url, journey_html)
 
         # scrape that html
+        # TODO: change html_dir into an iterator of html files
+        # so that every loop treats different lines separately
+        # currently, every line is in the journey dir so every loop
+        # will read every line html, so all the resulting csv are the same
+        # and it treats the entire route on different lines as the same "line"
         scrap_html.main(
             Path('out/transfers/journey'),
             Path('out/transfers/generated_csv') / (line_name + '.csv')
@@ -43,7 +50,20 @@ def main(route: Route):
 
     # using new code, remove stations outside origin and destination
     # (outside specific time sections)
+
     # using pre-existing code, plot the result
+    #plot_dir = Path('out/transfers/plot')
+    #normal = plot_dir / f'{line_name}_normal.png'
+    #if normal.exists():
+    #    return
+    # TODO: different input file
+    #df = prepare_plot.prepare_normal(line_name)
+    #plt_func = plot.matplotlib
+    # TODO: different output file
+    #plt_func(
+    #    df, None,
+    #    line_name, 'normal', alpha=0.5, color='red', line=True
+    #)
 
 
 if __name__ == '__main__':
