@@ -126,6 +126,8 @@ Bokeh and Altair is optional, it is only used for interactive plots and depends 
 
 `python -m marey.app.simple.main`
 
+`python -m marey.app.transfers.main`
+
 # Editing
 
 Either edit the bottom of main.py to use your own url and line name, and line color
