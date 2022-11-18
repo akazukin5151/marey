@@ -21,8 +21,15 @@ def main(route: Route):
         rs = get_urls.main(outfile)
 
         # find train that matches `time` and return url
-        print(rs)
-        # url = TODO
+        splitted = time.split(':')
+        hour = splitted[0]
+        minute = splitted[1]
+        for (target_url, train_dep_hour, train_dep_min, _, _) in rs:
+            if train_dep_hour == hour and train_dep_min == minute:
+                break
+        else:  # no break
+            raise Exception(f"couldn't find matching train at {time}")
+        print(target_url)
 
         # using pre-existing code, download that page
         #save_page.main(url, line_name, TODO)
