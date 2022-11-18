@@ -1,17 +1,20 @@
+from pathlib import Path
 from .common import Route
-from . import save_page
+from marey.lib import save_page
 from . import scrape_routing
 
 def main(route: Route):
-    save_page.main(route.to_url(), route.filename)
+    outfile = Path('out/transfers/routing') / f'{route.filename}.html'
+    save_page.main(route.to_url(), route.filename, outfile)
     all_stations_data = scrape_routing.scrape_html(route)
 
     print(all_stations_data)
     for (name, time, timetable_url) in all_stations_data:
         line_name = name + '_part'
-        # using pre-existing code, download url to html
-        # TODO: different output dir
-        #save_page.main(timetable_url, line_name)
+
+        # download timetable url to html
+        outfile = Path('out/transfers/line') / f'{line_name}.html'
+        save_page.main(timetable_url, line_name, outfile)
 
         # using pre-existing code, scrape urls from html
         # TODO: different input and output paths
