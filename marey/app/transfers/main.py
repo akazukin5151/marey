@@ -24,11 +24,7 @@ def main(route: Route):
         # url = TODO
 
         # using pre-existing code, download that page
-        # this function only reads urls from a txt file, so write url to that file
-        # with open(TODO, 'w') as f:
-        #     f.write(url)
-        # TODO: different input dir
-        #download.main(line_name)
+        #save_page.main(url, line_name, TODO)
 
         # using pre-existing code, scrape that html
         # TODO: different input dir
