@@ -124,7 +124,7 @@ Bokeh and Altair is optional, it is only used for interactive plots and depends 
 
 # Running
 
-`python main.py`
+`python -m marey.app.simple.main`
 
 # Editing
 
