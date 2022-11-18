@@ -38,13 +38,8 @@ def main(route: Route):
         save_page.main(target_url, journey_html)
 
         # scrape that html
-        # TODO: change html_dir into an iterator of html files
-        # so that every loop treats different lines separately
-        # currently, every line is in the journey dir so every loop
-        # will read every line html, so all the resulting csv are the same
-        # and it treats the entire route on different lines as the same "line"
         scrap_html.main(
-            Path('out/transfers/journey'),
+            [journey_html],
             Path('out/transfers/generated_csv') / (line_name + '.csv')
         )
 
