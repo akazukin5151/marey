@@ -1,11 +1,7 @@
 from pathlib import Path
 from bs4 import BeautifulSoup
-from .common import mkdirs_touch_open, Constants
 
-def main(html_path: Path, url_file: Path, url_dir: Path):
-    if url_file.exists():
-        return
-
+def main(html_path: Path):
     with open(html_path, 'r') as f:
         page = BeautifulSoup(f.read(), features='html.parser')
 
@@ -32,11 +28,10 @@ def main(html_path: Path, url_file: Path, url_dir: Path):
             train_dep_min = train_dep_min.get_text()
             target_url = get_target_url(train.find('a'))
 
-            outname = url_dir / f'{train_dep_hour}-{train_dep_min}-{train_dest}-{train_speed}'
-            out = f'{target_url};{outname}'
-            result.append(out)
+            r = (target_url, train_dep_hour, train_dep_min, train_dest, train_speed)
+            result.append(r)
 
-    mkdirs_touch_open('\n'.join(result), url_file)
+    return result
 
 def get_target_url(link):
     return 'https://ekitan.com' + link.get('href')

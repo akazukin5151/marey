@@ -18,13 +18,10 @@ def main(route: Route):
         save_page.main(timetable_url, outfile)
 
         # scrape urls from html
-        get_urls.main(
-            outfile,
-            Path('out/transfers') / f'{line_name}.txt',
-            Path('out/transfers') / line_name
-        )
+        rs = get_urls.main(outfile)
 
-        # using new code, find train that matches `time` and return url
+        # find train that matches `time` and return url
+        print(rs)
         # url = TODO
 
         # using pre-existing code, download that page
