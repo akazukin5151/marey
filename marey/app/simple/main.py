@@ -1,7 +1,7 @@
 from enum import Enum
 from .common import Constants, Line
 from . import save_page
-from marey.lib import get_urls
+from . import get_urls
 from marey.lib import download
 from marey.lib import scrap_html
 from marey.lib import prepare_plot
@@ -17,7 +17,7 @@ class Plotter(Enum):
 
 def main(line: Line, plotter: Plotter):
     save_page.main(line.url, line.name)
-    get_urls.main(line.url, line.name)
+    get_urls.main(line.name)
     download.main(line.name)
     scrap_html.main(line.name)
 

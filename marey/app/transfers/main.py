@@ -2,6 +2,7 @@ from pathlib import Path
 from .common import Route
 from marey.lib import save_page
 from . import scrape_routing
+from marey.lib import get_urls
 
 def main(route: Route):
     outfile = Path('out/transfers/routing') / f'{route.filename}.html'
@@ -16,9 +17,12 @@ def main(route: Route):
         outfile = Path('out/transfers/line') / f'{line_name}.html'
         save_page.main(timetable_url, outfile)
 
-        # using pre-existing code, scrape urls from html
-        # TODO: different input and output paths
-        #get_urls.main(timetable_url, line_name)
+        # scrape urls from html
+        get_urls.main(
+            outfile,
+            Path('out/transfers') / f'{line_name}.txt',
+            Path('out/transfers') / line_name
+        )
 
         # using new code, find train that matches `time` and return url
         # url = TODO

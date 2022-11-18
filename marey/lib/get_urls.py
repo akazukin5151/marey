@@ -1,11 +1,12 @@
+from pathlib import Path
 from bs4 import BeautifulSoup
 from .common import mkdirs_touch_open, Constants
 
-def main(URL, line_name):
-    if (Constants.url_dir / f'{line_name}.txt').exists():
+def main(html_path: Path, url_file: Path, url_dir: Path):
+    if url_file.exists():
         return
 
-    with open(Constants.html_dir / f'{line_name}.html', 'r') as f:
+    with open(html_path, 'r') as f:
         page = BeautifulSoup(f.read(), features='html.parser')
 
     # If the page is on a station that is not the terminus, the page
@@ -29,17 +30,13 @@ def main(URL, line_name):
                     'span', class_='time-min means-text start'
                 )
             train_dep_min = train_dep_min.get_text()
-            target_url = get_target_url(URL, train.find('a'))
+            target_url = get_target_url(train.find('a'))
 
-            outname = (
-                Constants.html_dir
-                / line_name
-                / f'{train_dep_hour}-{train_dep_min}-{train_dest}-{train_speed}'
-            )
+            outname = url_dir / f'{train_dep_hour}-{train_dep_min}-{train_dest}-{train_speed}'
             out = f'{target_url};{outname}'
             result.append(out)
 
-    mkdirs_touch_open('\n'.join(result), Constants.url_dir / f'{line_name}.txt')
+    mkdirs_touch_open('\n'.join(result), url_file)
 
-def get_target_url(URL, link):
+def get_target_url(link):
     return 'https://ekitan.com' + link.get('href')
