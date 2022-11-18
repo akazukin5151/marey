@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from bs4 import BeautifulSoup
-from common import mkdirs_touch_open, Constants
+from .common import mkdirs_touch_open, Constants
 
 def main(line_name):
     outfile = Constants.gen_csv_dir / f'{line_name}.csv'

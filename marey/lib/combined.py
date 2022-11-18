@@ -1,9 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
-import plot
-from common import Constants
-from prepare_plot import subtract_min, groupby_apply_midnight
+from . import plot
+from .common import Constants
+from .prepare_plot import subtract_min, groupby_apply_midnight
 
 
 def read_delta_csv(line_name):

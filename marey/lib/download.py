@@ -1,6 +1,6 @@
 import time
 from pathlib import Path
-from common import mkdirs_touch_open, fetch_soup, Constants
+from .common import mkdirs_touch_open, fetch_soup, Constants
 
 def main(line_name):
     print('Downloading urls online...')

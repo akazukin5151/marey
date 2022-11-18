@@ -1,7 +1,7 @@
 from datetime import timedelta
 import pandas as pd
 import numpy as np
-from common import Constants
+from .common import Constants
 
 
 def prepare_normal(line_name):

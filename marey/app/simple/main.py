@@ -1,12 +1,12 @@
 from enum import Enum
 from .common import Constants, Line
 from . import save_page
-from . import get_urls
-from . import download
-from . import scrap_html
-from . import prepare_plot
+from marey.lib import get_urls
+from marey.lib import download
+from marey.lib import scrap_html
+from marey.lib import prepare_plot
 from marey.lib import plot
-from . import combined
+from marey.lib import combined
 
 # Only matplotlib supports the second DataFrame argument
 # (DataFrame -> Maybe DataFrame -> str -> str -> float -> str -> bool -> IO (), str)
