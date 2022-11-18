@@ -1,14 +1,10 @@
 # TODO: duplicated code
 # only change is outfile
-import sys
-
-sys.path.append('../marey')
-
 from pathlib import Path
-from common import mkdirs_touch_open, fetch_soup
+from marey.lib.common import mkdirs_touch_open, fetch_soup
 
 def main(url, line_name):
-    outfile = Path('transfers/out/routing') / f'{line_name}.html'
+    outfile = Path('out/transfers/routing') / f'{line_name}.html'
     if outfile.exists():
         return
     print('Getting urls online...')

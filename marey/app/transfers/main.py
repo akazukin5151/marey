@@ -1,6 +1,6 @@
-from common2 import Route
-import save_page
-import scrape_routing
+from .common2 import Route
+from . import save_page
+from . import scrape_routing
 
 def main(route: Route):
     save_page.main(route.to_url(), route.filename)

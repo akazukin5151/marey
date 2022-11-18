@@ -1,13 +1,13 @@
 from typing import List, Tuple, Any
 from pathlib import Path
-from common2 import Route
+from .common2 import Route
 from bs4 import BeautifulSoup
 
 '''Type alias of a BeautifulSoup object, which doesn't have stubs'''
 Soup = Any
 
 def scrape_html(route: Route) -> List[Tuple[str, str, str]]:
-    filename = Path('transfers/out/routing') / f'{route.filename}.html'
+    filename = Path('out/transfers/routing') / f'{route.filename}.html'
     with open(filename, 'r') as f:
         soup = BeautifulSoup(f.read(), features='html.parser')
 
