@@ -1,7 +1,6 @@
-from common import mkdirs_touch_open, fetch_soup, Constants
+from .common import mkdirs_touch_open, fetch_soup
 
-def main(url, line_name):
-    outfile = Constants.html_dir / f'{line_name}.html'
+def main(url, line_name, outfile):
     if outfile.exists():
         return
     print('Getting urls online...')
