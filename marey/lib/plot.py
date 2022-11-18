@@ -1,4 +1,4 @@
-from common import Constants
+from .common import Constants
 import pandas as pd
 import matplotlib.pyplot as plt
 

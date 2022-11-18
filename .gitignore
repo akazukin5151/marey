@@ -7,3 +7,10 @@ tokyo-metro-subway-map.png
 .mypy_cache/*
 transfers/__pycache__
 transfers/out/*
+
+marey/__pycache__
+marey/app/__pycache__
+marey/app/simple/__pycache__
+marey/app/transfers/__pycache__
+marey/lib/__pycache__
+marey/app/transfers/out/routing
