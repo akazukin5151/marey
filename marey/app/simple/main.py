@@ -3,7 +3,7 @@ from .common import Constants, Line
 from . import save_page
 from . import get_urls
 from marey.lib import download
-from marey.lib import scrap_html
+from . import scrap_html
 from marey.lib import prepare_plot
 from marey.lib import plot
 from marey.lib import combined

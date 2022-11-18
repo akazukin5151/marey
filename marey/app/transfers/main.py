@@ -3,6 +3,7 @@ from .common import Route
 from marey.lib import save_page
 from . import scrape_routing
 from marey.lib import get_urls
+from marey.lib import scrap_html
 
 def main(route: Route):
     outfile = Path('out/transfers/routing') / f'{route.filename}.html'
@@ -34,10 +35,11 @@ def main(route: Route):
         journey_html = Path('out/transfers/journey') / f'{name}-{time}.html'
         save_page.main(target_url, journey_html)
 
-        # using pre-existing code, scrape that html
-        # TODO: different input dir
-        #scrap_html.main(line_name)
-        pass
+        # scrape that html
+        scrap_html.main(
+            Path('out/transfers/journey'),
+            Path('out/transfers/generated_csv') / (line_name + '.csv')
+        )
 
     # using new code, remove stations outside origin and destination
     # (outside specific time sections)

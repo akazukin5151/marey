@@ -1,18 +1,18 @@
+from pathlib import Path
 import pandas as pd
 import numpy as np
 from bs4 import BeautifulSoup
-from .common import mkdirs_touch_open, Constants
+from .common import mkdirs_touch_open
 
-def main(line_name):
-    outfile = Constants.gen_csv_dir / f'{line_name}.csv'
-    if outfile.exists():
+def main(html_dir: Path, out_csv: Path):
+    if out_csv.exists():
         return
     print('Scraping html... (offline)')
     df = pd.DataFrame(columns=['Station', 'Arrive', 'Depart', 'Train'])
-    for f in (Constants.html_dir / line_name).iterdir():
+    for f in html_dir.iterdir():
         df = df.append(make_df(f))
-    mkdirs_touch_open('', outfile)
-    df.to_csv(outfile, index=False)
+    mkdirs_touch_open('', out_csv)
+    df.to_csv(out_csv, index=False)
 
 def make_df(file_):
     with open(file_, 'r') as f:
