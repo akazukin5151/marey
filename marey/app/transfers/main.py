@@ -1,4 +1,4 @@
-from .common2 import Route
+from .common import Route
 from . import save_page
 from . import scrape_routing
 

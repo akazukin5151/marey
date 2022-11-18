@@ -1,6 +1,6 @@
 from typing import List, Tuple, Any
 from pathlib import Path
-from .common2 import Route
+from .common import Route
 from bs4 import BeautifulSoup
 
 '''Type alias of a BeautifulSoup object, which doesn't have stubs'''
