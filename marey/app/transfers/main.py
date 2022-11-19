@@ -5,14 +5,16 @@ from . import scrape_routing
 from marey.lib import get_urls
 from marey.lib import scrap_html
 from marey.lib import prepare_plot
-from marey.lib import plot
+from . import plot
 
 def main(route: Route):
     outfile = Path('out/transfers/routing') / f'{route.filename}.html'
+    plot_dir = Path('out/transfers/plot')
+    plot_outfile = plot_dir / f'{route.filename}.png'
     save_page.main(route.to_url(), outfile)
     all_stations_data = scrape_routing.scrape_html(route)
 
-    print(all_stations_data)
+    dfs = []
     for (name, time, timetable_url) in all_stations_data:
         line_name = name + '_part'
 
@@ -44,25 +46,19 @@ def main(route: Route):
         # using new code, remove stations outside origin and destination
         # (outside specific time sections)
 
-        # plot the result
-        plot_dir = Path('out/transfers/plot')
-        normal = plot_dir / f'{line_name}_normal.png'
-        if normal.exists():
-            return
+        # prepare for plot
+        if plot_outfile.exists():
+            continue
 
         processed_csv_path = csv_path.with_stem(line_name + '_processed')
         df = prepare_plot.prepare_normal(
             in_csv=csv_path,
             out_csv=processed_csv_path
         )
-        print(df)
+        dfs.append(df)
 
-        #plt_func = plot.matplotlib
-        # TODO: different output file
-        #plt_func(
-        #    df, None,
-        #    line_name, 'normal', alpha=0.5, color='red', line=True
-        #)
+    # plot the result
+    plot.main(dfs, plot_outfile)
 
 
 if __name__ == '__main__':

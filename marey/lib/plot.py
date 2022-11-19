@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 def core(outfile, plot_func, plot_format, plot_name, figsize):
-    from common import mkdirs_touch_open
+    from .common import mkdirs_touch_open
 
     if outfile.exists():
         return
