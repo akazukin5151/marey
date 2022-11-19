@@ -17,7 +17,15 @@ def main(route: Route):
     save_page.main(route.to_url(), route_html_path)
 
     # scrape the route html
-    (all_stations_data, dest_station) = scrape_routing.scrape_html(route)
+    (
+        all_stations_data,
+        dest_station,
+        stylesheet_url,
+        color_classes
+    ) = scrape_routing.scrape_html(route)
+
+    print(stylesheet_url)
+    print(color_classes)
 
     # for every leg of the journey... (the route is made of legs and transfers)
     dfs = []
