@@ -4,7 +4,8 @@ from . import save_page
 from . import get_urls
 from marey.lib import download
 from . import scrap_html
-from . import prepare_plot
+from marey.lib import prepare_plot
+from . import prepare_plot as prepare_plot_
 from marey.lib import plot
 from marey.lib import combined
 
@@ -30,7 +31,7 @@ def main(line: Line, plotter: Plotter):
     if normal.exists() and delta.exists() and delta_scatter.exists() and delta_box.exists():
         return
 
-    df = prepare_plot.prepare_normal(line.name)
+    df = prepare_plot_.prepare_normal(line.name)
 
     if line.branch_data is not None:
         df_for_main, df_for_branch = prepare_plot.handle_branches(df, line)
