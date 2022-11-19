@@ -108,6 +108,17 @@ keihin_tohoku_ueno_tokyo_yamanote_combined_delta_box
 
 ![keihin_tohoku_ueno_tokyo_yamanote_combined_delta_box](examples/plots/keihin_tohoku_ueno_tokyo_yamanote_combined_delta_box.png)
 
+## Journey with transfers
+
+Ueno to Futako-Tamagawa
+
+![上野→二子玉川](examples/transfers/plots/上野→二子玉川.png)
+
+
+Tanashi to Akihabara
+
+![田無→秋葉原](examples/transfers/plots/田無→秋葉原.png)
+
 # Features
 
 - Can start from any station, not just line terminus
