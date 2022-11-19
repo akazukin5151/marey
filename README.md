@@ -112,12 +112,12 @@ keihin_tohoku_ueno_tokyo_yamanote_combined_delta_box
 
 Ueno to Futako-Tamagawa
 
-![上野→二子玉川](examples/transfers/plots/上野→二子玉川.png)
+![上野→二子玉川](examples/transfers/上野→二子玉川.png)
 
 
 Tanashi to Akihabara
 
-![田無→秋葉原](examples/transfers/plots/田無→秋葉原.png)
+![田無→秋葉原](examples/transfers/田無→秋葉原.png)
 
 # Features
 
