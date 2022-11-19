@@ -4,6 +4,7 @@ from marey.lib import save_page
 from . import scrape_routing
 from marey.lib import get_urls
 from marey.lib import scrap_html
+from . import combined
 from marey.lib import prepare_plot
 from . import plot
 
@@ -16,7 +17,7 @@ def main(route: Route):
     save_page.main(route.to_url(), route_html_path)
 
     # scrape the route html
-    all_stations_data = scrape_routing.scrape_html(route)
+    (all_stations_data, dest_station) = scrape_routing.scrape_html(route)
 
     # for every leg of the journey... (the route is made of legs and transfers)
     dfs = []
@@ -48,9 +49,6 @@ def main(route: Route):
         csv_path = Path('out/transfers/generated_csv') / (line_name + '.csv')
         scrap_html.main([journey_html], csv_path)
 
-        # using new code, remove stations outside origin and destination
-        # (outside specific time sections)
-
         # prepare for plot (split up arrive and depart time into separate rows)
         if plot_out_path.exists():
             continue
@@ -61,6 +59,12 @@ def main(route: Route):
             out_csv=processed_csv_path
         )
         dfs.append(df)
+
+    # remove stations outside origin and destination
+    names_to_remove = [name for (name, _, _) in all_stations_data[1:]]
+    names_to_remove.append(dest_station)
+    for df, name in zip(dfs, names_to_remove):
+        combined.remove_stations_after_exclusive(name, df)
 
     # plot the entire route
     plot.main(dfs, plot_out_path)

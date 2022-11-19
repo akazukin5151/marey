@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 '''Type alias of a BeautifulSoup object, which doesn't have stubs'''
 Soup = Any
 
-def scrape_html(route: Route) -> List[Tuple[str, str, str]]:
+def scrape_html(route: Route) -> Tuple[List[Tuple[str, str, str]], str]:
     filename = Path('out/transfers/routing') / f'{route.filename}.html'
     with open(filename, 'r') as f:
         soup = BeautifulSoup(f.read(), features='html.parser')
@@ -17,11 +17,15 @@ def scrape_html(route: Route) -> List[Tuple[str, str, str]]:
     starting_station_data = parse_starting_station(result, route.date)
     transfer_stations_data = parse_transfer_stations(result, route.date)
     all_stations_data = [starting_station_data] + transfer_stations_data
-    return all_stations_data
+    return (all_stations_data, parse_dest_station_name(result))
 
 def parse_starting_station(result: Soup, date: str) -> Tuple[str, str, str]:
     starting_station = result.find('div', class_='result-route-departure-wrap')
     return parse_station(starting_station, date)
+
+def parse_dest_station_name(result: Soup) -> str:
+    dest_station = result.find('div', class_='result-route-arrival-wrap')
+    return get_station_name(dest_station)
 
 def parse_transfer_stations(result: Soup, date: str) -> List[Tuple[str, str, str]]:
     transfer_stations = result.find_all(
@@ -37,10 +41,10 @@ def parse_transfer_station(transfer_station: Soup, date: str) -> Tuple[str, str,
     time = time.replace('発', '')
     return (name, time, timetable_url)
 
-def parse_station(transfer_station: Soup, date: str) -> Tuple[str, str, str]:
-    name = get_station_name(transfer_station)
-    time = get_station_time(transfer_station)
-    timetable_url = get_timetable_url(transfer_station, date)
+def parse_station(station: Soup, date: str) -> Tuple[str, str, str]:
+    name = get_station_name(station)
+    time = get_station_time(station)
+    timetable_url = get_timetable_url(station, date)
     return (name, time, timetable_url)
 
 def get_station_name(s: Soup) -> str:
