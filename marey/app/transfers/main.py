@@ -71,7 +71,7 @@ def main(route: Route):
         df = prepare_plot.prepare_normal(
             in_csv=csv_path,
             out_csv=processed_csv_path
-        )
+        ).reset_index()
         dfs.append(df)
 
     # remove stations outside origin and destination
@@ -90,6 +90,7 @@ if __name__ == '__main__':
         filename='上野→二子玉川',
         result_idx=0
     ))
+
     main(Route(
         url='https://ekitan.com/transit/route/sf-2489/st-1483?sfname=%E7%94%B0%E7%84%A1&stname=%E7%A7%8B%E8%91%89%E5%8E%9F&sfcomp=1&sf=2489&st=1483&dt=20221119&tm=1000',
         filename='田無→秋葉原',
