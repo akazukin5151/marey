@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+CssClass = str
+
 @dataclass
 class Route:
     date: str

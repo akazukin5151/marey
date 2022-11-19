@@ -1,6 +1,6 @@
 from typing import List, Tuple, Any
 from pathlib import Path
-from .common import Route
+from .common import Route, CssClass
 from marey.lib.get_urls import get_target_url
 from bs4 import BeautifulSoup
 
@@ -11,8 +11,6 @@ Name = str
 Time = str
 Url = str
 StationData = Tuple[Name, Time, Url]
-
-CssClass = str
 
 def scrape_html(route: Route) -> Tuple[List[StationData], Name, Url, List[CssClass]]:
     filename = Path('out/transfers/routing') / f'{route.filename}.html'

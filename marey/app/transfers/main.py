@@ -2,6 +2,7 @@ from pathlib import Path
 from .common import Route
 from marey.lib import save_page
 from . import scrape_routing
+from . import scrape_css
 from marey.lib import get_urls
 from marey.lib import scrap_html
 from . import combined
@@ -24,8 +25,12 @@ def main(route: Route):
         color_classes
     ) = scrape_routing.scrape_html(route)
 
-    print(stylesheet_url)
-    print(color_classes)
+    # download the stylesheet
+    stylesheet_path = Path('out/transfers/stylesheet.css')
+    save_page.main(stylesheet_url, stylesheet_path)
+
+    # get the colors
+    colors = scrape_css.main(stylesheet_path, color_classes)
 
     # for every leg of the journey... (the route is made of legs and transfers)
     dfs = []
@@ -75,7 +80,7 @@ def main(route: Route):
         combined.remove_stations_after_exclusive(name, df)
 
     # plot the entire route
-    plot.main(dfs, plot_out_path)
+    plot.main(dfs, plot_out_path, colors)
 
 
 if __name__ == '__main__':
