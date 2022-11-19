@@ -12,7 +12,9 @@ Time = str
 Url = str
 StationData = Tuple[Name, Time, Url]
 
-def scrape_html(route: Route) -> Tuple[List[StationData], Name, Url, List[CssClass]]:
+def scrape_html(route: Route) -> Tuple[
+    List[StationData], Name, Url, List[CssClass], List[str]
+]:
     filename = Path('out/transfers/routing') / f'{route.filename}.html'
     with open(filename, 'r') as f:
         soup = BeautifulSoup(f.read(), features='html.parser')
@@ -31,7 +33,19 @@ def scrape_html(route: Route) -> Tuple[List[StationData], Name, Url, List[CssCla
     colors_soups = result.find_all('td', class_='td-line-color')
     color_classes = [colors_soup['class'][2] for colors_soup in colors_soups]
 
-    return (all_stations_data, dest_station, stylesheet_url, color_classes)
+    line_names = parse_line_names(result)
+
+    return (
+        all_stations_data, dest_station, stylesheet_url, color_classes, line_names
+    )
+
+def parse_line_names(result: Soup) -> List[str]:
+    line_names = []
+    for soup in result.find_all('div', class_='transportation'):
+        text = soup.find('span', class_='name').get_text()
+        line_name = text.split(' ')[0]
+        line_names.append(line_name)
+    return line_names
 
 def get_stylesheet_url(s: Soup) -> Url:
     return get_target_url(s.find('link', rel='stylesheet'))

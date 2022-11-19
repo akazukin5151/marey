@@ -22,7 +22,8 @@ def main(route: Route):
         all_stations_data,
         dest_station,
         stylesheet_url,
-        color_classes
+        color_classes,
+        line_names
     ) = scrape_routing.scrape_html(route)
 
     # download the stylesheet
@@ -80,7 +81,7 @@ def main(route: Route):
         combined.remove_stations_after_exclusive(name, df)
 
     # plot the entire route
-    plot.main(dfs, plot_out_path, colors)
+    plot.main(dfs, plot_out_path, colors, line_names)
 
 
 if __name__ == '__main__':
