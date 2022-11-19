@@ -133,22 +133,28 @@ Install dependencies from `pyproject.toml`
 
 Bokeh and Altair is optional, it is only used for interactive plots and depends on your choice
 
-# Running
+# Using the simple app
 
 `python -m marey.app.simple.main`
 
-`python -m marey.app.transfers.main`
+Either edit the bottom of marey/app/simple/main.py to use your own url and line name, and line color
 
-# Editing
-
-Either edit the bottom of main.py to use your own url and line name, and line color
-
-Or from another python module, import `main` and call `main.main(line)`, giving your own `line`. To construct a `Line`, import `common` and call `common.Constants.Line`
+Or from another python module, import `main` and call `main.main(line)`, giving your own `line`. To construct a `Line`, import `common` from `marey.app.simple` and call `common.Constants.Line`
 
 Note that your url should be pinned to a specific date, not current results. See:
 
 - NO: 'https://ekitan.com/timetable/railway/line-station/180-0/d1'
 - YES: 'https://ekitan.com/timetable/railway/line-station/180-0/d1?dt=20211101'
+
+All the scripts will try its best to immediately return if their output file already exists (regardless if the file is correct). To force the scripts to run, delete their output files
+
+# Using the transfers app
+
+`python -m marey.app.transfers.main`
+
+Either edit the bottom of marey/app/transfers/main.py to use your own url and filename
+
+Or from another python module, import `main` and call `main.main(route)`, giving your own `route`. To construct a `Route`, import `common` from `marey.app.transfers` and call `common.Route`
 
 All the scripts will try its best to immediately return if their output file already exists (regardless if the file is correct). To force the scripts to run, delete their output files
 
