@@ -1,7 +1,8 @@
 from pathlib import Path
 from datetime import timedelta
-import pandas as pd
 from .common import Constants
+import pandas as pd
+import numpy as np
 
 
 def prepare_normal(in_csv: Path, out_csv: Path):
@@ -110,6 +111,7 @@ def loop_aware_subtract_min(here: 'DataFrame') -> 'DataFrame':
 
 
 def handle_branches(df, line):
+    breakpoint()
     outfile1 = Constants.gen_csv_dir / f'{line.name}_main.csv'
     outfile2 = Constants.gen_csv_dir / f'{line.name}_branch.csv'
     if outfile1.exists() and outfile2.exists():
@@ -164,4 +166,10 @@ def split_by_branch(df: 'DataFrame') -> 'Tuple[DataFrame, DataFrame]':
 
 def set_station_seqs(df, branched: 'dict[str, str]'):
     '''Renames main-branch station pairs'''
-    df.loc[:, 'Station_sequence'] = branched.get(df.Station, df.Station)
+    df.loc[:, 'Station_sequence'] = np.nan
+    def f(x):
+        for idx, row in x.iterrows():
+            station = row.Station
+            seq = branched.get(station, station)
+            df.loc[idx, 'Station_sequence'] = seq
+    df.groupby('Train').apply(f)
