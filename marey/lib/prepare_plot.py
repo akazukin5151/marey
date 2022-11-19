@@ -1,17 +1,16 @@
+from pathlib import Path
 from datetime import timedelta
 import pandas as pd
-import numpy as np
 from .common import Constants
 
 
-def prepare_normal(line_name):
-    outfile = Constants.gen_csv_dir / f'{line_name}_processed.csv'
-    if outfile.exists():
-        return pd.read_csv(outfile, parse_dates=['Arrive', 'Depart'])
+def prepare_normal(in_csv: Path, out_csv: Path):
+    if out_csv.exists():
+        return pd.read_csv(out_csv, parse_dates=['Arrive', 'Depart'])
 
     print('Preparing plot (offline)...')
 
-    df = pd.read_csv(Constants.gen_csv_dir / f'{line_name}.csv')
+    df = pd.read_csv(in_csv)
 
     df['Arrive'] = df.Arrive.str.replace('24:', '0:').astype('datetime64[ns]')
     df['Depart'] = df.Depart.astype('datetime64[ns]')
@@ -41,7 +40,7 @@ def prepare_normal(line_name):
     df['Arrive'].where(
         df['Station'] != first, df.Depart, inplace=True
     )
-    df.to_csv(outfile)
+    df.to_csv(out_csv)
     return df
 
 def fix_next_days(df, col):

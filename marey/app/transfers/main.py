@@ -38,27 +38,31 @@ def main(route: Route):
         save_page.main(target_url, journey_html)
 
         # scrape that html
-        scrap_html.main(
-            [journey_html],
-            Path('out/transfers/generated_csv') / (line_name + '.csv')
+        csv_path = Path('out/transfers/generated_csv') / (line_name + '.csv')
+        scrap_html.main([journey_html], csv_path)
+
+        # using new code, remove stations outside origin and destination
+        # (outside specific time sections)
+
+        # plot the result
+        plot_dir = Path('out/transfers/plot')
+        normal = plot_dir / f'{line_name}_normal.png'
+        if normal.exists():
+            return
+
+        processed_csv_path = csv_path.with_stem(line_name + '_processed')
+        df = prepare_plot.prepare_normal(
+            in_csv=csv_path,
+            out_csv=processed_csv_path
         )
+        print(df)
 
-    # using new code, remove stations outside origin and destination
-    # (outside specific time sections)
-
-    # using pre-existing code, plot the result
-    #plot_dir = Path('out/transfers/plot')
-    #normal = plot_dir / f'{line_name}_normal.png'
-    #if normal.exists():
-    #    return
-    # TODO: different input file
-    #df = prepare_plot.prepare_normal(line_name)
-    #plt_func = plot.matplotlib
-    # TODO: different output file
-    #plt_func(
-    #    df, None,
-    #    line_name, 'normal', alpha=0.5, color='red', line=True
-    #)
+        #plt_func = plot.matplotlib
+        # TODO: different output file
+        #plt_func(
+        #    df, None,
+        #    line_name, 'normal', alpha=0.5, color='red', line=True
+        #)
 
 
 if __name__ == '__main__':
