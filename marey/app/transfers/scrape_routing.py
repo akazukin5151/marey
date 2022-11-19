@@ -22,8 +22,8 @@ def scrape_html(route: Route) -> Tuple[
     results = soup.find_all('div', class_='ek-page-no-1')
     result: Soup = results[route.result_idx]
 
-    starting_station_data = parse_starting_station(result, route.date)
-    transfer_stations_data = parse_transfer_stations(result, route.date)
+    starting_station_data = parse_starting_station(result, route.date())
+    transfer_stations_data = parse_transfer_stations(result, route.date())
     all_stations_data = [starting_station_data] + transfer_stations_data
 
     dest_station = parse_dest_station_name(result)

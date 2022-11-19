@@ -4,12 +4,14 @@ CssClass = str
 
 @dataclass
 class Route:
-    date: str
-    time: str
-    start: str
-    end: str
+    url: str
     filename: str
     result_idx: int
 
-    def to_url(self):
-        return f'https://ekitan.com/transit/route/sf-1627/st-2962?sfname={self.start}&stname={self.end}&dt={self.date}&tm={self.time}'
+    def date(self):
+        dt_pos = self.url.find('dt')
+        DATE_LEN = 8
+        start = dt_pos + 3
+        end = start + DATE_LEN
+        return self.url[start:end]
+
