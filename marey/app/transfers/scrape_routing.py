@@ -1,6 +1,7 @@
 from typing import List, Tuple, Any
 from pathlib import Path
 from .common import Route, CssClass
+from marey.lib import save_page
 from marey.lib.get_urls import get_target_url
 from bs4 import BeautifulSoup
 
@@ -75,7 +76,7 @@ def parse_transfer_station(transfer_station: Soup, date: str) -> StationData:
 def parse_station(station: Soup, date: str) -> StationData:
     name = get_station_name(station)
     time = get_station_time(station)
-    timetable_url = get_timetable_url(station, date)
+    timetable_url = get_timetable_url(station, date, name)
     return (name, time, timetable_url)
 
 def get_station_name(s: Soup) -> Name:
@@ -84,9 +85,66 @@ def get_station_name(s: Soup) -> Name:
 def get_station_time(s: Soup) -> Time:
     return s.find('div', class_='departure-time').get_text()
 
-def get_timetable_url(s: Soup, date: str) -> Url:
-    url = s.find(
+def get_timetable_url(s: Soup, date: str, name: Name) -> Url:
+    link = s.find(
         'div', class_='btn-group-simple-links'
-    ).find('a').get('href')
-    return url.replace('?dw=1', '') + '?' + date
+    ).find('a')
+    if link.get_text() == '時刻表':
+        url = link.get('href')
+        return url.replace('?dw=1', '') + '?dt=' + date
+    elif link.get_text() == '地図':
+        url = link.get('href')
+        return scrape_timetable_url_from_map(s, name, url, date)
+    else:
+        return ask_timetable_url()
+
+def scrape_timetable_url_from_map(s: Soup, name: Name, url: str, date: str) -> Url:
+    station_url = url.replace(
+        'sta-info', 'timetable/railway'
+    ).replace('/map', '')
+    html_path = Path('out/transfers/station/' + name + '.html')
+
+    # parse what train and direction the route is telling us to go
+    line_name_to_match, direction_to_match = get_match_info(s)
+
+    # download the station page with a list of all lines serving the station
+    save_page.main(station_url, html_path)
+
+    with open(html_path, 'r') as f:
+        soup = BeautifulSoup(f.read(), features='html.parser')
+
+    # find service that matches our route
+    url = find_matching_service(soup, line_name_to_match, direction_to_match)
+
+    return url + '?dt=' + date
+
+def get_match_info(s: Soup) -> Tuple[str, str]:
+    section = s.find_next_sibling('div')
+    text = section.find(
+        'div', class_='transportation'
+    ).find('span', class_='name').get_text()
+    splitted = text.split(' ')
+    line_name = splitted[0]
+    direction_name = splitted[2][:-2]
+    return line_name, direction_name
+
+def find_matching_service(
+    soup: Soup, line_name_to_match: str, direction_to_match: str
+) -> Url:
+    services = soup.find_all('div', class_='link-wrap type04')
+    for service in services:
+        line_name = service.find('dt').find('span').find('a').get_text()
+        if line_name == line_name_to_match:
+            directions = service.find('dd').find('ul').find_all('li')
+            for direction in directions:
+                link = direction.find('a')
+                dir_name = link.get_text().replace('方面', '')
+                if dir_name == direction_to_match:
+                    return get_target_url(link)
+    return ask_timetable_url()
+
+def ask_timetable_url() -> Url:
+    print('Station does not have known method to get timetable, please enter timetable url')
+    print('eg: https://ekitan.com/timetable/railway/line-station/182-9/d1?dt=20221119')
+    return input('url: ')
 
