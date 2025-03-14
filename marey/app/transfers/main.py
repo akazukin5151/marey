@@ -48,9 +48,8 @@ def main(route: Route):
     # for every leg of the journey, scrape the leg
     dfs = []
     for station_data, to_remove in zip(all_stations_data, names_to_remove):
-        df = scrape_leg(station_data, to_remove, plot_out_path)
-        if df is not None:
-            dfs.append(df)
+        dfs_ = scrape_leg(station_data, to_remove, plot_out_path)
+        dfs.extend(dfs_)
 
     # plot the entire route
     plot.main(dfs, plot_out_path, colors, line_names)
@@ -59,13 +58,13 @@ def scrape_leg(
     station_data: StationData,
     to_remove: str,
     plot_out_path: Path
-) -> Optional[pd.DataFrame]:
+) -> list[pd.DataFrame]:
     name = station_data[0]
     time = station_data[1]
     timetable_url = station_data[2]
 
     if timetable_url is None:
-        return None
+        return []
 
     line_name = name + '_part'
 
@@ -86,9 +85,16 @@ def scrape_leg(
     else:  # no break
         raise Exception(f"couldn't find matching train at {time}")
 
-    return scrape_train(
+    dfs = []
+
+    df = scrape_train(
         name, time, line_name, plot_out_path, to_remove, target_url
     )
+    if df is not None:
+        dfs.append(df)
+
+
+    return dfs
 
 def scrape_train(
     name: str,
