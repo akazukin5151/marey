@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Optional
 from .common import Route
 from marey.lib import save_page
 from . import scrape_routing
@@ -8,6 +9,9 @@ from marey.lib import scrap_html
 from . import combined
 from marey.lib import prepare_plot
 from . import plot
+
+from .scrape_routing import StationData
+import pandas as pd
 
 def main(route: Route):
     route_html_path = Path('out/transfers/routing') / f'{route.filename}.html'
@@ -40,56 +44,70 @@ def main(route: Route):
     names_to_remove = [name for (name, _, _) in all_stations_data[1:]]
     names_to_remove.append(dest_station)
 
-    # for every leg of the journey... (the route is made of legs and transfers)
+    # the route is made of legs and transfers
+    # for every leg of the journey, scrape the leg
     dfs = []
-    for (name, time, timetable_url), to_remove in zip(all_stations_data, names_to_remove):
-        if timetable_url is None:
-            continue
-
-        line_name = name + '_part'
-
-        # download timetable url to html
-        timetable_html_path = Path('out/transfers/line') / f'{line_name}.html'
-        save_page.main(timetable_url, timetable_html_path)
-
-        # scrape urls from html
-        rs = get_urls.main(timetable_html_path)
-
-        # find train that matches `time` and return url
-        splitted = time.split(':')
-        hour = splitted[0]
-        minute = splitted[1]
-        for (target_url, train_dep_hour, train_dep_min, _, _) in rs:
-            if train_dep_hour == hour and train_dep_min == minute:
-                break
-        else:  # no break
-            raise Exception(f"couldn't find matching train at {time}")
-
-        # download page of the train for this leg
-        journey_html = Path('out/transfers/journey') / f'{name}-{time}.html'
-        save_page.main(target_url, journey_html)
-
-        # scrape html of train for this leg
-        csv_path = Path('out/transfers/generated_csv') / (line_name + '.csv')
-        scrap_html.main([journey_html], csv_path)
-
-        # prepare for plot (split up arrive and depart time into separate rows)
-        if plot_out_path.exists():
-            continue
-
-        processed_csv_path = csv_path.with_stem(line_name + '_processed')
-        df = prepare_plot.prepare_normal(
-            in_csv=csv_path,
-            out_csv=processed_csv_path
-        ).reset_index()
-
-        # remove stations outside origin and destination
-        combined.remove_stations_after_exclusive(to_remove, df)
-
-        dfs.append(df)
+    for station_data, to_remove in zip(all_stations_data, names_to_remove):
+        df = scrape_leg(station_data, to_remove, plot_out_path)
+        if df is not None:
+            dfs.append(df)
 
     # plot the entire route
     plot.main(dfs, plot_out_path, colors, line_names)
+
+def scrape_leg(
+    station_data: StationData,
+    to_remove: str,
+    plot_out_path: Path
+) -> Optional[pd.DataFrame]:
+    name = station_data[0]
+    time = station_data[1]
+    timetable_url = station_data[2]
+
+    if timetable_url is None:
+        return None
+
+    line_name = name + '_part'
+
+    # download timetable url to html
+    timetable_html_path = Path('out/transfers/line') / f'{line_name}.html'
+    save_page.main(timetable_url, timetable_html_path)
+
+    # scrape urls from html
+    rs = get_urls.main(timetable_html_path)
+
+    # find train that matches `time` and return url
+    splitted = time.split(':')
+    hour = splitted[0]
+    minute = splitted[1]
+    for (target_url, train_dep_hour, train_dep_min, _, _) in rs:
+        if train_dep_hour == hour and train_dep_min == minute:
+            break
+    else:  # no break
+        raise Exception(f"couldn't find matching train at {time}")
+
+    # download page of the train for this leg
+    journey_html = Path('out/transfers/journey') / f'{name}-{time}.html'
+    save_page.main(target_url, journey_html)
+
+    # scrape html of train for this leg
+    csv_path = Path('out/transfers/generated_csv') / (line_name + '.csv')
+    scrap_html.main([journey_html], csv_path)
+
+    # prepare for plot (split up arrive and depart time into separate rows)
+    if plot_out_path.exists():
+        return None
+
+    processed_csv_path = csv_path.with_stem(line_name + '_processed')
+    df = prepare_plot.prepare_normal(
+        in_csv=csv_path,
+        out_csv=processed_csv_path
+    ).reset_index()
+
+    # remove stations outside origin and destination
+    combined.remove_stations_after_exclusive(to_remove, df)
+
+    return df
 
 
 if __name__ == '__main__':
