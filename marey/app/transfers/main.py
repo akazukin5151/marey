@@ -33,9 +33,16 @@ def main(route: Route):
     # get the colors
     colors = scrape_css.main(stylesheet_path, color_classes)
 
+    # eg:
+    # names_to_remove = [s1, s3, s6]
+    # for the first line [s1, s2, s3, s4], remove everything after s3.
+    # for the second line, remove everything after s6.
+    names_to_remove = [name for (name, _, _) in all_stations_data[1:]]
+    names_to_remove.append(dest_station)
+
     # for every leg of the journey... (the route is made of legs and transfers)
     dfs = []
-    for (name, time, timetable_url) in all_stations_data:
+    for (name, time, timetable_url), to_remove in zip(all_stations_data, names_to_remove):
         if timetable_url is None:
             continue
 
@@ -75,13 +82,11 @@ def main(route: Route):
             in_csv=csv_path,
             out_csv=processed_csv_path
         ).reset_index()
-        dfs.append(df)
 
-    # remove stations outside origin and destination
-    names_to_remove = [name for (name, _, _) in all_stations_data[1:]]
-    names_to_remove.append(dest_station)
-    for df, name in zip(dfs, names_to_remove):
-        combined.remove_stations_after_exclusive(name, df)
+        # remove stations outside origin and destination
+        combined.remove_stations_after_exclusive(to_remove, df)
+
+        dfs.append(df)
 
     # plot the entire route
     plot.main(dfs, plot_out_path, colors, line_names)
