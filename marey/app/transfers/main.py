@@ -86,13 +86,13 @@ def main(route: Route):
 
 if __name__ == '__main__':
     main(Route(
-        url='https://ekitan.com/transit/route/sf-1627/st-2962?sfname=%E4%B8%8A%E9%87%8E&stname=%E4%BA%8C%E5%AD%90%E7%8E%89%E5%B7%9D&dt=20221119&tm=1000',
+        url='https://ekitan.com/transit/route/sf-1627/st-2962?sfname=%E4%B8%8A%E9%87%8E&stname=%E4%BA%8C%E5%AD%90%E7%8E%89%E5%B7%9D&dt=20250314&tm=1000',
         filename='上野→二子玉川',
         result_idx=0
     ))
 
     main(Route(
-        url='https://ekitan.com/transit/route/sf-2489/st-1483?sfname=%E7%94%B0%E7%84%A1&stname=%E7%A7%8B%E8%91%89%E5%8E%9F&sfcomp=1&sf=2489&st=1483&dt=20221119&tm=1000',
+        url='https://ekitan.com/transit/route/sf-2489/st-1483?sfname=%E7%94%B0%E7%84%A1&stname=%E7%A7%8B%E8%91%89%E5%8E%9F&dt=20250314&tm=1000',
         filename='田無→秋葉原',
         result_idx=0,
     ))
