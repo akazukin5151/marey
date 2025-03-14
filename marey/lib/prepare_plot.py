@@ -112,7 +112,6 @@ def loop_aware_subtract_min(here: 'DataFrame') -> 'DataFrame':
 
 
 def handle_branches(df, line):
-    breakpoint()
     outfile1 = Constants.gen_csv_dir / f'{line.name}_main.csv'
     outfile2 = Constants.gen_csv_dir / f'{line.name}_branch.csv'
     if outfile1.exists() and outfile2.exists():
