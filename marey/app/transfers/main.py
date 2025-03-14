@@ -86,6 +86,19 @@ def scrape_leg(
     else:  # no break
         raise Exception(f"couldn't find matching train at {time}")
 
+    return scrape_train(
+        name, time, line_name, plot_out_path, to_remove, target_url
+    )
+
+def scrape_train(
+    name: str,
+    time: str,
+    line_name: str,
+    plot_out_path: Path,
+    to_remove: str,
+    target_url: str,
+) -> Optional[pd.DataFrame]:
+    '''scrape a train that has a specific time'''
     # download page of the train for this leg
     journey_html = Path('out/transfers/journey') / f'{name}-{time}.html'
     save_page.main(target_url, journey_html)
