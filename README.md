@@ -127,13 +127,15 @@ Tanashi to Akihabara
     - Interactive bokeh
     - Interactive Altair/Vega (Note: rather slow for large data sets)
 
-# Install dependencies
+# Usage
+
+## Install dependencies
 
 Install dependencies from `pyproject.toml`
 
 Bokeh and Altair is optional, it is only used for interactive plots and depends on your choice
 
-# Using the simple app
+## Using the simple app
 
 `python -m marey.app.simple.main`
 
@@ -148,7 +150,7 @@ Note that your url should be pinned to a specific date, not current results. See
 
 All the scripts will try its best to immediately return if their output file already exists (regardless if the file is correct). To force the scripts to run, delete their output files
 
-# Using the transfers app
+## Using the transfers app
 
 `python -m marey.app.transfers.main`
 
