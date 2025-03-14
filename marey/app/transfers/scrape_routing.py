@@ -1,4 +1,4 @@
-from typing import List, Tuple, Any
+from typing import List, Optional, Tuple, Any
 from pathlib import Path
 from .common import Route, CssClass
 from marey.lib import save_page
@@ -11,7 +11,7 @@ Soup = Any
 Name = str
 Time = str
 Url = str
-StationData = Tuple[Name, Time, Url]
+StationData = Tuple[Name, Time, Optional[Url]]
 
 def scrape_html(route: Route) -> Tuple[
     List[StationData], Name, Url, List[CssClass], List[str]
@@ -86,7 +86,7 @@ def get_station_name(s: Soup) -> Name:
 def get_station_time(s: Soup) -> Time:
     return s.find('div', class_='departure-time').get_text()
 
-def get_timetable_url(s: Soup, name_elem: Soup, name: Name, date: str) -> Url:
+def get_timetable_url(s: Soup, name_elem: Soup, name: Name, date: str) -> Optional[Url]:
     link = s.find('div', class_='btn-group-simple-links').find('a')
     if link.get_text() == '時刻表':
         url = link.get('href')
@@ -99,7 +99,11 @@ def get_timetable_url(s: Soup, name_elem: Soup, name: Name, date: str) -> Url:
     html_path = Path('out/transfers/station/' + name + '.html')
 
     # parse what train and direction the route is telling us to go
-    line_name_to_match, direction_to_match = get_match_info(s)
+    matched = get_match_info(s)
+    if matched is None:
+        return None
+
+    line_name_to_match, direction_to_match = matched
 
     # download the station page with a list of all lines serving the station
     save_page.main(station_url, html_path)
@@ -112,11 +116,14 @@ def get_timetable_url(s: Soup, name_elem: Soup, name: Name, date: str) -> Url:
 
     return url + '?dt=' + date
 
-def get_match_info(s: Soup) -> Tuple[str, str]:
+def get_match_info(s: Soup) -> Optional[Tuple[str, str]]:
     section = s.find_next_sibling('div')
-    text = section.find(
-        'div', class_='transportation'
-    ).find('span', class_='name').get_text()
+    transportation = section.find('div', class_='transportation')
+    walk = transportation.find('span', 'feis-walk')
+    if walk is not None:
+        return None
+
+    text = transportation.find('span', class_='name').get_text()
     splitted = text.split(' ')
     line_name = splitted[0]
     direction_name = splitted[2][:-2]

@@ -36,6 +36,9 @@ def main(route: Route):
     # for every leg of the journey... (the route is made of legs and transfers)
     dfs = []
     for (name, time, timetable_url) in all_stations_data:
+        if timetable_url is None:
+            continue
+
         line_name = name + '_part'
 
         # download timetable url to html
