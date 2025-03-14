@@ -115,7 +115,22 @@ def scrape_leg(
         if df is not None:
             dfs.append(df)
 
+    fix_order(dfs)
     return dfs
+
+def fix_order(dfs: list[pd.DataFrame]):
+    '''
+    plot longest line first so that all stations are in order,
+    and all lines are monotonic
+    '''
+    df_longest = (None, None)
+    for idx, df in enumerate(dfs):
+        if df_longest[1] is None or len(df) > len(df_longest[1]):
+            df_longest = (idx, df)
+
+    idx = df_longest[0]
+    assert idx is not None
+    dfs[0], dfs[idx] = dfs[idx], dfs[0]
 
 def scrape_train(
     name: str,
