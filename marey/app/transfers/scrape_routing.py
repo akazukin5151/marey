@@ -74,34 +74,28 @@ def parse_transfer_station(transfer_station: Soup, date: str) -> StationData:
     return (name, time, timetable_url)
 
 def parse_station(station: Soup, date: str) -> StationData:
-    name = get_station_name(station)
+    name_elem = station.find('div', class_='name')
+    name = name_elem.get_text().strip()
     time = get_station_time(station)
-    timetable_url = get_timetable_url(station, date, name)
+    timetable_url = get_timetable_url(station, name_elem, name, date)
     return (name, time, timetable_url)
 
 def get_station_name(s: Soup) -> Name:
-    return s.find('div', class_='name').get_text()
+    return s.find('div', class_='name').get_text().strip()
 
 def get_station_time(s: Soup) -> Time:
     return s.find('div', class_='departure-time').get_text()
 
-def get_timetable_url(s: Soup, date: str, name: Name) -> Url:
-    link = s.find(
-        'div', class_='btn-group-simple-links'
-    ).find('a')
+def get_timetable_url(s: Soup, name_elem: Soup, name: Name, date: str) -> Url:
+    link = s.find('div', class_='btn-group-simple-links').find('a')
     if link.get_text() == '時刻表':
         url = link.get('href')
         return url.replace('?dw=1', '') + '?dt=' + date
-    elif link.get_text() == '地図':
-        url = link.get('href')
-        return scrape_timetable_url_from_map(s, name, url, date)
-    else:
-        return ask_timetable_url()
 
-def scrape_timetable_url_from_map(s: Soup, name: Name, url: str, date: str) -> Url:
-    station_url = url.replace(
-        'sta-info', 'timetable/railway'
-    ).replace('/map', '')
+    station_link = name_elem.find('a').get('href')
+    station_id = station_link.split('/')[-1]
+    station_url = f'https://ekitan.com/timetable/railway/station/{station_id}'
+
     html_path = Path('out/transfers/station/' + name + '.html')
 
     # parse what train and direction the route is telling us to go
@@ -133,18 +127,47 @@ def find_matching_service(
 ) -> Url:
     services = soup.find_all('div', class_='link-wrap type04')
     for service in services:
-        line_name = service.find('dt').find('span').find('a').get_text()
-        if line_name == line_name_to_match:
-            directions = service.find('dd').find('ul').find_all('li')
-            for direction in directions:
-                link = direction.find('a')
-                dir_name = link.get_text().replace('方面', '')
-                if dir_name == direction_to_match:
-                    return get_target_url(link)
-    return ask_timetable_url()
+        dls = service.find_all('dl')
+        for dl in dls:
+            line_name = dl.find('dt').find('span').find('a').get_text()
+            if line_name == line_name_to_match:
+                directions = dl.find('dd').find('ul').find_all('li')
+                direction_infos = []
+                for direction in directions:
+                    link = direction.find('a')
+                    dir_name = link.get_text().replace('方面', '')
+                    direction_infos.append((link, dir_name))
+                    if dir_name == direction_to_match:
+                        return get_target_url(link)
+                # line found but direction not found: ask for correct direction
+                return ask_direction(line_name_to_match, direction_to_match, direction_infos)
+    return ask_timetable_url(line_name_to_match, direction_to_match)
 
-def ask_timetable_url() -> Url:
-    print('Station does not have known method to get timetable, please enter timetable url')
+def ask_direction(
+    line_name_to_match: str, direction_to_match: str, direction_infos: list[str]
+) -> Url:
+    print(f'Found line {line_name_to_match}, but direction {direction_to_match} not found, please enter corresponding direction index')
+    print('Found directions:')
+    for idx, (_, dir_name) in enumerate(direction_infos):
+        print(f'{idx}: {dir_name}')
+
+    while True:
+        input_ = input('index: ')
+        try:
+            chosen_idx = int(input_)
+            break
+        except Exception:
+            print('could not parse int')
+
+    link = direction_infos[chosen_idx][0]
+    return get_target_url(link)
+
+def ask_timetable_url(
+    line_name_to_match: str, direction_to_match: str
+) -> Url:
+    print('Could not get timetable, please enter timetable url')
+    print(f'{line_name_to_match=}')
+    print(f'{direction_to_match=}')
     print('eg: https://ekitan.com/timetable/railway/line-station/182-9/d1?dt=20221119')
     return input('url: ')
 
