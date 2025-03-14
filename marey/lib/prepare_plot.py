@@ -15,6 +15,7 @@ def prepare_normal(in_csv: Path, out_csv: Path):
 
     df['Arrive'] = df.Arrive.str.replace('24:', '0:').astype('datetime64[ns]')
     df['Depart'] = df.Depart.astype('datetime64[ns]')
+    df = df.reset_index()
 
     # include dwell time
     new_rows = []
@@ -28,7 +29,7 @@ def prepare_normal(in_csv: Path, out_csv: Path):
         # (where both times are the arrival time)
         df.loc[idx, 'Depart'] = row['Arrive']
         new_rows.append(depart_dot)
-    df = df.append(pd.DataFrame(new_rows)).reset_index(drop=True)
+    df = pd.concat([df, pd.DataFrame(new_rows)]).reset_index(drop=True)
     df.sort_values(['Train', 'index'], inplace=True)
 
     fix_next_days(df, 'Arrive')

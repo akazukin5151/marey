@@ -9,9 +9,12 @@ def main(htmls: Iterable[Path], out_csv: Path):
     if out_csv.exists():
         return
     print('Scraping html... (offline)')
-    df = pd.DataFrame(columns=['Station', 'Arrive', 'Depart', 'Train'])
+    dfs = []
     for f in htmls:
-        df = df.append(make_df(f))
+        dfs.append(make_df(f))
+    df = pd.concat(dfs)
+    df = df.drop(columns=['index'])
+    df.columns = ['Station', 'Arrive', 'Depart', 'Train']
     mkdirs_touch_open('', out_csv)
     df.to_csv(out_csv, index=False)
 
