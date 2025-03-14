@@ -142,7 +142,7 @@ Bokeh and Altair is optional, it is only used for interactive plots and depends 
 Either edit the bottom of marey/app/simple/main.py to use your own url and line name, and line color
 
 > [!WARNING]
-> You may have to change url to use a recent date and time. Older date and times might be missing some information. Just changing the `dt=yyyymmdd` query param will work
+> You may have to change url to use a recent date and time. Older date and times might be missing some information. Just changing the `dt=yyyymmdd` and `tm=hhmm` query params will work
 
 Or from another python module, import `main` and call `main.main(line)`, giving your own `line`. To construct a `Line`, import `common` from `marey.app.simple` and call `common.Constants.Line`
 
@@ -160,7 +160,7 @@ All the scripts will try its best to immediately return if their output file alr
 Either edit the bottom of marey/app/transfers/main.py to use your own url and filename
 
 > [!WARNING]
-> You may have to change url to use a recent date and time. Older date and times might be missing some information. Just changing the `dt=yyyymmdd` query param will work
+> You may have to change url to use a recent date and time. Older date and times might be missing some information. Just changing the `dt=yyyymmdd` and `tm=hhmm` query params will work
 
 Or from another python module, import `main` and call `main.main(route)`, giving your own `route`. To construct a `Route`, import `common` from `marey.app.transfers` and call `common.Route`
 
