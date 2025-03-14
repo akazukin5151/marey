@@ -90,7 +90,7 @@ def get_timetable_url(s: Soup, name_elem: Soup, name: Name, date: str) -> Url:
     link = s.find('div', class_='btn-group-simple-links').find('a')
     if link.get_text() == '時刻表':
         url = link.get('href')
-        return url.replace('?dw=1', '') + '?dt=' + date
+        return url.replace('?dw=0', '') + '?dt=' + date
 
     station_link = name_elem.find('a').get('href')
     station_id = station_link.split('/')[-1]
