@@ -34,7 +34,8 @@ def scrape_html(route: Route) -> Tuple[
     colors_soups = result.find_all('td', class_='td-line-color')
     color_classes = [colors_soup['class'][2] for colors_soup in colors_soups]
 
-    line_names = parse_line_names(result)
+    # exclude the 'walking' transportation mode
+    line_names = [ln for ln in parse_line_names(result) if ln != '徒歩']
 
     return (
         all_stations_data, dest_station, stylesheet_url, color_classes, line_names

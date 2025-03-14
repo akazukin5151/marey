@@ -10,6 +10,9 @@ def main(stylesheet_path: Path, color_classes: List[CssClass]) -> List[str]:
 
     colors = []
     for color_class in color_classes:
+        if color_class == 'walk':
+            continue
+
         class_pos = css.find(f'.{color_class}.with-bg')
         color_key = css.find('background-color', class_pos)
 
