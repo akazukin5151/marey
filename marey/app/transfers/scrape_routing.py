@@ -3,6 +3,8 @@ from pathlib import Path
 from .common import Route, CssClass
 from marey.lib import save_page
 from marey.lib.get_urls import get_target_url
+from marey.lib import get_urls
+from marey.lib.scrap_html import get_rest_station_info
 from bs4 import BeautifulSoup
 
 '''Type alias of a BeautifulSoup object, which doesn't have stubs'''
@@ -54,40 +56,128 @@ def get_stylesheet_url(s: Soup) -> Url:
 
 def parse_starting_station(result: Soup, date: str) -> StationData:
     starting_station = result.find('div', class_='result-route-departure-wrap')
-    return parse_station(starting_station, date)
+    return parse_station(starting_station, date, None, None)
 
 def parse_dest_station_name(result: Soup) -> Name:
     dest_station = result.find('div', class_='result-route-arrival-wrap')
     return get_station_name(dest_station)
 
 def parse_transfer_stations(result: Soup, date: str) -> List[StationData]:
-    transfer_stations = result.find_all(
-        'div', class_='result-route-transfer-sta-wrap'
-    )
-    return [
-        parse_transfer_station(transfer_station, date)
-        for transfer_station in transfer_stations
-    ]
+    divs = result.find_all('div')
+    res = []
+    for div in divs:
+        # also include stations between through services
+        # as past/future times may not have the exact same through service
+        # but the journey can still be continued by manually changing
+        # at that station
+        if (
+            'result-route-transfer-sta-wrap' in div.get('class')
+            or 'result-route-station-direct-wrap' in div.get('class')
+        ):
+            prev_time = None if len(res) == 0 else res[-1][1]
+            prev_timetable_url = None if len(res) == 0 else res[-1][2]
+            # this can be a through service station
+            # if so, we need to get the prev transfer station (not through service)
+            # and use its timetable to find the departure time at the through
+            # service station.
+            # TODO: prev non through service station
+            r = parse_transfer_station(div, date, prev_timetable_url, prev_time)
+            res.append(r)
 
-def parse_transfer_station(transfer_station: Soup, date: str) -> StationData:
-    (name, time, timetable_url) = parse_station(transfer_station, date)
+    return res
+
+def parse_transfer_station(
+    transfer_station: Soup,
+    date: str,
+    prev_timetable_url: Optional[Url],
+    prev_time: Optional[Time],
+) -> StationData:
+    (name, time, timetable_url) = parse_station(
+        transfer_station, date, prev_timetable_url, prev_time
+    )
     time = time.replace('発', '')
     return (name, time, timetable_url)
 
-def parse_station(station: Soup, date: str) -> StationData:
+def parse_station(
+    station: Soup,
+    date: str,
+    prev_timetable_url: Optional[Url],
+    prev_time: Optional[Time],
+) -> StationData:
     name_elem = station.find('div', class_='name')
     name = name_elem.get_text().strip()
-    time = get_station_time(station)
+    time = get_station_time(station, name, prev_timetable_url, prev_time)
     timetable_url = get_timetable_url(station, name_elem, name, date)
     return (name, time, timetable_url)
 
 def get_station_name(s: Soup) -> Name:
     return s.find('div', class_='name').get_text().strip()
 
-def get_station_time(s: Soup) -> Time:
+def get_station_time(
+    s: Soup,
+    name: Name,
+    prev_timetable_url: Optional[Url],
+    prev_time: Optional[Time],
+) -> Time:
     elem = s.find('div', class_='departure-time')
     if elem is not None:
         return elem.get_text()
+
+    if prev_timetable_url is None or prev_time is None:
+        raise Exception('cannot find depature time and timetable url or prev time is none')
+
+    # this station is a station that leads to through services.
+    # no manual transfer is needed, but we still want to show this
+    # as two separate lines as if a transfer has happened.
+    # to do this, we need to get the departure time.
+    # we can only do this by going to the previous transfer station's timetable,
+    # find the matching train, get that train's station list, and get the
+    # departure time in that station list.
+
+    # download timetable url to html
+    line_name = 'prev_' + name + '_part'
+    timetable_html_path = Path('out/transfers/line') / f'{line_name}.html'
+    save_page.main(prev_timetable_url, timetable_html_path)
+
+    # scrape urls from html
+    rs = get_urls.main(timetable_html_path)
+
+    # find train that matches `time` and return url
+    splitted = prev_time.split(':')
+    hour = splitted[0]
+    minute = splitted[1]
+    for (target_url, train_dep_hour, train_dep_min, _, _) in rs:
+        if train_dep_hour == hour and train_dep_min == minute:
+            break
+    else:  # no break
+        raise Exception(f"couldn't find matching train at {prev_time}")
+
+    # download page of the train for this leg
+    journey_html = Path('out/transfers/journey') / f'to {name} from {prev_time}.html'
+    save_page.main(target_url, journey_html)
+
+    # scrape the departure time for name (大和西大寺)
+    dep_t = scrape_dep_time(journey_html, name)
+    if dep_t is None:
+        raise Exception('could not scrape depature time')
+
+    return dep_t
+
+def scrape_dep_time(file_: Path, name: Name) -> Optional[str]:
+    print('Scraping html... (offline)')
+    with open(file_, 'r') as f:
+        soup = BeautifulSoup(f.read(), features='html.parser')
+
+    first_station = soup.find('div', class_='result-route-departure-wrap')
+    rest_stations = soup.find_all('div', class_='result-route-transfer-wrap')
+    all_stations = [first_station] + rest_stations
+
+    for station in all_stations:
+        (station_name, _, dep_t) = get_rest_station_info(station)
+        if station_name == name:
+            return dep_t
+
+    return None
 
 def get_timetable_url(s: Soup, name_elem: Soup, name: Name, date: str) -> Optional[Url]:
     links = s.find('div', class_='btn-group-simple-links')
