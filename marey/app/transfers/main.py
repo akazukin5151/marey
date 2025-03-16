@@ -9,6 +9,7 @@ from marey.lib import scrap_html
 from . import combined
 from marey.lib import prepare_plot
 from . import plot
+from . import scrape_timetable
 
 from .scrape_routing import StationData
 import pandas as pd
@@ -77,22 +78,8 @@ def scrape_leg(
 
     line_name = name + '_part'
 
-    # download timetable url to html
-    timetable_html_path = Path('out/transfers/line') / f'{line_name}.html'
-    save_page.main(timetable_url, timetable_html_path)
-
-    # scrape urls from html
-    rs = get_urls.main(timetable_html_path)
-
-    # find train that matches `time` and return url
-    splitted = time.split(':')
-    hour = splitted[0]
-    minute = splitted[1]
-    for idx, (target_url, train_dep_hour, train_dep_min, _, _) in enumerate(rs):
-        if train_dep_hour == hour and train_dep_min == minute:
-            break
-    else:  # no break
-        raise Exception(f"couldn't find matching train at {time}")
+    timetable_data = scrape_timetable.scrape_timetable_urls(line_name, timetable_url)
+    idx, target_url = scrape_timetable.find_train_in_timetable_data(timetable_data, time)
 
     dfs = []
 
@@ -105,8 +92,8 @@ def scrape_leg(
     # plot many different times of the same line.
     # based on the same timetable.
     from_idx = max(idx - 10, 0)
-    to_idx = min(idx + 10, len(rs))
-    for r in rs[from_idx:to_idx]:
+    to_idx = min(idx + 10, len(timetable_data))
+    for r in timetable_data[from_idx:to_idx]:
         target_url = r[0]
         time_ = r[1] + ':' + r[2]
         df = scrape_train(

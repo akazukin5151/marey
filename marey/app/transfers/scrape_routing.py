@@ -5,6 +5,7 @@ from marey.lib import save_page
 from marey.lib.get_urls import get_target_url
 from marey.lib import get_urls
 from marey.lib.scrap_html import get_rest_station_info
+from . import scrape_timetable
 from bs4 import BeautifulSoup
 
 '''Type alias of a BeautifulSoup object, which doesn't have stubs'''
@@ -136,21 +137,12 @@ def get_station_time(
 
     # download timetable url to html
     line_name = 'prev_' + name + '_part'
-    timetable_html_path = Path('out/transfers/line') / f'{line_name}.html'
-    save_page.main(prev_timetable_url, timetable_html_path)
-
-    # scrape urls from html
-    rs = get_urls.main(timetable_html_path)
-
-    # find train that matches `time` and return url
-    splitted = prev_time.split(':')
-    hour = splitted[0]
-    minute = splitted[1]
-    for (target_url, train_dep_hour, train_dep_min, _, _) in rs:
-        if train_dep_hour == hour and train_dep_min == minute:
-            break
-    else:  # no break
-        raise Exception(f"couldn't find matching train at {prev_time}")
+    timetable_data = scrape_timetable.scrape_timetable_urls(
+        line_name, prev_timetable_url
+    )
+    _, target_url = scrape_timetable.find_train_in_timetable_data(
+        timetable_data, prev_time
+    )
 
     # download page of the train for this leg
     journey_html = Path('out/transfers/journey') / f'to {name} from {prev_time}.html'
