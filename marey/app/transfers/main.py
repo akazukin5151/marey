@@ -91,19 +91,48 @@ def scrape_leg(
 
     # plot many different times of the same line.
     # based on the same timetable.
-    from_idx = max(idx - 10, 0)
-    to_idx = min(idx + 10, len(timetable_data))
-    for r in timetable_data[from_idx:to_idx]:
-        target_url = r[0]
-        time_ = r[1] + ':' + r[2]
-        df = scrape_train(
-            name, time_, plot_out_path, to_remove, target_url
-        )
+
+    # since some trains don't actually go to our destination (returns None)
+    # we go backwards/forwards until we each our limit (10)
+
+    i = idx
+    n = 0
+    while True:
+        if n >= 10 or i < 0:
+            break
+        r = timetable_data[i]
+        df = scrape_multi(r, name, to_remove, plot_out_path)
         if df is not None:
             dfs.append(df)
+            n += 1
+        i -= 1
+
+    i = idx
+    n = 0
+    while True:
+        if n >= 10 or i >= len(timetable_data):
+            break
+        r = timetable_data[i]
+        df = scrape_multi(r, name, to_remove, plot_out_path)
+        if df is not None:
+            dfs.append(df)
+            n += 1
+        i += 1
 
     fix_order(dfs)
     return dfs
+
+def scrape_multi(
+    r: scrape_timetable.TimetableData,
+    name: str,
+    to_remove: str,
+    plot_out_path: Path,
+):
+    target_url = r[0]
+    time_ = r[1] + ':' + r[2]
+    return scrape_train(
+        name, time_, plot_out_path, to_remove, target_url
+    )
 
 def fix_order(dfs: list[pd.DataFrame]):
     '''
