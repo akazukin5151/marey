@@ -85,13 +85,17 @@ def get_station_name(s: Soup) -> Name:
     return s.find('div', class_='name').get_text().strip()
 
 def get_station_time(s: Soup) -> Time:
-    return s.find('div', class_='departure-time').get_text()
+    elem = s.find('div', class_='departure-time')
+    if elem is not None:
+        return elem.get_text()
 
 def get_timetable_url(s: Soup, name_elem: Soup, name: Name, date: str) -> Optional[Url]:
-    link = s.find('div', class_='btn-group-simple-links').find('a')
-    if link.get_text() == '時刻表':
-        url = link.get('href')
-        return url.replace('?dw=0', '') + '?dt=' + date
+    links = s.find('div', class_='btn-group-simple-links')
+    if links is not None:
+        link = links.find('a')
+        if link.get_text() == '時刻表':
+            url = link.get('href')
+            return url.replace('?dw=0', '') + '?dt=' + date
 
     station_link = name_elem.find('a').get('href')
     station_id = station_link.split('/')[-1]
