@@ -1,5 +1,6 @@
 from marey.lib import get_urls
-from .common import Constants, mkdirs_touch_open
+from .common import Constants
+from ...lib.common import mkdirs_touch_open
 
 def main(line_name):
     url_file = Constants.url_dir / f'{line_name}.txt'
