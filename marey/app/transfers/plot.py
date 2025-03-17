@@ -1,13 +1,32 @@
-from typing import List
 from pathlib import Path
 import matplotlib.pyplot as plt
 from marey.lib import plot
+import pandas as pd
 
-def main(dfs, plot_outfile: Path, colors: List[str], line_names: List[str]):
+def main(
+    dfs: list[tuple[str, str, list[pd.DataFrame]]],
+    plot_outfile: Path,
+):
     def f():
-        for (df, color) in zip(dfs, colors):
-            plt.plot(df['Arrive'], df['Station'], marker='o', color=color)
-        plt.legend(line_names)
+        labelled = {}
+        for (line_name, color, dfs_) in dfs:
+            for df in dfs_:
+                if labelled.get(line_name, None) is None:
+                    label = line_name
+                else:
+                    label = None
+
+                plt.plot(
+                    df["Arrive"],
+                    df["Station"],
+                    marker="o",
+                    color=color,
+                    label=label,
+                )
+
+                labelled[line_name] = True
+
+        plt.legend()
 
     def g():
         plot.format_mpl_plot(plt.gca())

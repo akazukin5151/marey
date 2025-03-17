@@ -47,22 +47,20 @@ def main(route: Route):
 
     # the route is made of legs and transfers
     # for every leg of the journey, scrape the leg
-    dfs = []
-    all_colors = []
+    dfs: list[tuple[str, str, list[pd.DataFrame]]] = []
     n_empty = 0
     for idx, station_data in enumerate(all_stations_data):
         to_remove = names_to_remove[idx]
         color = colors[idx - n_empty]
+        line_name = line_names[idx - n_empty]
         dfs_ = scrape_leg(station_data, to_remove, plot_out_path)
 
-        dfs.extend(dfs_)
+        dfs.append((line_name, color, dfs_))
         if len(dfs_) == 0:
             n_empty += 1
 
-        all_colors.extend([color] * len(dfs_))
-
     # plot the entire route
-    plot.main(dfs, plot_out_path, all_colors, line_names)
+    plot.main(dfs, plot_out_path)
 
 def scrape_leg(
     station_data: StationData,
