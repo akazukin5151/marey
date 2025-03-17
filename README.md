@@ -108,7 +108,7 @@ keihin_tohoku_ueno_tokyo_yamanote_combined_delta_box
 
 ![keihin_tohoku_ueno_tokyo_yamanote_combined_delta_box](examples/plots/keihin_tohoku_ueno_tokyo_yamanote_combined_delta_box.png)
 
-## Journey with transfers
+## Journeys with transfers with varying times
 
 Ueno to Futako-Tamagawa
 
@@ -118,6 +118,10 @@ Ueno to Futako-Tamagawa
 Tanashi to Akihabara
 
 ![田無→秋葉原](examples/transfers/田無→秋葉原.png)
+
+Gion-Shijo to Kintetsu-Nara
+
+![祇園四条→近鉄奈良](examples/transfers/祇園四条→近鉄奈良.png)
 
 # Features
 
