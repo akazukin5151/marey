@@ -28,7 +28,7 @@ def make_df(file_):
     # first and last stations only have one of {arrival, departure} time
     first_station_name = get_station_name(first_station)
     # don't special-case this because a "first" station can actually not be the terminus
-    _, first_station_dep_time, _ = get_rest_station_info(first_station)
+    _, _, first_station_dep_time = get_rest_station_info(first_station)
     first_station_info = (first_station_name, np.nan, first_station_dep_time)
 
     last_station_name = get_station_name(rest_stations[-1])
